@@ -1,0 +1,26 @@
+warning: linker stderr: Note: mold is unavailable or failed the active target/toolchain link probe.
+         Falling back to lld or the platform linker for this build.
+  |
+  = note: `#[warn(linker_messages)]` on by default
+
+warning: `mesh-llm-build-info` (build script) generated 1 warning
+warning: `mesh-llm-analytics` (build script) generated 1 warning (1 duplicate)
+warning: `mesh-llm-ui` (build script) generated 1 warning (1 duplicate)
+warning: `skippy-ffi` (build script) generated 1 warning (1 duplicate)
+warning: `skippy-model-package` (build script) generated 1 warning (1 duplicate)
+warning: `skippy-api` (build script) generated 1 warning (1 duplicate)
+warning: `mesh-llm-plugin` (build script) generated 1 warning (1 duplicate)
+warning: `skippy-protocol` (build script) generated 1 warning (1 duplicate)
+warning: `mesh-llm-host-runtime` (lib test) generated 1 warning (1 duplicate)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 8m 43s
+     Running unittests src/lib.rs (target/debug/deps/mesh_llm_host_runtime-a556dd449c76ba59)
+
+running 4 tests
+test network::openai::response::payment_admission::tests::decoded_chunked_model_cannot_bypass_seller_payment_admission ... ok
+test network::openai::response::payment_admission::tests::unprofiled_public_alias_requires_payment_after_profile_fallback ... ok
+test network::openai::response::payment_admission::tests::priced_public_alias_still_requires_payment_after_ingress_alias_rewrite ... ok
+test network::openai::auto_route::payment_admission::tests::mixed_replicas_measure_readiness_only_on_admitted_targets ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 4222 filtered out; finished in 0.12s
+
+EXIT=0

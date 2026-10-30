@@ -1,0 +1,198 @@
+name: Fork CI
+
+# The upstream lanes run in a private runner image this fork cannot pull, so
+# they are guarded to Mesh-LLM/mesh-llm. This workflow replaces them on the
+# fork with checks that run directly on a GitHub-hosted runner.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review, edited]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fork-ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_INCREMENTAL: "0"
+  CARGO_PROFILE_DEV_DEBUG: "0"
+  CARGO_PROFILE_TEST_DEBUG: "0"
+  CARGO_TERM_COLOR: always
+  MESH_LLM_SKIP_UI: "1"
+
+jobs:
+  commit_convention:
+    name: Commit convention
+    if: ${{ github.repository == 'miminashi/mesh-llm' && github.event_name == 'pull_request' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+      - uses: ./.github/actions/prepare-automation
+        with:
+          runner-profile: hosted-bare
+      - name: Check commit convention
+        env:
+          # Pull-request-authored text reaches the script through the
+          # environment and is never interpolated into the shell.
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          "$MESH_LLM_AUTOMATION_BIN" repository conventional-commits --message "$PR_TITLE"
+          gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/commits" --paginate \
+            --jq '.[].commit.message' > "$RUNNER_TEMP/pr-commit-messages.txt"
+          printf '%s\n' "$PR_BODY" >> "$RUNNER_TEMP/pr-commit-messages.txt"
+          "$MESH_LLM_AUTOMATION_BIN" repository conventional-commits \
+            --trailers-only "$RUNNER_TEMP/pr-commit-messages.txt"
+
+  rust_fmt:
+    name: Rust format
+    if: ${{ github.repository == 'miminashi/mesh-llm' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@4360b52568e2003a75bf9bc1d59f33a8e3fc893c # stable 2026-08-20
+        with:
+          components: rustfmt
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+
+  rust_checks:
+    name: Clippy and tests
+    if: ${{ github.repository == 'miminashi/mesh-llm' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@4360b52568e2003a75bf9bc1d59f33a8e3fc893c # stable 2026-08-20
+        id: rust_toolchain
+        with:
+          components: clippy
+      - name: Restore Cargo cache
+        id: cargo_cache
+        uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: fork-ci-${{ runner.os }}-${{ steps.rust_toolchain.outputs.cachekey }}-${{ hashFiles('Cargo.lock') }}
+          restore-keys: |
+            fork-ci-${{ runner.os }}-${{ steps.rust_toolchain.outputs.cachekey }}-
+      - uses: ./.github/actions/prepare-automation
+        with:
+          runner-profile: hosted-bare
+      - name: Select crates
+        id: select
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          BEFORE_SHA: ${{ github.event.before }}
+        run: |
+          set -euo pipefail
+          # Hosted runners have no sccache, which .cargo/config.toml selects.
+          export RUSTC_WRAPPER='' CARGO_BUILD_RUSTC_WRAPPER=''
+          changed="$RUNNER_TEMP/changed-files.txt"
+          if [[ "$EVENT_NAME" == pull_request ]]; then
+            git diff --name-only "$BASE_SHA"...HEAD > "$changed"
+          elif [[ -z "$BEFORE_SHA" || "$BEFORE_SHA" =~ ^0+$ ]] || ! git cat-file -e "$BEFORE_SHA^{commit}"; then
+            # No usable previous commit: select the whole workspace.
+            echo Cargo.lock > "$changed"
+          else
+            git diff --name-only "$BEFORE_SHA"..HEAD > "$changed"
+          fi
+          cat "$changed"
+
+          selection=$(bash scripts/affected-crates.sh --stdin < "$changed")
+          echo "$selection"
+          if [[ $(jq -r '.all_rust' <<<"$selection") == true ]]; then
+            mapfile -t crates < <(jq -r '.affected[]' <<<"$selection")
+          else
+            mapfile -t crates < <(jq -r '.test_crates[]' <<<"$selection")
+          fi
+          # A change to this workflow exercises both selection paths on
+          # one crate that builds on CPU alone and one that needs native.
+          if grep -Fqx .github/workflows/fork-ci.yml "$changed"; then
+            crates+=(skippy-hf-hub skippy-runtime)
+          fi
+
+          selected=()
+          skipped=()
+          for crate in $(printf '%s\n' "${crates[@]}" | sort -u); do
+            # skippy-ffi without its dynamic-runtime feature links the
+            # patched llama.cpp ABI archives, which only the upstream runner
+            # image provides.
+            tree=$(cargo tree --locked -p "$crate" -e normal,build,dev --prefix none --format '{p} [{f}]')
+            ffi=$(awk '$1 == "skippy-ffi"' <<<"$tree")
+            if [[ -n "$ffi" && "$ffi" != *dynamic-runtime* ]]; then
+              skipped+=("$crate")
+            else
+              selected+=("$crate")
+            fi
+          done
+
+          {
+            echo "### Rust crates"
+            if [[ ${#selected[@]} -eq 0 ]]; then
+              echo "No Rust crates affected."
+            else
+              printf -- '- `%s`\n' "${selected[@]}"
+            fi
+            if [[ ${#skipped[@]} -gt 0 ]]; then
+              echo
+              echo "### Skipped (needs native llama ABI)"
+              printf -- '- `%s`\n' "${skipped[@]}"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "crates=${selected[*]}" >> "$GITHUB_OUTPUT"
+      - name: Clippy
+        if: ${{ steps.select.outputs.crates != '' }}
+        env:
+          CRATES: ${{ steps.select.outputs.crates }}
+        run: |
+          set -euo pipefail
+          # Hosted runners have no sccache, which .cargo/config.toml selects.
+          export RUSTC_WRAPPER='' CARGO_BUILD_RUSTC_WRAPPER=''
+          for crate in $CRATES; do
+            echo "::group::cargo clippy -p $crate"
+            cargo clippy --locked -p "$crate" --all-targets -- -D warnings
+            echo "::endgroup::"
+          done
+      - name: Tests
+        if: ${{ steps.select.outputs.crates != '' }}
+        env:
+          CRATES: ${{ steps.select.outputs.crates }}
+        run: |
+          set -euo pipefail
+          # Hosted runners have no sccache, which .cargo/config.toml selects.
+          export RUSTC_WRAPPER='' CARGO_BUILD_RUSTC_WRAPPER=''
+          for crate in $CRATES; do
+            echo "::group::cargo test -p $crate"
+            cargo test --locked -p "$crate"
+            echo "::endgroup::"
+          done
+      - name: Save Cargo cache
+        if: ${{ github.event_name == 'push' && steps.cargo_cache.outputs.cache-hit != 'true' }}
+        uses: actions/cache/save@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ steps.cargo_cache.outputs.cache-primary-key }}

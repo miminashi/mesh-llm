@@ -11,6 +11,7 @@ permissions:
 jobs:
   plan:
     name: Plan website
+    if: github.repository == 'Mesh-LLM/mesh-llm'
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -92,6 +93,7 @@ jobs:
     permissions: {}
     steps:
       - name: Enforce website result
+        if: github.repository == 'Mesh-LLM/mesh-llm'
         env:
           LANE_PLAN: ${{ needs.plan.outputs.lane_plan }}
           LANE_RESULT: ${{ needs.lane.result }}

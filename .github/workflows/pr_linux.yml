@@ -16,6 +16,7 @@ concurrency:
 jobs:
   plan:
     name: Plan Linux
+    if: github.repository == 'Mesh-LLM/mesh-llm'
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     permissions:
@@ -117,6 +118,7 @@ jobs:
     permissions: {}
     steps:
       - name: Enforce Linux result
+        if: github.repository == 'Mesh-LLM/mesh-llm'
         env:
           LANE_PLAN: ${{ needs.plan.outputs.lane_plan }}
           LANE_RESULT: ${{ needs.lane.result }}

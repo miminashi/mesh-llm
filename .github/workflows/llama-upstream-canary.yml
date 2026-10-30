@@ -455,7 +455,7 @@ jobs:
 
   alert-consecutive-failures:
     name: Alert after consecutive scheduled failures
-    if: ${{ !cancelled() && github.event_name == 'schedule' }}
+    if: ${{ github.repository == 'Mesh-LLM/mesh-llm' && !cancelled() && github.event_name == 'schedule' }}
     needs: [resolve, result, publish-certified-canary]
     runs-on: ubuntu-24.04
     timeout-minutes: 5

@@ -20,6 +20,7 @@ env:
 
 jobs:
   close_stale_prs:
+    if: github.repository == 'Mesh-LLM/mesh-llm'
     runs-on: ubuntu-24.04
     steps:
       - name: Calculate stale warning window

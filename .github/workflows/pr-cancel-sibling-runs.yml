@@ -14,7 +14,7 @@ concurrency:
 jobs:
   monitor:
     name: Monitor PR lane failures
-    if: ${{ github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.pull_requests[0] != null }}
+    if: ${{ github.repository == 'Mesh-LLM/mesh-llm' && github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.pull_requests[0] != null }}
     runs-on: ubuntu-24.04
     timeout-minutes: 185
     permissions:

@@ -4,7 +4,7 @@ use futures::StreamExt;
 use futures::stream::{self, Stream};
 use reqwest::header::HeaderMap;
 use serde::de::DeserializeOwned;
-use url::Url;
+use url::{Origin, Url};
 
 use crate::client::HFClient;
 use crate::error::{HFError, HFResult};
@@ -34,6 +34,7 @@ impl HFClient {
             return futures::stream::empty().left_stream();
         }
 
+        let origin = initial_url.origin();
         let state = PaginationState {
             buffer: VecDeque::new(),
             next_url: Some(initial_url),
@@ -45,6 +46,7 @@ impl HFClient {
 
         stream::try_unfold(state, move |mut state| {
             let params = params.clone();
+            let origin = origin.clone();
             async move {
                 if state.limit.is_some_and(|max| state.items_yielded >= max) {
                     return Ok(None);
@@ -61,7 +63,7 @@ impl HFClient {
                 }
 
                 let url = match state.next_url.take() {
-                    Some(u) => u,
+                    Some(u) => same_origin_page(&origin, u)?,
                     None => return Ok(None),
                 };
 
@@ -107,6 +109,19 @@ impl HFClient {
     }
 }
 
+/// `url` if it keeps the scheme, host and port of the first page: every page
+/// request carries the Hub token, which no other origin may get, so a `Link`
+/// header pointing anywhere else ends the stream with an error.
+fn same_origin_page(origin: &Origin, url: Url) -> HFResult<Url> {
+    if url.origin() == *origin {
+        return Ok(url);
+    }
+    Err(HFError::MalformedResponse {
+        what: "pagination Link header points to another origin".into(),
+        url: Some(url.into()),
+    })
+}
+
 /// Parse the `Link` header for a `rel="next"` URL.
 /// Format: `<https://huggingface.co/api/models?p=1>; rel="next"`
 fn parse_link_header_next(headers: &HeaderMap) -> Option<Url> {
@@ -127,9 +142,152 @@ fn parse_link_header_next(headers: &HeaderMap) -> Option<Url> {
 
 #[cfg(test)]
 mod tests {
-    use reqwest::header::{HeaderMap, HeaderValue};
+    use std::sync::{Arc, Mutex};
 
-    use super::parse_link_header_next;
+    use futures::StreamExt;
+    use reqwest::header::{HeaderMap, HeaderValue};
+    use tokio::io::{AsyncReadExt, AsyncWriteExt};
+    use url::Url;
+
+    use super::{parse_link_header_next, same_origin_page};
+    use crate::HFClientBuilder;
+
+    /// Answers each request with the `Link` header and JSON body mapped to its
+    /// path, or 404, and records every request it reads.
+    fn serve(
+        listener: tokio::net::TcpListener,
+        pages: Vec<(String, Option<String>, String)>,
+    ) -> Arc<Mutex<Vec<String>>> {
+        let seen = Arc::new(Mutex::new(Vec::new()));
+        let recorded = Arc::clone(&seen);
+        tokio::spawn(async move {
+            loop {
+                let Ok((mut socket, _)) = listener.accept().await else {
+                    return;
+                };
+                let pages = pages.clone();
+                let recorded = Arc::clone(&recorded);
+                tokio::spawn(async move {
+                    let mut request = vec![0; 4096];
+                    let Ok(read) = socket.read(&mut request).await else {
+                        return;
+                    };
+                    let request = String::from_utf8_lossy(&request[..read]).into_owned();
+                    let path = request.split_whitespace().nth(1).unwrap_or_default();
+                    let answer = match pages.iter().find(|(at, _, _)| at == path) {
+                        Some((_, next, body)) => {
+                            let link = next
+                                .as_ref()
+                                .map(|next| format!("Link: <{next}>; rel=\"next\"\r\n"))
+                                .unwrap_or_default();
+                            format!(
+                                "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n{link}\
+                                 Content-Length: {}\r\nConnection: close\r\n\r\n{body}",
+                                body.len()
+                            )
+                        }
+                        None => "HTTP/1.1 404 Not Found\r\nContent-Length: 0\r\n\
+                                 Connection: close\r\n\r\n"
+                            .into(),
+                    };
+                    recorded.lock().unwrap().push(request);
+                    let _ = socket.write_all(answer.as_bytes()).await;
+                });
+            }
+        });
+        seen
+    }
+
+    async fn hub() -> (tokio::net::TcpListener, String) {
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let endpoint = format!("http://{}", listener.local_addr().unwrap());
+        (listener, endpoint)
+    }
+
+    async fn list(endpoint: &str) -> Vec<crate::HFResult<serde_json::Value>> {
+        let client = HFClientBuilder::new()
+            .endpoint(endpoint)
+            .token("hf_dummy")
+            .retry_max_attempts(0)
+            .build()
+            .unwrap();
+        let url = Url::parse(&format!("{endpoint}/api/models")).unwrap();
+        client.paginate(url, vec![], None).collect().await
+    }
+
+    #[test]
+    fn only_a_same_origin_next_page_is_requested() {
+        let origin = Url::parse("https://huggingface.co/api/models")
+            .unwrap()
+            .origin();
+        let next = Url::parse("https://huggingface.co/api/models?cursor=x").unwrap();
+        assert_eq!(same_origin_page(&origin, next.clone()).unwrap(), next);
+        // Each of these reaches another origin, which must not get the token.
+        for elsewhere in [
+            "https://evil.example/x",
+            "https://cdn-lfs.hf.co/x",
+            "http://huggingface.co/x",
+            "https://huggingface.co:8443/x",
+        ] {
+            let url = Url::parse(elsewhere).unwrap();
+            assert!(same_origin_page(&origin, url).is_err(), "{elsewhere}");
+        }
+    }
+
+    #[tokio::test]
+    async fn a_same_origin_next_page_is_followed() {
+        let (listener, endpoint) = hub().await;
+        let seen = serve(
+            listener,
+            vec![
+                (
+                    "/api/models".into(),
+                    Some(format!("{endpoint}/api/models?p=1")),
+                    "[1]".into(),
+                ),
+                ("/api/models?p=1".into(), None, "[2]".into()),
+            ],
+        );
+
+        let items: Vec<_> = list(&endpoint)
+            .await
+            .into_iter()
+            .map(Result::unwrap)
+            .collect();
+
+        assert_eq!(items, [serde_json::json!(1), serde_json::json!(2)]);
+        let seen = seen.lock().unwrap();
+        assert_eq!(seen.len(), 2);
+        assert!(
+            seen.iter()
+                .all(|request| request.contains("Bearer hf_dummy"))
+        );
+    }
+
+    #[tokio::test]
+    async fn a_next_page_on_another_origin_never_gets_the_token() {
+        let (listener, endpoint) = hub().await;
+        let (elsewhere, other) = hub().await;
+        let stolen = serve(elsewhere, vec![("/steal".into(), None, "[2]".into())]);
+        serve(
+            listener,
+            vec![(
+                "/api/models".into(),
+                Some(format!("{other}/steal")),
+                "[1]".into(),
+            )],
+        );
+
+        let items = list(&endpoint).await;
+
+        assert_eq!(items.len(), 2, "{items:?}");
+        assert_eq!(*items[0].as_ref().unwrap(), serde_json::json!(1));
+        assert!(matches!(
+            items[1],
+            Err(crate::HFError::MalformedResponse { .. })
+        ));
+        assert!(stolen.lock().unwrap().is_empty());
+    }
 
     #[test]
     fn test_parse_link_header_next() {

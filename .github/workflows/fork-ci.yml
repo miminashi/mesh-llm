@@ -129,16 +129,18 @@ jobs:
           # A change to this workflow exercises both selection paths on
           # one crate that builds on CPU alone and one that needs native.
           if grep -Fqx .github/workflows/fork-ci.yml "$changed"; then
-            crates+=(skippy-hf-hub mesh-llm-host-runtime)
+            crates+=(skippy-hf-hub skippy-runtime)
           fi
 
           selected=()
           skipped=()
           for crate in $(printf '%s\n' "${crates[@]}" | sort -u); do
-            # Crates that link skippy-ffi need the patched llama.cpp ABI
-            # archives, which only the upstream runner image provides.
-            if cargo tree --locked -p "$crate" -e normal,build,dev --prefix none --format '{p}' \
-              | awk '{print $1}' | grep -Fqx skippy-ffi; then
+            # skippy-ffi without its dynamic-runtime feature links the
+            # patched llama.cpp ABI archives, which only the upstream runner
+            # image provides.
+            tree=$(cargo tree --locked -p "$crate" -e normal,build,dev --prefix none --format '{p} [{f}]')
+            ffi=$(awk '$1 == "skippy-ffi"' <<<"$tree")
+            if [[ -n "$ffi" && "$ffi" != *dynamic-runtime* ]]; then
               skipped+=("$crate")
             else
               selected+=("$crate")

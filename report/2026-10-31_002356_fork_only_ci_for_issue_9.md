@@ -1,7 +1,7 @@
 # fork 専用 CI の追加と upstream 由来の CI の停止
 
-- **実施日時**: 2026年10月30日 23:30 〜 2026年10月31日 00:38 JST (issue #9 の実装: fork-ci.yml の追加、upstream 由来のワークフローへの条件追加、契約チェックの確認、PR #10 の CI 確認)
-- **報告日時**: 2026年10月31日 00:38 JST
+- **実施日時**: 2026年10月30日 23:30 〜 2026年10月31日 01:35 JST (issue #9 の実装: fork-ci.yml の追加、upstream 由来のワークフローへの条件追加、契約チェックの確認、PR #10 の CI 確認・マージ、マージ後の main の CI 確認、不要なワークフロー 2 つの無効化)
+- **報告日時**: 2026年10月31日 00:38 JST（01:35 JST にマージ後の結果を追記）
 - **作成者**: Claude Opus 5.5
 
 ## 概要
@@ -93,13 +93,41 @@ upstream 由来のワークフローには、Mesh-LLM/mesh-llm でだけ動く�
 
 ## 副次発見
 
-- `llama-upstream-canary.yml` の `alert-consecutive-failures` が、fork に issue #8「[CI] llama.cpp upstream canary failing repeatedly」を自動で作っていた。今回の変更で止まる。#8 はマージ後に閉じてよい
+- `llama-upstream-canary.yml` の `alert-consecutive-failures` が、fork に issue #8「[CI] llama.cpp upstream canary failing repeatedly」を自動で作っていた。今回の変更で止まる。マージ後、「fork では使わないため無効にした」というコメントを付けて、#8 を not planned で閉じた
 - 静的 ABI が必要な 16 クレート: `llama-spec-bench`、`mesh-llm-cli`、`mesh-llm-commands`、`mesh-llm-embedded-runtime`、`mesh-llm-skippy-adapter`、`mesh-llm-system`、`mesh-native-serving-plugin-host`、`skippy-api`、`skippy-cli`、`skippy-commands`、`skippy-correctness`、`skippy-package-builder`、`skippy-runtime`、`skippy-runtime-install`、`skippy-scheduler`、`skippy-serving`
 - 集約ジョブ（`PR / Linux` など）は、fork では数秒だけ動き、中のステップを飛ばして success になる。skipped ではなく success と表示される点に注意
 
 ## 残課題
 
 - **llama-upstream-canary のスケジュール失敗**: ユーザーの指示で、`gh workflow disable llama-upstream-canary.yml --repo miminashi/mesh-llm` を実行して無効にした（状態は `disabled_manually`）。設定はリポジトリに残らないので、再び有効にするときは `gh workflow enable` を使う
-- **upstream を取り込んだあとの main への push**: `Cargo.lock` が変わるので `all_rust=true` になり、静的 ABI が不要な 62 クレートすべてが対象になる。そのうち xtask のテストには、`just` などを前提にするものがあるので、ubuntu-24.04 で落ちる可能性がある。マージ後、最初の main への push で確かめ、落ちる場合は `just` の導入や対象の調整を行う
+- **upstream を取り込んだあとの main への push**: `Cargo.lock` が変わるので `all_rust=true` になり、静的 ABI が不要な 62 クレートすべてが対象になる。そのうち xtask のテストには、`just` などを前提にするものがあるので、ubuntu-24.04 で落ちる可能性がある。PR #10 のマージでは `Cargo.lock` が変わらなかったので、まだ確かめられていない。次に upstream を取り込んだときに確かめ、落ちる場合は `just` の導入や対象の調整を行う
 - **静的 ABI が必要な 16 クレート**: テストするには、`SKIPPY_LLAMA_AUTO_BUILD=1` などで llama.cpp を CPU 向けにビルドしてキャッシュする段階を足す必要がある
 - **ブランチ保護**: 必須チェックにするなら、Fork CI の `Commit convention` / `Rust format` / `Clippy and tests` を指定する
+
+## マージ後の追記（2026年10月31日 01:35 JST）
+
+### main への push の CI
+
+PR #10 をマージコミット `46f814719` で main にマージした（issue #9 は自動で閉じた）。この push で動いた CI の結果:
+
+| ワークフロー | 結果 |
+|---|---|
+| Fork CI（run `41090004502`） | success |
+| Main · Linux / macOS / Windows / Website / Quality | success（`plan` は skip、集約ジョブはステップを飛ばして success） |
+| Public Website Deploy、Warm Windows ABI CI caches | skipped |
+| **Cache · Trusted sccache seed**（run `41090029177`） | **failure**（非公開イメージの pull で `manifest unknown`） |
+
+### 新しく見つかった失敗: `cache-warm-sccache.yml`
+
+- **動く条件**: `workflow_run` で、`Main · Quality` が main への push で**成功したとき**に動く。これまでは Main · Quality が毎回失敗していたので skip されていた。今回の変更で Main · Quality が（中身を飛ばして）success になったため、動き出した。issue #9 では「手動・リリース時のみ」に分類していたが、実際には main への push のたびに連動して動く
+- **役割**: 非公開イメージのコンテナで `just ci-sccache-seed-build` を実行し、sccache の種（最大 2GB）を `mesh-llm-sccache-seed-linux-x86_64-…` という名前で Actions のキャッシュに保存する。使うのは upstream のレーン（`ci-quality-slice.yml`、`ci-rust-tests-slice.yml`、`ci-linux-host-slice.yml`、`ci-linux-runtime-slice.yml`）だけで、どれも fork では止めた。Fork CI は sccache を使わない
+- **対応**: ユーザーの判断で、`gh workflow disable cache-warm-sccache.yml --repo miminashi/mesh-llm` を実行して無効にした
+
+### fork で手動で無効にしたワークフロー
+
+| ワークフロー | ファイル | 理由 |
+|---|---|---|
+| Llama Upgrade | `llama-upstream-canary.yml` | upstream の self-hosted macOS ランナーと AI エージェントの認証情報が必要で、fork では `result` が毎日 fail していた |
+| Cache · Trusted sccache seed | `cache-warm-sccache.yml` | 非公開イメージが必要。作った種を使う側のレーンも fork では止めている |
+
+どちらもリポジトリの設定なので、コードには記録が残らず、upstream を取り込んでも元に戻らない。もう一度動かすときは `gh workflow enable <file> --repo miminashi/mesh-llm` を使う。upstream で新しく追加されたワークフローは有効のまま動くので、upstream を取り込んだあとは Actions の結果を確かめる。

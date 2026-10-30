@@ -72,7 +72,7 @@ env:
 jobs:
   warm_windows_cpu:
     name: Warm Windows CPU ABI cache
-    if: ${{ (github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch') && (github.event_name != 'workflow_dispatch' || inputs.workload == 'all' || inputs.workload == 'cpu') }}
+    if: ${{ github.repository == 'Mesh-LLM/mesh-llm' && (github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch') && (github.event_name != 'workflow_dispatch' || inputs.workload == 'all' || inputs.workload == 'cpu') }}
     runs-on: windows-2022
     env:
       LLAMA_STAGE_BACKEND: cpu
@@ -152,7 +152,7 @@ jobs:
 
   warm_windows_gpu:
     name: Warm Windows ${{ matrix.name }} ABI cache
-    if: ${{ (github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch') && (github.event_name != 'workflow_dispatch' || inputs.workload == 'all') }}
+    if: ${{ github.repository == 'Mesh-LLM/mesh-llm' && (github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch') && (github.event_name != 'workflow_dispatch' || inputs.workload == 'all') }}
     runs-on: windows-2022
     env:
       LLAMA_STAGE_BUILD_DIR: .deps/llama-build/windows/build-stage-abi-${{ matrix.backend }}
@@ -309,7 +309,7 @@ jobs:
     needs:
       - warm_windows_cpu
       - warm_windows_gpu
-    if: ${{ !cancelled() && github.ref == 'refs/heads/main' }}
+    if: ${{ github.repository == 'Mesh-LLM/mesh-llm' && !cancelled() && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-24.04
     steps:
       - name: Prune old Windows ABI caches

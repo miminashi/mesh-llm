@@ -1,0 +1,1592 @@
+﻿2026-10-30T15:35:32.8575964Z Current runner version: '2.338.0'
+2026-10-30T15:35:32.8599124Z ##[group]Runner Image Provisioner
+2026-10-30T15:35:32.8599897Z Hosted Compute Agent
+2026-10-30T15:35:32.8600270Z Version: 20261021.618
+2026-10-30T15:35:32.8600948Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-30T15:35:32.8601430Z Build Date: 2026-10-21T00:45:21Z
+2026-10-30T15:35:32.8601885Z Worker ID: {ae838b30-fc6e-4fc9-b283-62114f9a19a5}
+2026-10-30T15:35:32.8602382Z Region: southcentralus
+2026-10-30T15:35:32.8602747Z Cloud: Azure
+2026-10-30T15:35:32.8603081Z ##[endgroup]
+2026-10-30T15:35:32.8604051Z ##[group]Operating System
+2026-10-30T15:35:32.8604477Z Ubuntu
+2026-10-30T15:35:32.8604847Z 24.04.5
+2026-10-30T15:35:32.8605194Z LTS
+2026-10-30T15:35:32.8605509Z ##[endgroup]
+2026-10-30T15:35:32.8605900Z ##[group]Runner Image
+2026-10-30T15:35:32.8606309Z Image: ubuntu-24.04
+2026-10-30T15:35:32.8606688Z Version: 20261025.353.1
+2026-10-30T15:35:32.8607385Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261025.353/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-30T15:35:32.8608731Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261025.353
+2026-10-30T15:35:32.8609383Z ##[endgroup]
+2026-10-30T15:35:32.8610197Z ##[group]GITHUB_TOKEN Permissions
+2026-10-30T15:35:32.8611736Z Contents: read
+2026-10-30T15:35:32.8612166Z Metadata: read
+2026-10-30T15:35:32.8612726Z ##[endgroup]
+2026-10-30T15:35:32.8614303Z Secret source: Actions
+2026-10-30T15:35:32.8614957Z Cache mode: write
+2026-10-30T15:35:32.8615427Z Prepare workflow directory
+2026-10-30T15:35:32.8907930Z Prepare all required actions
+2026-10-30T15:35:32.8945429Z Getting action download info
+2026-10-30T15:35:33.1341783Z Download action repository 'actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09' (SHA:fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09)
+2026-10-30T15:35:33.2006016Z Download action repository 'dtolnay/rust-toolchain@4360b52568e2003a75bf9bc1d59f33a8e3fc893c' (SHA:4360b52568e2003a75bf9bc1d59f33a8e3fc893c)
+2026-10-30T15:35:33.3957765Z Download action repository 'actions/cache@caa296126883cff596d87d8935842f9db880ef25' (SHA:caa296126883cff596d87d8935842f9db880ef25)
+2026-10-30T15:35:33.6088924Z Complete job name: Clippy and tests
+﻿2026-10-30T15:35:33.6736733Z ##[group]Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+2026-10-30T15:35:33.6737303Z with:
+2026-10-30T15:35:33.6737542Z   fetch-depth: 0
+2026-10-30T15:35:33.6737810Z   persist-credentials: false
+2026-10-30T15:35:33.6738256Z   repository: miminashi/mesh-llm
+2026-10-30T15:35:33.6741143Z   token: ***
+2026-10-30T15:35:33.6741386Z   ssh-strict: true
+2026-10-30T15:35:33.6741631Z   ssh-user: git
+2026-10-30T15:35:33.6741868Z   clean: true
+2026-10-30T15:35:33.6742121Z   sparse-checkout-cone-mode: true
+2026-10-30T15:35:33.6742413Z   fetch-tags: false
+2026-10-30T15:35:33.6742664Z   show-progress: true
+2026-10-30T15:35:33.6742917Z   lfs: false
+2026-10-30T15:35:33.6743153Z   submodules: false
+2026-10-30T15:35:33.6743525Z   set-safe-directory: true
+2026-10-30T15:35:33.6743820Z   allow-unsafe-pr-checkout: false
+2026-10-30T15:35:33.6744480Z env:
+2026-10-30T15:35:33.6744835Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:33.6745119Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:33.6745410Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:33.6745729Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:33.6746091Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:33.6746427Z ##[endgroup]
+2026-10-30T15:35:33.8690282Z Syncing repository: miminashi/mesh-llm
+2026-10-30T15:35:33.8692211Z ##[group]Getting Git version info
+2026-10-30T15:35:33.8692842Z Working directory is '/home/runner/work/mesh-llm/mesh-llm'
+2026-10-30T15:35:33.8693685Z [command]/usr/bin/git version
+2026-10-30T15:35:33.8751019Z git version 2.56.0
+2026-10-30T15:35:33.8882713Z ##[endgroup]
+2026-10-30T15:35:33.8888039Z Temporarily overriding HOME='/home/runner/work/_temp/f85b9a48-7ded-4ccb-a94a-51240fa6e58f' before making global git config changes
+2026-10-30T15:35:33.8889240Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-30T15:35:33.8890434Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/mesh-llm/mesh-llm
+2026-10-30T15:35:33.8891938Z Deleting the contents of '/home/runner/work/mesh-llm/mesh-llm'
+2026-10-30T15:35:33.8892858Z ##[group]Initializing the repository
+2026-10-30T15:35:33.8893424Z [command]/usr/bin/git init /home/runner/work/mesh-llm/mesh-llm
+2026-10-30T15:35:33.8964866Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-30T15:35:33.8966499Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-30T15:35:33.8967195Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-30T15:35:33.8967965Z hint: call:
+2026-10-30T15:35:33.8968305Z hint:
+2026-10-30T15:35:33.8968672Z hint: 
+2026-10-30T15:35:33.8969255Z hint:
+2026-10-30T15:35:33.8969906Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-30T15:35:33.8971066Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-30T15:35:33.8971901Z hint:
+2026-10-30T15:35:33.8972366Z hint: 
+2026-10-30T15:35:33.8972855Z hint:
+2026-10-30T15:35:33.8973549Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-30T15:35:33.8974761Z Initialized empty Git repository in /home/runner/work/mesh-llm/mesh-llm/.git/
+2026-10-30T15:35:33.8986268Z [command]/usr/bin/git remote add origin https://github.com/miminashi/mesh-llm
+2026-10-30T15:35:33.9058785Z ##[endgroup]
+2026-10-30T15:35:33.9059731Z ##[group]Disabling automatic garbage collection
+2026-10-30T15:35:33.9063876Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-30T15:35:33.9105397Z ##[endgroup]
+2026-10-30T15:35:33.9106250Z ##[group]Setting up auth
+2026-10-30T15:35:33.9113204Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-30T15:35:33.9154463Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-30T15:35:33.9534231Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-30T15:35:33.9576642Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-30T15:35:33.9816849Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-30T15:35:33.9862496Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-30T15:35:34.0079193Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-30T15:35:34.0126620Z ##[endgroup]
+2026-10-30T15:35:34.0127280Z ##[group]Fetching the repository
+2026-10-30T15:35:34.0147731Z [command]/usr/bin/git -c protocol.version=2 fetch --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/* +12154b679236293d7bfdcbdc8cc533937a1de4ac:refs/remotes/pull/10/merge
+2026-10-30T15:35:37.3170907Z From https://github.com/miminashi/mesh-llm
+2026-10-30T15:35:37.3172418Z  * [new branch]        ci/fork-only-ci                          -> origin/ci/fork-only-ci
+2026-10-30T15:35:37.3179627Z  * [new branch]        fix/hf-pagination-origin-check           -> origin/fix/hf-pagination-origin-check
+2026-10-30T15:35:37.3181026Z  * [new branch]        fix/hf-pagination-same-origin            -> origin/fix/hf-pagination-same-origin
+2026-10-30T15:35:37.3182063Z  * [new branch]        main                                     -> origin/main
+2026-10-30T15:35:37.3182990Z  * [new ref]           12154b679236293d7bfdcbdc8cc533937a1de4ac -> pull/10/merge
+2026-10-30T15:35:37.3185161Z ##[endgroup]
+2026-10-30T15:35:37.3185865Z ##[group]Determining the checkout info
+2026-10-30T15:35:37.3187086Z ##[endgroup]
+2026-10-30T15:35:37.3187536Z [command]/usr/bin/git sparse-checkout disable
+2026-10-30T15:35:37.3238864Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-30T15:35:37.3289876Z ##[group]Checking out the ref
+2026-10-30T15:35:37.3294105Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/10/merge
+2026-10-30T15:35:37.8045242Z Note: switching to 'refs/remotes/pull/10/merge'.
+2026-10-30T15:35:37.8045918Z 
+2026-10-30T15:35:37.8046310Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-30T15:35:37.8046908Z changes and commit them, and you can discard any commits you make in this
+2026-10-30T15:35:37.8047525Z state without impacting any branches by switching back to a branch.
+2026-10-30T15:35:37.8047847Z 
+2026-10-30T15:35:37.8048100Z If you want to create a new branch to retain commits you create, you may
+2026-10-30T15:35:37.8048580Z do so (now or later) by using -c with the switch command. Example:
+2026-10-30T15:35:37.8048924Z 
+2026-10-30T15:35:37.8049062Z   git switch -c <new-branch-name>
+2026-10-30T15:35:37.8049253Z 
+2026-10-30T15:35:37.8049392Z Or undo this operation with:
+2026-10-30T15:35:37.8049568Z 
+2026-10-30T15:35:37.8049676Z   git switch -
+2026-10-30T15:35:37.8049817Z 
+2026-10-30T15:35:37.8050030Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-30T15:35:37.8050324Z 
+2026-10-30T15:35:37.8050823Z HEAD is now at 12154b67 Merge 19259643c130e1e39f85b3dcf35768fea8163e62 into 2c1ad03e539929792874c329bb648265b96c6606
+2026-10-30T15:35:37.8094873Z ##[endgroup]
+2026-10-30T15:35:37.8147762Z [command]/usr/bin/git log -1 --format=%H
+2026-10-30T15:35:37.8182393Z 12154b679236293d7bfdcbdc8cc533937a1de4ac
+2026-10-30T15:35:37.8191410Z ##[group]Removing auth
+2026-10-30T15:35:37.8194980Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-30T15:35:37.8234231Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-30T15:35:37.8458188Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-30T15:35:37.8495708Z http.https://github.com/.extraheader
+2026-10-30T15:35:37.8501762Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-30T15:35:37.8547409Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-30T15:35:37.8772805Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-30T15:35:37.8815507Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-30T15:35:37.9034487Z ##[endgroup]
+﻿2026-10-30T15:35:37.9318965Z ##[group]Run dtolnay/rust-toolchain@4360b52568e2003a75bf9bc1d59f33a8e3fc893c
+2026-10-30T15:35:37.9319451Z with:
+2026-10-30T15:35:37.9319700Z   components: clippy
+2026-10-30T15:35:37.9319950Z   toolchain: stable
+2026-10-30T15:35:37.9320189Z env:
+2026-10-30T15:35:37.9320420Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:37.9320855Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:37.9321128Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:37.9321400Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:37.9321667Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:37.9321912Z ##[endgroup]
+2026-10-30T15:35:37.9378303Z ##[start-action display=Parse toolchain version;id=rust_toolchain.parse]
+2026-10-30T15:35:37.9432800Z ##[group]Run if [[ -z $toolchain ]]; then
+2026-10-30T15:35:37.9433314Z if [[ -z $toolchain ]]; then
+2026-10-30T15:35:37.9433789Z   # GitHub does not enforce `required: true` inputs itself. https://github.com/actions/runner/issues/1070
+2026-10-30T15:35:37.9434237Z   echo "'toolchain' is a required input" >&2
+2026-10-30T15:35:37.9434826Z   exit 1
+2026-10-30T15:35:37.9435143Z elif [[ $toolchain =~ ^stable' '[0-9]+' '(year|month|week|day)s?' 'ago$ ]]; then
+2026-10-30T15:35:37.9435534Z   if [[ Linux == macOS ]]; then
+2026-10-30T15:35:37.9435980Z     echo "toolchain=1.$((($(date -v-$(sed 's/stable \([0-9]*\) \(.\).*/\1\2/' <<< $toolchain) +%s)/60/60/24-16569)/7/6))" >> $GITHUB_OUTPUT
+2026-10-30T15:35:37.9436408Z   else
+2026-10-30T15:35:37.9436806Z     echo "toolchain=1.$((($(date --date "${toolchain#stable }" +%s)/60/60/24-16569)/7/6))" >> $GITHUB_OUTPUT
+2026-10-30T15:35:37.9437190Z   fi
+2026-10-30T15:35:37.9437484Z elif [[ $toolchain =~ ^stable' 'minus' '[0-9]+' 'releases?$ ]]; then
+2026-10-30T15:35:37.9437952Z   echo "toolchain=1.$((($(date +%s)/60/60/24-16569)/7/6-${toolchain//[^0-9]/}))" >> $GITHUB_OUTPUT
+2026-10-30T15:35:37.9438359Z elif [[ $toolchain =~ ^1\.[0-9]+$ ]]; then
+2026-10-30T15:35:37.9438798Z   echo "toolchain=1.$((i=${toolchain#1.}, c=($(date +%s)/60/60/24-16569)/7/6, i+9*i*(10*i<=c)+90*i*(100*i<=c)))" >> $GITHUB_OUTPUT
+2026-10-30T15:35:37.9439243Z else
+2026-10-30T15:35:37.9439526Z   echo "toolchain=$toolchain" >> $GITHUB_OUTPUT
+2026-10-30T15:35:37.9439827Z fi
+2026-10-30T15:35:37.9460920Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-30T15:35:37.9461319Z env:
+2026-10-30T15:35:37.9461588Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:37.9461864Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:37.9462162Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:37.9462447Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:37.9462714Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:37.9462982Z   toolchain: stable
+2026-10-30T15:35:37.9463235Z ##[endgroup]
+2026-10-30T15:35:37.9551114Z ##[end-action id=rust_toolchain.parse;outcome=success;conclusion=success;duration_ms=17]
+2026-10-30T15:35:37.9563680Z ##[start-action display=Construct rustup command line;id=rust_toolchain.flags]
+2026-10-30T15:35:37.9596842Z ##[group]Run echo "targets=$(for t in ${targets//,/ }; do echo -n ' --target' $t; done)" >> $GITHUB_OUTPUT
+2026-10-30T15:35:37.9597470Z echo "targets=$(for t in ${targets//,/ }; do echo -n ' --target' $t; done)" >> $GITHUB_OUTPUT
+2026-10-30T15:35:37.9597981Z echo "components=$(for c in ${components//,/ }; do echo -n ' --component' $c; done)" >> $GITHUB_OUTPUT
+2026-10-30T15:35:37.9598401Z echo "downgrade=" >> $GITHUB_OUTPUT
+2026-10-30T15:35:37.9616492Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-30T15:35:37.9616856Z env:
+2026-10-30T15:35:37.9617131Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:37.9617415Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:37.9617701Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:37.9617987Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:37.9618259Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:37.9618519Z   targets: 
+2026-10-30T15:35:37.9618769Z   components: clippy
+2026-10-30T15:35:37.9619276Z ##[endgroup]
+2026-10-30T15:35:37.9676478Z ##[end-action id=rust_toolchain.flags;outcome=success;conclusion=success;duration_ms=11]
+2026-10-30T15:35:37.9679392Z ##[start-action display=Set $CARGO_HOME;id=rust_toolchain.__run]
+2026-10-30T15:35:37.9705196Z ##[group]Run echo CARGO_HOME=${CARGO_HOME:-"$HOME/.cargo"} >> $GITHUB_ENV
+2026-10-30T15:35:37.9705706Z echo CARGO_HOME=${CARGO_HOME:-"$HOME/.cargo"} >> $GITHUB_ENV
+2026-10-30T15:35:37.9722885Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-30T15:35:37.9723227Z env:
+2026-10-30T15:35:37.9723492Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:37.9723765Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:37.9724053Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:37.9724337Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:37.9724612Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:37.9724877Z ##[endgroup]
+2026-10-30T15:35:37.9775579Z ##[end-action id=rust_toolchain.__run;outcome=success;conclusion=success;duration_ms=9]
+2026-10-30T15:35:37.9778341Z ##[start-action display=Install rustup if needed;id=rust_toolchain.__run_2]
+2026-10-30T15:35:37.9809345Z ##[group]Run if ! command -v rustup &>/dev/null; then
+2026-10-30T15:35:37.9809738Z if ! command -v rustup &>/dev/null; then
+2026-10-30T15:35:37.9810328Z   curl --proto '=https' --tlsv1.2 --retry 10 --retry-connrefused --location --silent --show-error --fail https://sh.rustup.rs | sh -s -- --default-toolchain none -y
+2026-10-30T15:35:37.9811099Z   echo "$CARGO_HOME/bin" >> $GITHUB_PATH
+2026-10-30T15:35:37.9811380Z fi
+2026-10-30T15:35:37.9828694Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-30T15:35:37.9829024Z env:
+2026-10-30T15:35:37.9829262Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:37.9829531Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:37.9829800Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:37.9830066Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:37.9830327Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:37.9830740Z   CARGO_HOME: /home/runner/.cargo
+2026-10-30T15:35:37.9831031Z ##[endgroup]
+2026-10-30T15:35:37.9877965Z ##[end-action id=rust_toolchain.__run_2;outcome=success;conclusion=success;duration_ms=9]
+2026-10-30T15:35:37.9881050Z ##[start-action display=Install rustup if needed on windows;id=rust_toolchain.__run_3]
+2026-10-30T15:35:37.9889779Z ##[end-action id=rust_toolchain.__run_3;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-10-30T15:35:37.9900261Z ##[start-action display=rustup toolchain install stable;id=rust_toolchain.__run_4]
+2026-10-30T15:35:37.9950884Z ##[group]Run rustup toolchain install stable --component clippy --profile minimal --no-self-update
+2026-10-30T15:35:37.9951489Z rustup toolchain install stable --component clippy --profile minimal --no-self-update
+2026-10-30T15:35:37.9968654Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-30T15:35:37.9968976Z env:
+2026-10-30T15:35:37.9969219Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:37.9969476Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:37.9969741Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:37.9970046Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:37.9970302Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:37.9970743Z   CARGO_HOME: /home/runner/.cargo
+2026-10-30T15:35:37.9971022Z   RUSTUP_PERMIT_COPY_RENAME: 1
+2026-10-30T15:35:37.9971307Z ##[endgroup]
+2026-10-30T15:35:38.1683386Z info: syncing channel updates for stable-x86_64-unknown-linux-gnu
+2026-10-30T15:35:38.6190761Z info: latest update on 2026-10-15 for version 1.99.1 (58cf8f9c3 2026-10-13)
+2026-10-30T15:35:38.6305479Z info: component clippy is up to date
+2026-10-30T15:35:38.6314814Z 
+2026-10-30T15:35:38.6413832Z   stable-x86_64-unknown-linux-gnu unchanged - rustc 1.99.1 (58cf8f9c3 2026-10-13)
+2026-10-30T15:35:38.6414353Z 
+2026-10-30T15:35:38.6464218Z ##[end-action id=rust_toolchain.__run_4;outcome=success;conclusion=success;duration_ms=656]
+2026-10-30T15:35:38.6470233Z ##[start-action display=rustup default stable;id=rust_toolchain.__run_5]
+2026-10-30T15:35:38.6922295Z ##[group]Run rustup default stable
+2026-10-30T15:35:38.6922953Z rustup default stable
+2026-10-30T15:35:38.6940186Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-30T15:35:38.6940417Z env:
+2026-10-30T15:35:38.6940609Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:38.6940744Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:38.6940886Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:38.6941032Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:38.6941200Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:38.6941332Z   CARGO_HOME: /home/runner/.cargo
+2026-10-30T15:35:38.6941478Z ##[endgroup]
+2026-10-30T15:35:38.7475269Z info: using existing install for stable-x86_64-unknown-linux-gnu
+2026-10-30T15:35:38.8732762Z info: default toolchain set to stable-x86_64-unknown-linux-gnu
+2026-10-30T15:35:38.8733149Z 
+2026-10-30T15:35:38.8830618Z   stable-x86_64-unknown-linux-gnu unchanged - rustc 1.99.1 (58cf8f9c3 2026-10-13)
+2026-10-30T15:35:38.8831100Z 
+2026-10-30T15:35:38.8858791Z ##[end-action id=rust_toolchain.__run_5;outcome=success;conclusion=success;duration_ms=238]
+2026-10-30T15:35:38.8862284Z ##[start-action display=Create cachekey;id=rust_toolchain.rustc-version]
+2026-10-30T15:35:38.9623019Z ##[group]Run DATE=$(rustc +stable --version --verbose | sed -ne 's/^commit-date: \(20[0-9][0-9]\)-\([01][0-9]\)-\([0-3][0-9]\)$/\1\2\3/p')
+2026-10-30T15:35:38.9623676Z DATE=$(rustc +stable --version --verbose | sed -ne 's/^commit-date: \(20[0-9][0-9]\)-\([01][0-9]\)-\([0-3][0-9]\)$/\1\2\3/p')
+2026-10-30T15:35:38.9624145Z HASH=$(rustc +stable --version --verbose | sed -ne 's/^commit-hash: //p')
+2026-10-30T15:35:38.9624498Z echo "cachekey=$(echo $DATE$HASH | head -c12)" >> $GITHUB_OUTPUT
+2026-10-30T15:35:38.9644638Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-30T15:35:38.9644877Z env:
+2026-10-30T15:35:38.9645011Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:38.9645156Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:38.9645310Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:38.9645500Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:38.9645657Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:38.9645815Z   CARGO_HOME: /home/runner/.cargo
+2026-10-30T15:35:38.9645967Z ##[endgroup]
+2026-10-30T15:35:39.0949562Z ##[end-action id=rust_toolchain.rustc-version;outcome=success;conclusion=success;duration_ms=208]
+2026-10-30T15:35:39.0952326Z ##[start-action display=Disable incremental compilation;id=rust_toolchain.__run_6]
+2026-10-30T15:35:39.1616458Z ##[group]Run if [ -z "${CARGO_INCREMENTAL+set}" ]; then
+2026-10-30T15:35:39.1616904Z if [ -z "${CARGO_INCREMENTAL+set}" ]; then
+2026-10-30T15:35:39.1617190Z   echo CARGO_INCREMENTAL=0 >> $GITHUB_ENV
+2026-10-30T15:35:39.1617473Z fi
+2026-10-30T15:35:39.1639106Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-30T15:35:39.1639329Z env:
+2026-10-30T15:35:39.1639466Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:39.1639614Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:39.1639767Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:39.1639914Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:39.1640086Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:39.1640223Z   CARGO_HOME: /home/runner/.cargo
+2026-10-30T15:35:39.1640374Z ##[endgroup]
+2026-10-30T15:35:39.2138468Z ##[end-action id=rust_toolchain.__run_6;outcome=success;conclusion=success;duration_ms=118]
+2026-10-30T15:35:39.2140898Z ##[start-action display=Enable colors in Cargo output;id=rust_toolchain.__run_7]
+2026-10-30T15:35:39.2164005Z ##[group]Run if [ -z "${CARGO_TERM_COLOR+set}" ]; then
+2026-10-30T15:35:39.2164265Z if [ -z "${CARGO_TERM_COLOR+set}" ]; then
+2026-10-30T15:35:39.2164470Z   echo CARGO_TERM_COLOR=always >> $GITHUB_ENV
+2026-10-30T15:35:39.2164649Z fi
+2026-10-30T15:35:39.2182779Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-30T15:35:39.2182987Z env:
+2026-10-30T15:35:39.2183114Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:39.2183254Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:39.2183404Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:39.2183556Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:39.2183895Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:39.2184034Z   CARGO_HOME: /home/runner/.cargo
+2026-10-30T15:35:39.2184184Z ##[endgroup]
+2026-10-30T15:35:39.2228917Z ##[end-action id=rust_toolchain.__run_7;outcome=success;conclusion=success;duration_ms=8]
+2026-10-30T15:35:39.2231181Z ##[start-action display=Enable Cargo sparse registry;id=rust_toolchain.__run_8]
+2026-10-30T15:35:39.2254899Z ##[group]Run # implemented in 1.66, stabilized in 1.68, made default in 1.70
+2026-10-30T15:35:39.2255223Z # implemented in 1.66, stabilized in 1.68, made default in 1.70
+2026-10-30T15:35:39.2255630Z if [ -z "${CARGO_REGISTRIES_CRATES_IO_PROTOCOL+set}" -o -f "/home/runner/work/_temp"/.implicit_cargo_registries_crates_io_protocol ]; then
+2026-10-30T15:35:39.2256048Z   if rustc +stable --version --verbose | grep -q '^release: 1\.6[89]\.'; then
+2026-10-30T15:35:39.2256378Z     touch "/home/runner/work/_temp"/.implicit_cargo_registries_crates_io_protocol || true
+2026-10-30T15:35:39.2256842Z     echo CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse >> $GITHUB_ENV
+2026-10-30T15:35:39.2257159Z   elif rustc +stable --version --verbose | grep -q '^release: 1\.6[67]\.'; then
+2026-10-30T15:35:39.2257489Z     touch "/home/runner/work/_temp"/.implicit_cargo_registries_crates_io_protocol || true
+2026-10-30T15:35:39.2257786Z     echo CARGO_REGISTRIES_CRATES_IO_PROTOCOL=git >> $GITHUB_ENV
+2026-10-30T15:35:39.2257991Z   fi
+2026-10-30T15:35:39.2258110Z fi
+2026-10-30T15:35:39.2275736Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-30T15:35:39.2275936Z env:
+2026-10-30T15:35:39.2276061Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:39.2276202Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:39.2276351Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:39.2276496Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:39.2276632Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:39.2276778Z   CARGO_HOME: /home/runner/.cargo
+2026-10-30T15:35:39.2276937Z ##[endgroup]
+2026-10-30T15:35:39.2563683Z ##[end-action id=rust_toolchain.__run_8;outcome=success;conclusion=success;duration_ms=33]
+2026-10-30T15:35:39.2566107Z ##[start-action display=Work around spurious network errors in curl 8.0;id=rust_toolchain.__run_9]
+2026-10-30T15:35:39.2590396Z ##[group]Run # https://rust-lang.zulipchat.com/#narrow/stream/246057-t-cargo/topic/timeout.20investigation
+2026-10-30T15:35:39.2591093Z # https://rust-lang.zulipchat.com/#narrow/stream/246057-t-cargo/topic/timeout.20investigation
+2026-10-30T15:35:39.2591447Z if rustc +stable --version --verbose | grep -q '^release: 1\.7[01]\.'; then
+2026-10-30T15:35:39.2591715Z   echo CARGO_HTTP_MULTIPLEXING=false >> $GITHUB_ENV
+2026-10-30T15:35:39.2591902Z fi
+2026-10-30T15:35:39.2609575Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-30T15:35:39.2609777Z env:
+2026-10-30T15:35:39.2609903Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:39.2610041Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:39.2610217Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:39.2610367Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:39.2610930Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:39.2611067Z   CARGO_HOME: /home/runner/.cargo
+2026-10-30T15:35:39.2611212Z ##[endgroup]
+2026-10-30T15:35:39.2780254Z ##[end-action id=rust_toolchain.__run_9;outcome=success;conclusion=success;duration_ms=21]
+2026-10-30T15:35:39.2784649Z ##[start-action display=rustc +stable --version --verbose;id=rust_toolchain.__run_10]
+2026-10-30T15:35:39.2807696Z ##[group]Run rustc +stable --version --verbose
+2026-10-30T15:35:39.2807942Z rustc +stable --version --verbose
+2026-10-30T15:35:39.2826967Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-30T15:35:39.2827265Z env:
+2026-10-30T15:35:39.2827540Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:39.2827825Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:39.2828063Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:39.2828340Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:39.2828719Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:39.2828953Z   CARGO_HOME: /home/runner/.cargo
+2026-10-30T15:35:39.2829278Z ##[endgroup]
+2026-10-30T15:35:39.3034214Z rustc 1.99.1 (58cf8f9c3 2026-10-13)
+2026-10-30T15:35:39.3034656Z binary: rustc
+2026-10-30T15:35:39.3034899Z commit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67
+2026-10-30T15:35:39.3035198Z commit-date: 2026-10-13
+2026-10-30T15:35:39.3035426Z host: x86_64-unknown-linux-gnu
+2026-10-30T15:35:39.3035654Z release: 1.99.1
+2026-10-30T15:35:39.3036498Z LLVM version: 23.1.1
+2026-10-30T15:35:39.3060437Z ##[end-action id=rust_toolchain.__run_10;outcome=success;conclusion=success;duration_ms=27]
+﻿2026-10-30T15:35:39.3628285Z ##[group]Run actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25
+2026-10-30T15:35:39.3628585Z with:
+2026-10-30T15:35:39.3628740Z   path: ~/.cargo/registry
+~/.cargo/git
+target
+
+2026-10-30T15:35:39.3629066Z   key: fork-ci-Linux-2026101358cf-6c6bac19cb7118fe523fb8f564b51973b38e9ff7ee5b6088af6ba7cbf207014e
+2026-10-30T15:35:39.3629380Z   restore-keys: fork-ci-Linux-2026101358cf-
+
+2026-10-30T15:35:39.3629731Z   enableCrossOsArchive: false
+2026-10-30T15:35:39.3629886Z   fail-on-cache-miss: false
+2026-10-30T15:35:39.3630033Z   lookup-only: false
+2026-10-30T15:35:39.3630164Z env:
+2026-10-30T15:35:39.3630280Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:39.3630415Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:39.3630857Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:39.3631051Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:39.3631187Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:39.3631321Z   CARGO_HOME: /home/runner/.cargo
+2026-10-30T15:35:39.3631473Z ##[endgroup]
+2026-10-30T15:35:39.6191389Z Cache not found for input keys: fork-ci-Linux-2026101358cf-6c6bac19cb7118fe523fb8f564b51973b38e9ff7ee5b6088af6ba7cbf207014e, fork-ci-Linux-2026101358cf-
+﻿2026-10-30T15:35:39.6381147Z Prepare all required actions
+2026-10-30T15:35:39.6381587Z Getting action download info
+2026-10-30T15:35:39.7760735Z Download action repository 'mozilla-actions/sccache-action@fc920bf0ec8de6ee65d409111f7ec508035751ba' (SHA:fc920bf0ec8de6ee65d409111f7ec508035751ba)
+2026-10-30T15:35:40.1423375Z Download action repository 'ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756' (SHA:0b201ec74fa43914dc39ae48a89fd1d8cb592756)
+2026-10-30T15:35:40.4502060Z Download action repository 'taiki-e/install-action@3d23c1bbdafe696dfccad2664945a04f47d03dc3' (SHA:3d23c1bbdafe696dfccad2664945a04f47d03dc3)
+2026-10-30T15:35:40.9191169Z ##[group]Run ./.github/actions/prepare-automation
+2026-10-30T15:35:40.9191387Z with:
+2026-10-30T15:35:40.9191517Z   runner-profile: hosted-bare
+2026-10-30T15:35:40.9191670Z   reuse-hosted-binary: true
+2026-10-30T15:35:40.9191818Z   allow_depot_remote_cache: false
+2026-10-30T15:35:40.9191972Z   allow_native_github_cache: false
+2026-10-30T15:35:40.9192114Z env:
+2026-10-30T15:35:40.9192225Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:40.9192402Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:40.9192541Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:40.9192677Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:40.9192817Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:40.9192951Z   CARGO_HOME: /home/runner/.cargo
+2026-10-30T15:35:40.9193089Z ##[endgroup]
+2026-10-30T15:35:40.9201311Z ##[start-action display=Validate preparation profile;id=__self.__run]
+2026-10-30T15:35:40.9214392Z ##[group]Run set -euo pipefail
+2026-10-30T15:35:40.9214610Z set -euo pipefail
+2026-10-30T15:35:40.9214759Z case "$AUTOMATION_PROFILE" in
+2026-10-30T15:35:40.9214914Z   image) ;;
+2026-10-30T15:35:40.9215042Z   hosted-bare)
+2026-10-30T15:35:40.9215178Z     test "$RUNNER_OS" = Linux
+2026-10-30T15:35:40.9215354Z     test "$RUNNER_ENVIRONMENT" = github-hosted
+2026-10-30T15:35:40.9215532Z     ;;
+2026-10-30T15:35:40.9215657Z   preinstalled-macos)
+2026-10-30T15:35:40.9215821Z     test "$RUNNER_OS" = macOS
+2026-10-30T15:35:40.9215990Z     test "$RUNNER_ENVIRONMENT" = self-hosted
+2026-10-30T15:35:40.9216188Z     echo "RUSTUP_AUTO_INSTALL=0" >> "$GITHUB_ENV"
+2026-10-30T15:35:40.9216412Z     for tool in cargo rustc just sccache brew xcrun; do
+2026-10-30T15:35:40.9216620Z       command -v "$tool" >/dev/null 2>&1 || {
+2026-10-30T15:35:40.9216920Z         echo "missing preinstalled automation prerequisite: $tool; provision the runner before retrying" >&2
+2026-10-30T15:35:40.9217220Z         exit 1
+2026-10-30T15:35:40.9217343Z       }
+2026-10-30T15:35:40.9217459Z     done
+2026-10-30T15:35:40.9217572Z     ;;
+2026-10-30T15:35:40.9217727Z   *) echo "unsupported automation profile" >&2; exit 1 ;;
+2026-10-30T15:35:40.9217912Z esac
+2026-10-30T15:35:40.9235561Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-30T15:35:40.9235759Z env:
+2026-10-30T15:35:40.9235886Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:40.9236021Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:40.9236165Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:40.9236306Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:40.9236572Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:40.9236705Z   CARGO_HOME: /home/runner/.cargo
+2026-10-30T15:35:40.9236857Z   AUTOMATION_PROFILE: hosted-bare
+2026-10-30T15:35:40.9237001Z ##[endgroup]
+2026-10-30T15:35:40.9279783Z ##[end-action id=__self.__run;outcome=success;conclusion=success;duration_ms=7]
+2026-10-30T15:35:40.9281839Z ##[start-action display=Verify prebuilt Linux automation environment;id=__self.__run_2]
+2026-10-30T15:35:40.9286028Z ##[end-action id=__self.__run_2;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-10-30T15:35:40.9287100Z ##[start-action display=Configure Linux compiler cache;id=__self.__self]
+2026-10-30T15:35:40.9289499Z ##[end-action id=__self.__self;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-10-30T15:35:40.9290604Z ##[start-action display=Configure short Windows build paths;id=__self.__self_2]
+2026-10-30T15:35:40.9292702Z ##[end-action id=__self.__self_2;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-10-30T15:35:40.9293749Z ##[start-action display=Install pinned Rust toolchain;id=__self.rust_toolchain]
+2026-10-30T15:35:40.9389066Z ##[group]Run dtolnay/rust-toolchain@4360b52568e2003a75bf9bc1d59f33a8e3fc893c
+2026-10-30T15:35:40.9389336Z with:
+2026-10-30T15:35:40.9389453Z   toolchain: stable
+2026-10-30T15:35:40.9389573Z env:
+2026-10-30T15:35:40.9389687Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:40.9389819Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:40.9389963Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:40.9390108Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:40.9390241Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:40.9390374Z   CARGO_HOME: /home/runner/.cargo
+2026-10-30T15:35:40.9390698Z ##[endgroup]
+2026-10-30T15:35:40.9397912Z ##[start-action display=Parse toolchain version;id=__self.rust_toolchain.parse]
+2026-10-30T15:35:40.9411944Z ##[group]Run if [[ -z $toolchain ]]; then
+2026-10-30T15:35:40.9412168Z if [[ -z $toolchain ]]; then
+2026-10-30T15:35:40.9412466Z   # GitHub does not enforce `required: true` inputs itself. https://github.com/actions/runner/issues/1070
+2026-10-30T15:35:40.9412792Z   echo "'toolchain' is a required input" >&2
+2026-10-30T15:35:40.9412966Z   exit 1
+2026-10-30T15:35:40.9413161Z elif [[ $toolchain =~ ^stable' '[0-9]+' '(year|month|week|day)s?' 'ago$ ]]; then
+2026-10-30T15:35:40.9413402Z   if [[ Linux == macOS ]]; then
+2026-10-30T15:35:40.9413706Z     echo "toolchain=1.$((($(date -v-$(sed 's/stable \([0-9]*\) \(.\).*/\1\2/' <<< $toolchain) +%s)/60/60/24-16569)/7/6))" >> $GITHUB_OUTPUT
+2026-10-30T15:35:40.9413994Z   else
+2026-10-30T15:35:40.9414226Z     echo "toolchain=1.$((($(date --date "${toolchain#stable }" +%s)/60/60/24-16569)/7/6))" >> $GITHUB_OUTPUT
+2026-10-30T15:35:40.9414481Z   fi
+2026-10-30T15:35:40.9414663Z elif [[ $toolchain =~ ^stable' 'minus' '[0-9]+' 'releases?$ ]]; then
+2026-10-30T15:35:40.9414968Z   echo "toolchain=1.$((($(date +%s)/60/60/24-16569)/7/6-${toolchain//[^0-9]/}))" >> $GITHUB_OUTPUT
+2026-10-30T15:35:40.9415236Z elif [[ $toolchain =~ ^1\.[0-9]+$ ]]; then
+2026-10-30T15:35:40.9415535Z   echo "toolchain=1.$((i=${toolchain#1.}, c=($(date +%s)/60/60/24-16569)/7/6, i+9*i*(10*i<=c)+90*i*(100*i<=c)))" >> $GITHUB_OUTPUT
+2026-10-30T15:35:40.9415810Z else
+2026-10-30T15:35:40.9415958Z   echo "toolchain=$toolchain" >> $GITHUB_OUTPUT
+2026-10-30T15:35:40.9416132Z fi
+2026-10-30T15:35:40.9433744Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-30T15:35:40.9433932Z env:
+2026-10-30T15:35:40.9434052Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:40.9434187Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:40.9434333Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:40.9434478Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:40.9434618Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:40.9434757Z   CARGO_HOME: /home/runner/.cargo
+2026-10-30T15:35:40.9434901Z   toolchain: stable
+2026-10-30T15:35:40.9435046Z ##[endgroup]
+2026-10-30T15:35:40.9479452Z ##[end-action id=__self.rust_toolchain.parse;outcome=success;conclusion=success;duration_ms=8]
+2026-10-30T15:35:40.9483370Z ##[start-action display=Construct rustup command line;id=__self.rust_toolchain.flags]
+2026-10-30T15:35:40.9498995Z ##[group]Run echo "targets=$(for t in ${targets//,/ }; do echo -n ' --target' $t; done)" >> $GITHUB_OUTPUT
+2026-10-30T15:35:40.9499393Z echo "targets=$(for t in ${targets//,/ }; do echo -n ' --target' $t; done)" >> $GITHUB_OUTPUT
+2026-10-30T15:35:40.9499748Z echo "components=$(for c in ${components//,/ }; do echo -n ' --component' $c; done)" >> $GITHUB_OUTPUT
+2026-10-30T15:35:40.9500027Z echo "downgrade=" >> $GITHUB_OUTPUT
+2026-10-30T15:35:40.9517321Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-30T15:35:40.9517674Z env:
+2026-10-30T15:35:40.9517795Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:40.9517931Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:40.9518076Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:40.9518233Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:40.9518365Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:40.9518498Z   CARGO_HOME: /home/runner/.cargo
+2026-10-30T15:35:40.9518643Z   targets: 
+2026-10-30T15:35:40.9518758Z   components: 
+2026-10-30T15:35:40.9518877Z ##[endgroup]
+2026-10-30T15:35:40.9570940Z ##[end-action id=__self.rust_toolchain.flags;outcome=success;conclusion=success;duration_ms=8]
+2026-10-30T15:35:40.9572775Z ##[start-action display=Set $CARGO_HOME;id=__self.rust_toolchain.__run]
+2026-10-30T15:35:40.9588105Z ##[group]Run echo CARGO_HOME=${CARGO_HOME:-"$HOME/.cargo"} >> $GITHUB_ENV
+2026-10-30T15:35:40.9588398Z echo CARGO_HOME=${CARGO_HOME:-"$HOME/.cargo"} >> $GITHUB_ENV
+2026-10-30T15:35:40.9605755Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-30T15:35:40.9605962Z env:
+2026-10-30T15:35:40.9606082Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:40.9606218Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:40.9606361Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:40.9606512Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:40.9606647Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:40.9606781Z   CARGO_HOME: /home/runner/.cargo
+2026-10-30T15:35:40.9606924Z ##[endgroup]
+2026-10-30T15:35:40.9664195Z ##[end-action id=__self.rust_toolchain.__run;outcome=success;conclusion=success;duration_ms=9]
+2026-10-30T15:35:40.9666193Z ##[start-action display=Install rustup if needed;id=__self.rust_toolchain.__run_2]
+2026-10-30T15:35:40.9683508Z ##[group]Run if ! command -v rustup &>/dev/null; then
+2026-10-30T15:35:40.9683755Z if ! command -v rustup &>/dev/null; then
+2026-10-30T15:35:40.9684198Z   curl --proto '=https' --tlsv1.2 --retry 10 --retry-connrefused --location --silent --show-error --fail https://sh.rustup.rs | sh -s -- --default-toolchain none -y
+2026-10-30T15:35:40.9684654Z   echo "$CARGO_HOME/bin" >> $GITHUB_PATH
+2026-10-30T15:35:40.9684931Z fi
+2026-10-30T15:35:40.9702560Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-30T15:35:40.9702776Z env:
+2026-10-30T15:35:40.9702893Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:40.9703028Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:40.9703171Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:40.9703313Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:40.9703446Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:40.9703578Z   CARGO_HOME: /home/runner/.cargo
+2026-10-30T15:35:40.9703724Z ##[endgroup]
+2026-10-30T15:35:40.9747354Z ##[end-action id=__self.rust_toolchain.__run_2;outcome=success;conclusion=success;duration_ms=8]
+2026-10-30T15:35:40.9749314Z ##[start-action display=Install rustup if needed on windows;id=__self.rust_toolchain.__run_3]
+2026-10-30T15:35:40.9752641Z ##[end-action id=__self.rust_toolchain.__run_3;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-10-30T15:35:40.9754928Z ##[start-action display=rustup toolchain install stable;id=__self.rust_toolchain.__run_4]
+2026-10-30T15:35:40.9769539Z ##[group]Run rustup toolchain install stable --profile minimal --no-self-update
+2026-10-30T15:35:40.9770030Z rustup toolchain install stable --profile minimal --no-self-update
+2026-10-30T15:35:40.9787256Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-30T15:35:40.9787448Z env:
+2026-10-30T15:35:40.9787565Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:40.9787701Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:40.9787852Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:40.9787998Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:40.9788133Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:40.9788272Z   CARGO_HOME: /home/runner/.cargo
+2026-10-30T15:35:40.9788427Z   RUSTUP_PERMIT_COPY_RENAME: 1
+2026-10-30T15:35:40.9788568Z ##[endgroup]
+2026-10-30T15:35:41.0237615Z info: syncing channel updates for stable-x86_64-unknown-linux-gnu
+2026-10-30T15:35:41.1013543Z 
+2026-10-30T15:35:41.1118719Z   stable-x86_64-unknown-linux-gnu unchanged - rustc 1.99.1 (58cf8f9c3 2026-10-13)
+2026-10-30T15:35:41.1152572Z 
+2026-10-30T15:35:41.1157253Z ##[end-action id=__self.rust_toolchain.__run_4;outcome=success;conclusion=success;duration_ms=140]
+2026-10-30T15:35:41.1161077Z ##[start-action display=rustup default stable;id=__self.rust_toolchain.__run_5]
+2026-10-30T15:35:41.1177677Z ##[group]Run rustup default stable
+2026-10-30T15:35:41.1177879Z rustup default stable
+2026-10-30T15:35:41.1195297Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-30T15:35:41.1195497Z env:
+2026-10-30T15:35:41.1195625Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:41.1195763Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:41.1195909Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:41.1196052Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:41.1196185Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:41.1196321Z   CARGO_HOME: /home/runner/.cargo
+2026-10-30T15:35:41.1196471Z ##[endgroup]
+2026-10-30T15:35:41.1276735Z info: using existing install for stable-x86_64-unknown-linux-gnu
+2026-10-30T15:35:41.1282769Z info: default toolchain set to stable-x86_64-unknown-linux-gnu
+2026-10-30T15:35:41.1282931Z 
+2026-10-30T15:35:41.1365904Z   stable-x86_64-unknown-linux-gnu unchanged - rustc 1.99.1 (58cf8f9c3 2026-10-13)
+2026-10-30T15:35:41.1366306Z 
+2026-10-30T15:35:41.1384228Z ##[end-action id=__self.rust_toolchain.__run_5;outcome=success;conclusion=success;duration_ms=22]
+2026-10-30T15:35:41.1386270Z ##[start-action display=Create cachekey;id=__self.rust_toolchain.rustc-version]
+2026-10-30T15:35:41.1402801Z ##[group]Run DATE=$(rustc +stable --version --verbose | sed -ne 's/^commit-date: \(20[0-9][0-9]\)-\([01][0-9]\)-\([0-3][0-9]\)$/\1\2\3/p')
+2026-10-30T15:35:41.1403299Z DATE=$(rustc +stable --version --verbose | sed -ne 's/^commit-date: \(20[0-9][0-9]\)-\([01][0-9]\)-\([0-3][0-9]\)$/\1\2\3/p')
+2026-10-30T15:35:41.1403658Z HASH=$(rustc +stable --version --verbose | sed -ne 's/^commit-hash: //p')
+2026-10-30T15:35:41.1403939Z echo "cachekey=$(echo $DATE$HASH | head -c12)" >> $GITHUB_OUTPUT
+2026-10-30T15:35:41.1421187Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-30T15:35:41.1421389Z env:
+2026-10-30T15:35:41.1421522Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:41.1421659Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:41.1421805Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:41.1421949Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:41.1422085Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:41.1422221Z   CARGO_HOME: /home/runner/.cargo
+2026-10-30T15:35:41.1422368Z ##[endgroup]
+2026-10-30T15:35:41.1748373Z ##[end-action id=__self.rust_toolchain.rustc-version;outcome=success;conclusion=success;duration_ms=36]
+2026-10-30T15:35:41.1750782Z ##[start-action display=Disable incremental compilation;id=__self.rust_toolchain.__run_6]
+2026-10-30T15:35:41.1766264Z ##[group]Run if [ -z "${CARGO_INCREMENTAL+set}" ]; then
+2026-10-30T15:35:41.1766524Z if [ -z "${CARGO_INCREMENTAL+set}" ]; then
+2026-10-30T15:35:41.1766721Z   echo CARGO_INCREMENTAL=0 >> $GITHUB_ENV
+2026-10-30T15:35:41.1766907Z fi
+2026-10-30T15:35:41.1784257Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-30T15:35:41.1784611Z env:
+2026-10-30T15:35:41.1784730Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:41.1784866Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:41.1785012Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:41.1785155Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:41.1785289Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:41.1785423Z   CARGO_HOME: /home/runner/.cargo
+2026-10-30T15:35:41.1785569Z ##[endgroup]
+2026-10-30T15:35:41.1827142Z ##[end-action id=__self.rust_toolchain.__run_6;outcome=success;conclusion=success;duration_ms=7]
+2026-10-30T15:35:41.1829027Z ##[start-action display=Enable colors in Cargo output;id=__self.rust_toolchain.__run_7]
+2026-10-30T15:35:41.1844306Z ##[group]Run if [ -z "${CARGO_TERM_COLOR+set}" ]; then
+2026-10-30T15:35:41.1844559Z if [ -z "${CARGO_TERM_COLOR+set}" ]; then
+2026-10-30T15:35:41.1844912Z   echo CARGO_TERM_COLOR=always >> $GITHUB_ENV
+2026-10-30T15:35:41.1845081Z fi
+2026-10-30T15:35:41.1861462Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-30T15:35:41.1861669Z env:
+2026-10-30T15:35:41.1861785Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:41.1861925Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:41.1862067Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:41.1862229Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:41.1862378Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:41.1862513Z   CARGO_HOME: /home/runner/.cargo
+2026-10-30T15:35:41.1862659Z ##[endgroup]
+2026-10-30T15:35:41.1903925Z ##[end-action id=__self.rust_toolchain.__run_7;outcome=success;conclusion=success;duration_ms=7]
+2026-10-30T15:35:41.1905761Z ##[start-action display=Enable Cargo sparse registry;id=__self.rust_toolchain.__run_8]
+2026-10-30T15:35:41.1921161Z ##[group]Run # implemented in 1.66, stabilized in 1.68, made default in 1.70
+2026-10-30T15:35:41.1921468Z # implemented in 1.66, stabilized in 1.68, made default in 1.70
+2026-10-30T15:35:41.1921879Z if [ -z "${CARGO_REGISTRIES_CRATES_IO_PROTOCOL+set}" -o -f "/home/runner/work/_temp"/.implicit_cargo_registries_crates_io_protocol ]; then
+2026-10-30T15:35:41.1922305Z   if rustc +stable --version --verbose | grep -q '^release: 1\.6[89]\.'; then
+2026-10-30T15:35:41.1922636Z     touch "/home/runner/work/_temp"/.implicit_cargo_registries_crates_io_protocol || true
+2026-10-30T15:35:41.1922943Z     echo CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse >> $GITHUB_ENV
+2026-10-30T15:35:41.1923227Z   elif rustc +stable --version --verbose | grep -q '^release: 1\.6[67]\.'; then
+2026-10-30T15:35:41.1923546Z     touch "/home/runner/work/_temp"/.implicit_cargo_registries_crates_io_protocol || true
+2026-10-30T15:35:41.1923838Z     echo CARGO_REGISTRIES_CRATES_IO_PROTOCOL=git >> $GITHUB_ENV
+2026-10-30T15:35:41.1924035Z   fi
+2026-10-30T15:35:41.1924149Z fi
+2026-10-30T15:35:41.1940672Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-30T15:35:41.1940864Z env:
+2026-10-30T15:35:41.1940991Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:41.1941131Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:41.1941282Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:41.1941424Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:41.1941555Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:41.1941690Z   CARGO_HOME: /home/runner/.cargo
+2026-10-30T15:35:41.1941836Z ##[endgroup]
+2026-10-30T15:35:41.2251354Z ##[end-action id=__self.rust_toolchain.__run_8;outcome=success;conclusion=success;duration_ms=34]
+2026-10-30T15:35:41.2253452Z ##[start-action display=Work around spurious network errors in curl 8.0;id=__self.rust_toolchain.__run_9]
+2026-10-30T15:35:41.2285754Z ##[group]Run # https://rust-lang.zulipchat.com/#narrow/stream/246057-t-cargo/topic/timeout.20investigation
+2026-10-30T15:35:41.2286199Z # https://rust-lang.zulipchat.com/#narrow/stream/246057-t-cargo/topic/timeout.20investigation
+2026-10-30T15:35:41.2286542Z if rustc +stable --version --verbose | grep -q '^release: 1\.7[01]\.'; then
+2026-10-30T15:35:41.2286798Z   echo CARGO_HTTP_MULTIPLEXING=false >> $GITHUB_ENV
+2026-10-30T15:35:41.2287145Z fi
+2026-10-30T15:35:41.2303884Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-30T15:35:41.2304077Z env:
+2026-10-30T15:35:41.2304201Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:41.2304331Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:41.2304471Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:41.2304608Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:41.2304738Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:41.2304867Z   CARGO_HOME: /home/runner/.cargo
+2026-10-30T15:35:41.2305013Z ##[endgroup]
+2026-10-30T15:35:41.2481929Z ##[end-action id=__self.rust_toolchain.__run_9;outcome=success;conclusion=success;duration_ms=22]
+2026-10-30T15:35:41.2485578Z ##[start-action display=rustc +stable --version --verbose;id=__self.rust_toolchain.__run_10]
+2026-10-30T15:35:41.2501931Z ##[group]Run rustc +stable --version --verbose
+2026-10-30T15:35:41.2502151Z rustc +stable --version --verbose
+2026-10-30T15:35:41.2518668Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-30T15:35:41.2518871Z env:
+2026-10-30T15:35:41.2518988Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:41.2519129Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:41.2519271Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:41.2519408Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:41.2519539Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:41.2519670Z   CARGO_HOME: /home/runner/.cargo
+2026-10-30T15:35:41.2519810Z ##[endgroup]
+2026-10-30T15:35:41.2665710Z rustc 1.99.1 (58cf8f9c3 2026-10-13)
+2026-10-30T15:35:41.2666393Z binary: rustc
+2026-10-30T15:35:41.2666937Z commit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67
+2026-10-30T15:35:41.2667305Z commit-date: 2026-10-13
+2026-10-30T15:35:41.2667574Z host: x86_64-unknown-linux-gnu
+2026-10-30T15:35:41.2667807Z release: 1.99.1
+2026-10-30T15:35:41.2668001Z LLVM version: 23.1.1
+2026-10-30T15:35:41.2704279Z ##[end-action id=__self.rust_toolchain.__run_10;outcome=success;conclusion=success;duration_ms=21]
+2026-10-30T15:35:41.2713299Z ##[end-action id=__self.rust_toolchain;outcome=success;conclusion=success;duration_ms=341]
+2026-10-30T15:35:41.2715593Z ##[start-action display=Prepare macOS linker and compiler cache;id=__self.__self_3]
+2026-10-30T15:35:41.2719163Z ##[end-action id=__self.__self_3;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-10-30T15:35:41.2721159Z ##[start-action display=Install Windows compiler cache;id=__self.__mozilla-actions_sccache-action]
+2026-10-30T15:35:41.2724475Z ##[end-action id=__self.__mozilla-actions_sccache-action;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-10-30T15:35:41.2726271Z ##[start-action display=Configure Windows compiler cache;id=__self.__self_4]
+2026-10-30T15:35:41.2729289Z ##[end-action id=__self.__self_4;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-10-30T15:35:41.2732429Z ##[start-action display=Configure MSVC environment;id=__self.__ilammy_msvc-dev-cmd]
+2026-10-30T15:35:41.2736390Z ##[end-action id=__self.__ilammy_msvc-dev-cmd;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-10-30T15:35:41.2738137Z ##[start-action display=Install just;id=__self.__taiki-e_install-action]
+2026-10-30T15:35:41.2742570Z ##[end-action id=__self.__taiki-e_install-action;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-10-30T15:35:41.2744091Z ##[start-action display=Restore hosted automation binary;id=__self.hosted_binary]
+2026-10-30T15:35:42.1582182Z ##[group]Run actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25
+2026-10-30T15:35:42.1582434Z with:
+2026-10-30T15:35:42.1582562Z   path: target/release/xtask
+2026-10-30T15:35:42.1582870Z   key: xtask-hosted-bare-Linux-X64-2026101358cf-45cc05a4c54bdb57d720ad5969b0ea5452f536919b889289f4f9177ebe2eabff
+2026-10-30T15:35:42.1583203Z   enableCrossOsArchive: false
+2026-10-30T15:35:42.1583354Z   fail-on-cache-miss: false
+2026-10-30T15:35:42.1583490Z   lookup-only: false
+2026-10-30T15:35:42.1583634Z env:
+2026-10-30T15:35:42.1583745Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:42.1583873Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:42.1584010Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:42.1584410Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:42.1584542Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:42.1584676Z   CARGO_HOME: /home/runner/.cargo
+2026-10-30T15:35:42.1584817Z ##[endgroup]
+2026-10-30T15:35:42.4300967Z Cache hit for: xtask-hosted-bare-Linux-X64-2026101358cf-45cc05a4c54bdb57d720ad5969b0ea5452f536919b889289f4f9177ebe2eabff
+2026-10-30T15:35:43.0644984Z Received 10642690 of 10642690 (100.0%), 21.0 MBs/sec
+2026-10-30T15:35:43.0645420Z Cache Size: ~10 MB (10642690 B)
+2026-10-30T15:35:43.0662074Z [command]/usr/bin/tar -xf /home/runner/work/_temp/955aaf4d-78b1-4dc9-ba19-5c94e27c253c/cache.tzst -P -C /home/runner/work/mesh-llm/mesh-llm --use-compress-program unzstd
+2026-10-30T15:35:43.1054352Z Cache restored successfully
+2026-10-30T15:35:43.1176773Z Cache restored from key: xtask-hosted-bare-Linux-X64-2026101358cf-45cc05a4c54bdb57d720ad5969b0ea5452f536919b889289f4f9177ebe2eabff
+2026-10-30T15:35:43.1281654Z ##[end-action id=__self.hosted_binary;outcome=success;conclusion=success;duration_ms=1853]
+2026-10-30T15:35:43.1286941Z ##[start-action display=Build automation tool;id=__self.bootstrap_unix]
+2026-10-30T15:35:43.1303964Z ##[group]Run set -euo pipefail
+2026-10-30T15:35:43.1304245Z set -euo pipefail
+2026-10-30T15:35:43.1304507Z report="$RUNNER_TEMP/automation-bootstrap.txt"
+2026-10-30T15:35:43.1304763Z if [[ "$AUTOMATION_PROFILE" == hosted-bare ]]; then
+2026-10-30T15:35:43.1304996Z   # Hosted runners have no sccache; bootstrap also runs Cargo.
+2026-10-30T15:35:43.1305241Z   export RUSTC_WRAPPER='' CARGO_BUILD_RUSTC_WRAPPER=''
+2026-10-30T15:35:43.1305426Z fi
+2026-10-30T15:35:43.1305675Z if [[ "$AUTOMATION_PROFILE" == hosted-bare && "${AUTOMATION_CACHE_HIT:-}" == true && -x target/release/xtask ]]; then
+2026-10-30T15:35:43.1306021Z   target/release/xtask automation bootstrap | tee "$report"
+2026-10-30T15:35:43.1306258Z elif [[ "$AUTOMATION_PROFILE" == hosted-bare ]]; then
+2026-10-30T15:35:43.1306500Z   cargo build --locked --release -p xtask --bin xtask
+2026-10-30T15:35:43.1306786Z   cargo run --locked --release -p xtask --bin xtask -- automation bootstrap | tee "$report"
+2026-10-30T15:35:43.1307038Z else
+2026-10-30T15:35:43.1307181Z   just automation-bootstrap | tee "$report"
+2026-10-30T15:35:43.1307350Z fi
+2026-10-30T15:35:43.1307511Z binary_path="$(sed -n 's/^binary_path=//p' "$report")"
+2026-10-30T15:35:43.1307759Z target_directory="$(sed -n 's/^target_directory=//p' "$report")"
+2026-10-30T15:35:43.1307973Z test -x "$binary_path"
+2026-10-30T15:35:43.1308110Z {
+2026-10-30T15:35:43.1308237Z   echo "binary_path=$binary_path"
+2026-10-30T15:35:43.1308423Z   echo "target_directory=$target_directory"
+2026-10-30T15:35:43.1308602Z } >> "$GITHUB_OUTPUT"
+2026-10-30T15:35:43.1308792Z echo "MESH_LLM_AUTOMATION_BIN=$binary_path" >> "$GITHUB_ENV"
+2026-10-30T15:35:43.1325998Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-30T15:35:43.1326187Z env:
+2026-10-30T15:35:43.1326307Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:43.1326443Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:43.1326587Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:43.1326727Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:43.1326863Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:43.1326998Z   CARGO_HOME: /home/runner/.cargo
+2026-10-30T15:35:43.1327151Z   AUTOMATION_PROFILE: hosted-bare
+2026-10-30T15:35:43.1327300Z   AUTOMATION_CACHE_HIT: true
+2026-10-30T15:35:43.1327439Z ##[endgroup]
+2026-10-30T15:35:48.9450782Z binary_path=/home/runner/work/mesh-llm/mesh-llm/target/release/xtask
+2026-10-30T15:35:48.9451158Z target_directory=/home/runner/work/mesh-llm/mesh-llm/target
+2026-10-30T15:35:48.9451421Z host=x86_64-unknown-linux-gnu
+2026-10-30T15:35:48.9497991Z ##[end-action id=__self.bootstrap_unix;outcome=success;conclusion=success;duration_ms=5821]
+2026-10-30T15:35:48.9499790Z ##[start-action display=Save hosted automation binary;id=__self.__actions_cache]
+2026-10-30T15:35:48.9504750Z ##[end-action id=__self.__actions_cache;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-10-30T15:35:48.9505893Z ##[start-action display=Build automation tool;id=__self.bootstrap_windows]
+2026-10-30T15:35:48.9520930Z ##[end-action id=__self.bootstrap_windows;outcome=skipped;conclusion=skipped;duration_ms=0]
+﻿2026-10-30T15:35:48.9547420Z ##[group]Run set -euo pipefail
+2026-10-30T15:35:48.9547657Z set -euo pipefail
+2026-10-30T15:35:48.9547861Z # Hosted runners have no sccache, which .cargo/config.toml selects.
+2026-10-30T15:35:48.9548128Z export RUSTC_WRAPPER='' CARGO_BUILD_RUSTC_WRAPPER=''
+2026-10-30T15:35:48.9548348Z changed="$RUNNER_TEMP/changed-files.txt"
+2026-10-30T15:35:48.9548545Z if [[ "$EVENT_NAME" == pull_request ]]; then
+2026-10-30T15:35:48.9548759Z   git diff --name-only "$BASE_SHA"...HEAD > "$changed"
+2026-10-30T15:35:48.9549046Z elif [[ -z "$BEFORE_SHA" || "$BEFORE_SHA" =~ ^0+$ ]] || ! git cat-file -e "$BEFORE_SHA^{commit}"; then
+2026-10-30T15:35:48.9549359Z   # No usable previous commit: select the whole workspace.
+2026-10-30T15:35:48.9549565Z   echo Cargo.lock > "$changed"
+2026-10-30T15:35:48.9549718Z else
+2026-10-30T15:35:48.9549883Z   git diff --name-only "$BEFORE_SHA"..HEAD > "$changed"
+2026-10-30T15:35:48.9550104Z fi
+2026-10-30T15:35:48.9550223Z cat "$changed"
+2026-10-30T15:35:48.9550353Z 
+2026-10-30T15:35:48.9550758Z selection=$(bash scripts/affected-crates.sh --stdin < "$changed")
+2026-10-30T15:35:48.9550977Z echo "$selection"
+2026-10-30T15:35:48.9551155Z if [[ $(jq -r '.all_rust' <<<"$selection") == true ]]; then
+2026-10-30T15:35:48.9551389Z   mapfile -t crates < <(jq -r '.affected[]' <<<"$selection")
+2026-10-30T15:35:48.9551581Z else
+2026-10-30T15:35:48.9551744Z   mapfile -t crates < <(jq -r '.test_crates[]' <<<"$selection")
+2026-10-30T15:35:48.9551942Z fi
+2026-10-30T15:35:48.9552107Z # A change to this workflow exercises both selection paths on
+2026-10-30T15:35:48.9552358Z # one crate that builds on CPU alone and one that needs native.
+2026-10-30T15:35:48.9552607Z if grep -Fqx .github/workflows/fork-ci.yml "$changed"; then
+2026-10-30T15:35:48.9552827Z   crates+=(skippy-hf-hub skippy-runtime)
+2026-10-30T15:35:48.9553000Z fi
+2026-10-30T15:35:48.9553109Z 
+2026-10-30T15:35:48.9553222Z selected=()
+2026-10-30T15:35:48.9553349Z skipped=()
+2026-10-30T15:35:48.9553522Z for crate in $(printf '%s\n' "${crates[@]}" | sort -u); do
+2026-10-30T15:35:48.9553767Z   # skippy-ffi without its dynamic-runtime feature links the
+2026-10-30T15:35:48.9554023Z   # patched llama.cpp ABI archives, which only the upstream runner
+2026-10-30T15:35:48.9554236Z   # image provides.
+2026-10-30T15:35:48.9554493Z   tree=$(cargo tree --locked -p "$crate" -e normal,build,dev --prefix none --format '{p} [{f}]')
+2026-10-30T15:35:48.9554772Z   ffi=$(awk '$1 == "skippy-ffi"' <<<"$tree")
+2026-10-30T15:35:48.9554977Z   if [[ -n "$ffi" && "$ffi" != *dynamic-runtime* ]]; then
+2026-10-30T15:35:48.9555167Z     skipped+=("$crate")
+2026-10-30T15:35:48.9555312Z   else
+2026-10-30T15:35:48.9555442Z     selected+=("$crate")
+2026-10-30T15:35:48.9555583Z   fi
+2026-10-30T15:35:48.9555694Z done
+2026-10-30T15:35:48.9555806Z 
+2026-10-30T15:35:48.9555911Z {
+2026-10-30T15:35:48.9556031Z   echo "### Rust crates"
+2026-10-30T15:35:48.9556190Z   if [[ ${#selected[@]} -eq 0 ]]; then
+2026-10-30T15:35:48.9556373Z     echo "No Rust crates affected."
+2026-10-30T15:35:48.9556528Z   else
+2026-10-30T15:35:48.9556666Z     printf -- '- `%s`\n' "${selected[@]}"
+2026-10-30T15:35:48.9556972Z   fi
+2026-10-30T15:35:48.9557103Z   if [[ ${#skipped[@]} -gt 0 ]]; then
+2026-10-30T15:35:48.9557262Z     echo
+2026-10-30T15:35:48.9557409Z     echo "### Skipped (needs native llama ABI)"
+2026-10-30T15:35:48.9557601Z     printf -- '- `%s`\n' "${skipped[@]}"
+2026-10-30T15:35:48.9557764Z   fi
+2026-10-30T15:35:48.9557890Z } >> "$GITHUB_STEP_SUMMARY"
+2026-10-30T15:35:48.9558219Z echo "crates=${selected[*]}" >> "$GITHUB_OUTPUT"
+2026-10-30T15:35:48.9576974Z shell: /usr/bin/bash -e {0}
+2026-10-30T15:35:48.9577130Z env:
+2026-10-30T15:35:48.9577259Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:48.9577397Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:48.9577544Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:48.9577687Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:48.9577826Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:48.9577961Z   CARGO_HOME: /home/runner/.cargo
+2026-10-30T15:35:48.9578181Z   MESH_LLM_AUTOMATION_BIN: /home/runner/work/mesh-llm/mesh-llm/target/release/xtask
+2026-10-30T15:35:48.9578419Z   EVENT_NAME: pull_request
+2026-10-30T15:35:48.9578581Z   BASE_SHA: 2c1ad03e539929792874c329bb648265b96c6606
+2026-10-30T15:35:48.9578746Z   BEFORE_SHA: 
+2026-10-30T15:35:48.9578865Z ##[endgroup]
+2026-10-30T15:35:48.9643732Z .github/workflows/fork-ci.yml
+2026-10-30T15:35:48.9644079Z .github/workflows/llama-upstream-canary.yml
+2026-10-30T15:35:48.9644364Z .github/workflows/main_linux.yml
+2026-10-30T15:35:48.9644519Z .github/workflows/main_macos.yml
+2026-10-30T15:35:48.9644673Z .github/workflows/main_quality.yml
+2026-10-30T15:35:48.9644831Z .github/workflows/main_website.yml
+2026-10-30T15:35:48.9644979Z .github/workflows/main_windows.yml
+2026-10-30T15:35:48.9645149Z .github/workflows/pr-cancel-sibling-runs.yml
+2026-10-30T15:35:48.9645330Z .github/workflows/pr_linux.yml
+2026-10-30T15:35:48.9645505Z .github/workflows/pr_macos.yml
+2026-10-30T15:35:48.9645663Z .github/workflows/pr_quality.yml
+2026-10-30T15:35:48.9645844Z .github/workflows/pr_website.yml
+2026-10-30T15:35:48.9646050Z .github/workflows/pr_windows.yml
+2026-10-30T15:35:48.9646216Z .github/workflows/stale-prs.yml
+2026-10-30T15:35:48.9646374Z .github/workflows/website-pages.yml
+2026-10-30T15:35:48.9646544Z .github/workflows/windows-warm-caches.yml
+2026-10-30T15:35:49.0022723Z {
+2026-10-30T15:35:49.0023080Z   "affected": [],
+2026-10-30T15:35:49.0023324Z   "test_crates": [],
+2026-10-30T15:35:49.0023529Z   "all_rust": false,
+2026-10-30T15:35:49.0023657Z   "ui_changed": false,
+2026-10-30T15:35:49.0023792Z   "website_changed": false
+2026-10-30T15:35:49.0023926Z }
+﻿2026-10-30T15:35:49.4780404Z ##[group]Run set -euo pipefail
+2026-10-30T15:35:49.4780861Z set -euo pipefail
+2026-10-30T15:35:49.4781066Z # Hosted runners have no sccache, which .cargo/config.toml selects.
+2026-10-30T15:35:49.4781322Z export RUSTC_WRAPPER='' CARGO_BUILD_RUSTC_WRAPPER=''
+2026-10-30T15:35:49.4781522Z for crate in $CRATES; do
+2026-10-30T15:35:49.4781695Z   echo "::group::cargo clippy -p $crate"
+2026-10-30T15:35:49.4781946Z   cargo clippy --locked -p "$crate" --all-targets -- -D warnings
+2026-10-30T15:35:49.4782158Z   echo "::endgroup::"
+2026-10-30T15:35:49.4782294Z done
+2026-10-30T15:35:49.4799038Z shell: /usr/bin/bash -e {0}
+2026-10-30T15:35:49.4799180Z env:
+2026-10-30T15:35:49.4799297Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:35:49.4799428Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:35:49.4799570Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:35:49.4799714Z   CARGO_TERM_COLOR: always
+2026-10-30T15:35:49.4799848Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:35:49.4800020Z   CARGO_HOME: /home/runner/.cargo
+2026-10-30T15:35:49.4800239Z   MESH_LLM_AUTOMATION_BIN: /home/runner/work/mesh-llm/mesh-llm/target/release/xtask
+2026-10-30T15:35:49.4800616Z   CRATES: skippy-hf-hub
+2026-10-30T15:35:49.4800751Z ##[endgroup]
+2026-10-30T15:35:49.4834140Z ##[group]cargo clippy -p skippy-hf-hub
+2026-10-30T15:35:50.2743329Z    Compiling proc-macro2 v1.0.107
+2026-10-30T15:35:50.2744896Z    Compiling unicode-ident v1.0.26
+2026-10-30T15:35:50.2745206Z    Compiling quote v1.0.47
+2026-10-30T15:35:50.2745480Z    Compiling libc v0.2.189
+2026-10-30T15:35:53.7984157Z     Checking memchr v2.8.3
+2026-10-30T15:35:54.3161238Z     Checking pin-project-lite v0.2.17
+2026-10-30T15:35:54.3517859Z    Compiling shlex v2.0.1
+2026-10-30T15:35:54.4615056Z    Compiling find-msvc-tools v0.1.12
+2026-10-30T15:35:54.7393321Z     Checking cfg-if v1.0.5
+2026-10-30T15:35:54.7591098Z     Checking once_cell v1.21.4
+2026-10-30T15:35:54.8711320Z     Checking stable_deref_trait v1.2.1
+2026-10-30T15:35:54.8957499Z     Checking futures-core v0.3.34
+2026-10-30T15:35:54.9528323Z     Checking bytes v1.12.1
+2026-10-30T15:35:55.2639020Z     Checking smallvec v1.16.1
+2026-10-30T15:35:55.3822169Z     Checking futures-sink v0.3.34
+2026-10-30T15:35:55.4452353Z     Checking itoa v1.0.18
+2026-10-30T15:35:55.6602292Z    Compiling syn v3.0.6
+2026-10-30T15:35:55.6932756Z    Compiling syn v2.0.119
+2026-10-30T15:35:55.7572348Z    Compiling jobserver v0.1.35
+2026-10-30T15:35:55.7822521Z    Compiling dunce v1.0.5
+2026-10-30T15:35:55.8197588Z    Compiling fs_extra v1.3.0
+2026-10-30T15:35:56.0501873Z    Compiling cc v1.4.6
+2026-10-30T15:35:56.0873339Z    Compiling pkg-config v0.3.34
+2026-10-30T15:35:56.4842012Z     Checking mio v1.2.3
+2026-10-30T15:35:56.7191228Z     Checking socket2 v0.6.5
+2026-10-30T15:35:56.9582395Z    Compiling cmake v0.1.58
+2026-10-30T15:35:57.2442189Z     Checking slab v0.4.12
+2026-10-30T15:35:57.3283491Z     Checking futures-channel v0.3.34
+2026-10-30T15:35:57.4439338Z    Compiling aws-lc-sys v0.45.0
+2026-10-30T15:35:57.4492235Z     Checking tracing-core v0.1.36
+2026-10-30T15:35:57.7273448Z     Checking futures-io v0.3.34
+2026-10-30T15:35:57.7802012Z     Checking futures-task v0.3.34
+2026-10-30T15:35:57.8804908Z     Checking writeable v0.6.4
+2026-10-30T15:35:57.9932128Z    Compiling aws-lc-rs v1.18.1
+2026-10-30T15:35:58.3262146Z     Checking litemap v0.8.3
+2026-10-30T15:35:58.4382102Z    Compiling serde_core v1.0.229
+2026-10-30T15:35:58.6389218Z     Checking zeroize v1.9.0
+2026-10-30T15:35:58.6802652Z    Compiling synstructure v0.13.2
+2026-10-30T15:35:59.1826625Z     Checking http v1.5.0
+2026-10-30T15:35:59.7007597Z    Compiling icu_properties_data v2.3.0
+2026-10-30T15:35:59.8458369Z    Compiling rustversion v1.0.23
+2026-10-30T15:35:59.8667084Z    Compiling zerovec-derive v0.11.6
+2026-10-30T15:35:59.9023833Z    Compiling zerofrom-derive v0.1.7
+2026-10-30T15:36:00.0168715Z    Compiling yoke-derive v0.8.2
+2026-10-30T15:36:00.8786563Z    Compiling displaydoc v0.2.7
+2026-10-30T15:36:00.8791582Z     Checking zerofrom v0.1.8
+2026-10-30T15:36:00.8948261Z    Compiling tokio-macros v2.7.2
+2026-10-30T15:36:00.9291143Z     Checking yoke v0.8.3
+2026-10-30T15:36:01.0593616Z     Checking zerovec v0.11.8
+2026-10-30T15:36:01.3947256Z    Compiling futures-macro v0.3.34
+2026-10-30T15:36:01.4222285Z     Checking tokio v1.53.1
+2026-10-30T15:36:01.4590322Z     Checking tinystr v0.8.4
+2026-10-30T15:36:01.5638906Z     Checking icu_locale_core v2.3.0
+2026-10-30T15:36:01.9708187Z     Checking futures-util v0.3.34
+2026-10-30T15:36:02.2565074Z     Checking zerotrie v0.2.5
+2026-10-30T15:36:02.4152689Z     Checking potential_utf v0.1.6
+2026-10-30T15:36:02.4541144Z    Compiling tracing-attributes v0.1.31
+2026-10-30T15:36:03.4731315Z    Compiling icu_normalizer_data v2.3.0
+2026-10-30T15:36:03.6103254Z     Checking utf8_iter v1.0.4
+2026-10-30T15:36:03.6666113Z     Checking icu_collections v2.3.0
+2026-10-30T15:36:03.8722491Z     Checking tracing v0.1.44
+2026-10-30T15:36:03.9169460Z     Checking icu_provider v2.3.1
+2026-10-30T15:36:04.0608703Z     Checking rustls-pki-types v1.15.1
+2026-10-30T15:36:04.3052186Z     Checking aho-corasick v1.1.5
+2026-10-30T15:36:04.3858799Z     Checking regex-syntax v0.8.11
+2026-10-30T15:36:04.9649058Z     Checking percent-encoding v2.3.2
+2026-10-30T15:36:05.0300988Z    Compiling serde v1.0.229
+2026-10-30T15:36:05.2218512Z     Checking log v0.4.34
+2026-10-30T15:36:05.2801981Z     Checking regex-automata v0.4.18
+2026-10-30T15:36:05.4563281Z    Compiling serde_derive v1.0.229
+2026-10-30T15:36:05.8152108Z     Checking http-body v1.1.0
+2026-10-30T15:36:05.8704064Z     Checking hashbrown v0.17.1
+2026-10-30T15:36:06.2243340Z     Checking untrusted v0.9.0
+2026-10-30T15:36:06.2714172Z    Compiling zmij v1.0.23
+2026-10-30T15:36:06.4492138Z    Compiling rustls v0.23.46
+2026-10-30T15:36:06.5762036Z     Checking equivalent v1.0.2
+2026-10-30T15:36:06.6037840Z    Compiling httparse v1.10.1
+2026-10-30T15:36:06.7990392Z     Checking indexmap v2.14.2
+2026-10-30T15:36:06.8393869Z     Checking icu_normalizer v2.3.0
+2026-10-30T15:36:07.0421982Z     Checking icu_properties v2.3.0
+2026-10-30T15:36:07.2532444Z     Checking tokio-util v0.7.19
+2026-10-30T15:36:07.7239357Z    Compiling getrandom v0.4.3
+2026-10-30T15:36:07.7738765Z     Checking fnv v1.0.7
+2026-10-30T15:36:07.8106958Z     Checking scopeguard v1.2.0
+2026-10-30T15:36:07.8468985Z     Checking rand_core v0.10.1
+2026-10-30T15:36:07.8672876Z     Checking subtle v2.6.1
+2026-10-30T15:36:07.9232562Z    Compiling autocfg v1.5.1
+2026-10-30T15:36:07.9351964Z     Checking atomic-waker v1.1.2
+2026-10-30T15:36:07.9632376Z     Checking try-lock v0.2.5
+2026-10-30T15:36:07.9742235Z     Checking tower-service v0.3.3
+2026-10-30T15:36:08.0059750Z    Compiling serde_json v1.0.151
+2026-10-30T15:36:08.0112395Z     Checking want v0.3.1
+2026-10-30T15:36:08.0590840Z     Checking h2 v0.4.19
+2026-10-30T15:36:08.1383634Z     Checking idna_adapter v1.2.2
+2026-10-30T15:36:08.1781218Z    Compiling num-traits v0.2.19
+2026-10-30T15:36:08.4032847Z     Checking form_urlencoded v1.2.2
+2026-10-30T15:36:08.4647418Z     Checking bitflags v2.13.2
+2026-10-30T15:36:08.4782597Z    Compiling unicase v2.9.0
+2026-10-30T15:36:08.5572139Z     Checking cpufeatures v0.3.1
+2026-10-30T15:36:08.5882118Z    Compiling mime_guess v2.0.5
+2026-10-30T15:36:08.9382693Z     Checking idna v1.1.0
+2026-10-30T15:36:09.1194520Z    Compiling multiversion-macros v0.9.0
+2026-10-30T15:36:09.1776687Z    Compiling encoding_rs v0.8.41
+2026-10-30T15:36:09.3152712Z     Checking sync_wrapper v1.0.2
+2026-10-30T15:36:09.3582427Z     Checking base64 v0.22.1
+2026-10-30T15:36:09.5072227Z    Compiling crossbeam-utils v0.8.23
+2026-10-30T15:36:09.6632154Z     Checking openssl-probe v0.2.1
+2026-10-30T15:36:09.6993347Z     Checking tower-layer v0.3.3
+2026-10-30T15:36:09.7832187Z    Compiling thiserror v2.0.21
+2026-10-30T15:36:09.8614074Z     Checking hyper v1.11.1
+2026-10-30T15:36:10.0168069Z     Checking ipnet v2.12.2
+2026-10-30T15:36:10.0492461Z     Checking multiversion v0.9.0
+2026-10-30T15:36:10.1205100Z     Checking tower v0.5.3
+2026-10-30T15:36:10.1602253Z     Checking rustls-native-certs v0.8.4
+2026-10-30T15:36:10.2261937Z     Checking url v2.5.8
+2026-10-30T15:36:10.5326725Z    Compiling thiserror-impl v2.0.21
+2026-10-30T15:36:10.5408177Z     Checking hyper-util v0.1.20
+2026-10-30T15:36:10.9313348Z    Compiling anyhow v1.0.104
+2026-10-30T15:36:11.1502254Z     Checking option-ext v0.2.0
+2026-10-30T15:36:11.2571803Z     Checking mime v0.3.17
+2026-10-30T15:36:11.2933131Z     Checking simdutf8 v0.1.5
+2026-10-30T15:36:11.3372804Z     Checking lazy_static v1.5.0
+2026-10-30T15:36:11.3742271Z     Checking ryu v1.0.23
+2026-10-30T15:36:11.4106428Z    Compiling multiversion_no_op v1.0.0
+2026-10-30T15:36:11.4311947Z     Checking core_detect v1.0.0
+2026-10-30T15:36:11.4895643Z     Checking serde_urlencoded v0.7.1
+2026-10-30T15:36:11.5938705Z     Checking sharded-slab v0.1.7
+2026-10-30T15:36:11.7110833Z     Checking dirs-sys v0.5.0
+2026-10-30T15:36:11.8102161Z     Checking tower-http v0.6.11
+2026-10-30T15:36:11.9782022Z     Checking chacha20 v0.10.2
+2026-10-30T15:36:12.1323744Z     Checking tracing-serde v0.2.0
+2026-10-30T15:36:12.1742416Z     Checking bstr v1.13.1
+2026-10-30T15:36:12.2332549Z     Checking matchers v0.2.0
+2026-10-30T15:36:12.2832685Z     Checking http-body-util v0.1.5
+2026-10-30T15:36:12.3292206Z     Checking tracing-log v0.2.0
+2026-10-30T15:36:12.3983025Z     Checking futures-executor v0.3.34
+2026-10-30T15:36:12.4508390Z     Checking thread_local v1.1.10
+2026-10-30T15:36:12.4551729Z     Checking powerfmt v0.2.0
+2026-10-30T15:36:12.5122266Z     Checking typenum v1.20.1
+2026-10-30T15:36:12.5182149Z     Checking nu-ansi-term v0.50.3
+2026-10-30T15:36:12.5245368Z     Checking time-core v0.1.9
+2026-10-30T15:36:12.6262923Z     Checking num-conv v0.2.2
+2026-10-30T15:36:12.6579876Z     Checking base64 v0.23.1
+2026-10-30T15:36:12.6938291Z     Checking deranged v0.5.8
+2026-10-30T15:36:12.8678357Z     Checking typewit v1.15.2
+2026-10-30T15:36:13.1461028Z     Checking hybrid-array v0.4.15
+2026-10-30T15:36:13.1521718Z     Checking const_panic v0.2.17
+2026-10-30T15:36:13.3591839Z     Checking time v0.3.55
+2026-10-30T15:36:13.4535197Z     Checking tracing-subscriber v0.3.23
+2026-10-30T15:36:13.5092174Z     Checking crossbeam-channel v0.5.17
+2026-10-30T15:36:13.7355779Z     Checking rand v0.10.2
+2026-10-30T15:36:14.2272927Z     Checking dirs v6.0.0
+2026-10-30T15:36:14.2422153Z    Compiling pin-project-internal v1.1.13
+2026-10-30T15:36:14.2632021Z    Compiling git-version-macro v0.3.9
+2026-10-30T15:36:14.7583887Z    Compiling async-trait v0.1.92
+2026-10-30T15:36:14.8411972Z    Compiling blake3 v1.8.7
+2026-10-30T15:36:15.0882569Z     Checking os_str_bytes v6.6.1
+2026-10-30T15:36:15.1124207Z    Compiling konst_proc_macros v0.4.1
+2026-10-30T15:36:15.1964537Z     Checking iana-time-zone v0.1.65
+2026-10-30T15:36:15.2428781Z     Checking symlink v0.1.0
+2026-10-30T15:36:15.2755700Z     Checking link-section v0.19.3
+2026-10-30T15:36:15.4492346Z    Compiling rustix v1.1.5
+2026-10-30T15:36:15.4599442Z    Compiling linktime-proc-macro v0.2.3
+2026-10-30T15:36:15.4631763Z     Checking konst v0.4.3
+2026-10-30T15:36:15.8574335Z     Checking tracing-appender v0.2.5
+2026-10-30T15:36:15.9222122Z     Checking ctor v1.0.13
+2026-10-30T15:36:15.9633346Z     Checking chrono v0.4.45
+2026-10-30T15:36:15.9839550Z     Checking shellexpand v3.1.2
+2026-10-30T15:36:16.1157836Z     Checking pin-project v1.1.13
+2026-10-30T15:36:16.1430717Z     Checking git-version v0.3.9
+2026-10-30T15:36:16.1654507Z     Checking futures v0.3.34
+2026-10-30T15:36:16.1901544Z     Checking sysinfo v0.38.4
+2026-10-30T15:36:16.5227533Z     Checking whoami v2.1.3
+2026-10-30T15:36:16.5291637Z     Checking more-asserts v0.3.1
+2026-10-30T15:36:16.5617777Z     Checking const-str v1.1.0
+2026-10-30T15:36:16.6313456Z     Checking colored v3.1.1
+2026-10-30T15:36:16.7242767Z     Checking twox-hash v2.1.4
+2026-10-30T15:36:16.7530306Z    Compiling crc32fast v1.5.2
+2026-10-30T15:36:16.7696276Z     Checking either v1.18.0
+2026-10-30T15:36:16.8647209Z     Checking constant_time_eq v0.4.2
+2026-10-30T15:36:16.8951766Z     Checking arrayvec v0.7.8
+2026-10-30T15:36:16.9480426Z    Compiling strsim v0.11.1
+2026-10-30T15:36:16.9898621Z     Checking oneshot v0.1.13
+2026-10-30T15:36:17.0472030Z    Compiling redb v3.1.3
+2026-10-30T15:36:17.1518749Z     Checking linux-raw-sys v0.12.1
+2026-10-30T15:36:17.1711408Z     Checking humantime v2.4.0
+2026-10-30T15:36:17.2323284Z    Compiling ident_case v1.0.1
+2026-10-30T15:36:17.2814941Z    Compiling darling_core v0.24.1
+2026-10-30T15:36:17.4592477Z     Checking itertools v0.14.0
+2026-10-30T15:36:18.3957266Z     Checking lz4_flex v0.13.1
+2026-10-30T15:36:18.5112113Z     Checking crypto-common v0.2.2
+2026-10-30T15:36:18.5624385Z     Checking block-buffer v0.12.1
+2026-10-30T15:36:18.6404828Z     Checking approx v0.5.1
+2026-10-30T15:36:18.7022674Z     Checking uuid v1.26.0
+2026-10-30T15:36:18.8904532Z     Checking regex v1.13.1
+2026-10-30T15:36:18.8952285Z     Checking countio v0.3.0
+2026-10-30T15:36:18.9552148Z     Checking safe-transmute v0.11.3
+2026-10-30T15:36:19.0422164Z     Checking fastrand v2.5.0
+2026-10-30T15:36:19.0752183Z     Checking bytemuck v1.25.2
+2026-10-30T15:36:19.1365128Z    Compiling prettyplease v0.3.0
+2026-10-30T15:36:19.2031306Z     Checking static_assertions v1.1.0
+2026-10-30T15:36:19.2313300Z     Checking heapify v0.2.0
+2026-10-30T15:36:19.2648715Z     Checking const-oid v0.10.2
+2026-10-30T15:36:19.2833412Z     Checking tempfile v3.27.0
+2026-10-30T15:36:19.2972401Z    Compiling darling_macro v0.24.1
+2026-10-30T15:36:19.3405696Z     Checking digest v0.11.3
+2026-10-30T15:36:19.3912619Z     Checking statrs v0.18.0
+2026-10-30T15:36:19.7624104Z     Checking tokio-retry v0.3.2
+2026-10-30T15:36:19.7852075Z    Compiling serde_repr v0.1.21
+2026-10-30T15:36:19.8362466Z    Compiling parking_lot_core v0.9.12
+2026-10-30T15:36:19.9932430Z     Checking urlencoding v2.1.3
+2026-10-30T15:36:20.0561922Z    Compiling darling v0.24.1
+2026-10-30T15:36:20.0992116Z     Checking sha2 v0.11.0
+2026-10-30T15:36:20.7699551Z     Checking gearhash v0.1.4
+2026-10-30T15:36:20.7952181Z    Compiling bon-macros v3.10.1
+2026-10-30T15:36:20.9501872Z     Checking lock_api v0.4.14
+2026-10-30T15:36:21.0802321Z     Checking parking_lot v0.12.5
+2026-10-30T15:36:21.1871888Z     Checking globset v0.4.20
+2026-10-30T15:36:21.2582460Z    Compiling serial_test_derive v3.5.0
+2026-10-30T15:36:21.3692329Z     Checking pathdiff v0.2.3
+2026-10-30T15:36:21.6882150Z     Checking serial_test v3.5.0
+2026-10-30T15:36:23.4632654Z     Checking bon v3.10.1
+2026-10-30T15:36:30.5578133Z     Checking rustls-webpki v0.103.15
+2026-10-30T15:36:32.4151372Z     Checking tokio-rustls v0.26.5
+2026-10-30T15:36:32.4152744Z     Checking rustls-platform-verifier v0.7.0
+2026-10-30T15:36:32.5172190Z     Checking hyper-rustls v0.27.9
+2026-10-30T15:36:32.5900079Z     Checking reqwest v0.13.5
+2026-10-30T15:36:33.0713636Z     Checking xet-runtime v1.6.0
+2026-10-30T15:36:33.0714132Z     Checking reqwest-middleware v0.5.2
+2026-10-30T15:36:34.3170926Z     Checking xet-core-structures v1.6.0
+2026-10-30T15:36:35.2373347Z     Checking xet-client v1.6.0
+2026-10-30T15:36:37.8898253Z     Checking xet-data v1.6.0
+2026-10-30T15:36:39.2404103Z     Checking hf-xet v1.6.0
+2026-10-30T15:36:40.0139621Z     Checking skippy-hf-hub v0.78.0 (/home/runner/work/mesh-llm/mesh-llm/skippy/crates/skippy-hf-hub)
+2026-10-30T15:36:44.1404226Z     Finished `dev` profile [unoptimized] target(s) in 54.35s
+2026-10-30T15:36:44.1736617Z ##[endgroup]
+﻿2026-10-30T15:36:44.1765684Z ##[group]Run set -euo pipefail
+2026-10-30T15:36:44.1765890Z set -euo pipefail
+2026-10-30T15:36:44.1766114Z # Hosted runners have no sccache, which .cargo/config.toml selects.
+2026-10-30T15:36:44.1766373Z export RUSTC_WRAPPER='' CARGO_BUILD_RUSTC_WRAPPER=''
+2026-10-30T15:36:44.1766572Z for crate in $CRATES; do
+2026-10-30T15:36:44.1766743Z   echo "::group::cargo test -p $crate"
+2026-10-30T15:36:44.1766922Z   cargo test --locked -p "$crate"
+2026-10-30T15:36:44.1767084Z   echo "::endgroup::"
+2026-10-30T15:36:44.1767222Z done
+2026-10-30T15:36:44.1782611Z shell: /usr/bin/bash -e {0}
+2026-10-30T15:36:44.1782749Z env:
+2026-10-30T15:36:44.1782863Z   CARGO_INCREMENTAL: 0
+2026-10-30T15:36:44.1782994Z   CARGO_PROFILE_DEV_DEBUG: 0
+2026-10-30T15:36:44.1783138Z   CARGO_PROFILE_TEST_DEBUG: 0
+2026-10-30T15:36:44.1783277Z   CARGO_TERM_COLOR: always
+2026-10-30T15:36:44.1783409Z   MESH_LLM_SKIP_UI: 1
+2026-10-30T15:36:44.1783541Z   CARGO_HOME: /home/runner/.cargo
+2026-10-30T15:36:44.1783790Z   MESH_LLM_AUTOMATION_BIN: /home/runner/work/mesh-llm/mesh-llm/target/release/xtask
+2026-10-30T15:36:44.1784018Z   CRATES: skippy-hf-hub
+2026-10-30T15:36:44.1784148Z ##[endgroup]
+2026-10-30T15:36:44.1816004Z ##[group]cargo test -p skippy-hf-hub
+2026-10-30T15:36:44.4761253Z    Compiling memchr v2.8.3
+2026-10-30T15:36:44.4761792Z    Compiling pin-project-lite v0.2.17
+2026-10-30T15:36:44.4763018Z    Compiling cfg-if v1.0.5
+2026-10-30T15:36:44.4801496Z    Compiling once_cell v1.21.4
+2026-10-30T15:36:44.5121412Z    Compiling zerofrom v0.1.8
+2026-10-30T15:36:44.5298698Z    Compiling futures-core v0.3.34
+2026-10-30T15:36:44.5921921Z    Compiling stable_deref_trait v1.2.1
+2026-10-30T15:36:44.6052231Z    Compiling smallvec v1.16.1
+2026-10-30T15:36:44.6234514Z    Compiling bytes v1.12.1
+2026-10-30T15:36:44.6731458Z    Compiling yoke v0.8.3
+2026-10-30T15:36:44.8041193Z    Compiling futures-sink v0.3.34
+2026-10-30T15:36:44.8168733Z    Compiling itoa v1.0.18
+2026-10-30T15:36:44.8581566Z    Compiling zerovec v0.11.8
+2026-10-30T15:36:44.9128957Z    Compiling mio v1.2.3
+2026-10-30T15:36:44.9632475Z    Compiling socket2 v0.6.5
+2026-10-30T15:36:45.0902145Z    Compiling slab v0.4.12
+2026-10-30T15:36:45.2009332Z    Compiling futures-channel v0.3.34
+2026-10-30T15:36:45.2467817Z    Compiling tokio v1.53.1
+2026-10-30T15:36:45.2932234Z    Compiling tracing-core v0.1.36
+2026-10-30T15:36:45.3001957Z    Compiling futures-io v0.3.34
+2026-10-30T15:36:45.3612613Z    Compiling tinystr v0.8.4
+2026-10-30T15:36:45.3662035Z    Compiling zeroize v1.9.0
+2026-10-30T15:36:45.4681345Z    Compiling writeable v0.6.4
+2026-10-30T15:36:45.5212569Z    Compiling litemap v0.8.3
+2026-10-30T15:36:45.6328989Z    Compiling futures-task v0.3.34
+2026-10-30T15:36:45.6442098Z    Compiling icu_locale_core v2.3.0
+2026-10-30T15:36:45.6621915Z    Compiling potential_utf v0.1.6
+2026-10-30T15:36:45.7332063Z    Compiling futures-util v0.3.34
+2026-10-30T15:36:45.7451890Z    Compiling http v1.5.0
+2026-10-30T15:36:46.4702218Z    Compiling zerotrie v0.2.5
+2026-10-30T15:36:46.5012017Z    Compiling utf8_iter v1.0.4
+2026-10-30T15:36:46.5832437Z    Compiling icu_collections v2.3.0
+2026-10-30T15:36:46.6645068Z    Compiling icu_provider v2.3.1
+2026-10-30T15:36:46.8731899Z    Compiling tracing v0.1.44
+2026-10-30T15:36:46.9192694Z    Compiling serde_core v1.0.229
+2026-10-30T15:36:47.0242474Z    Compiling rustls-pki-types v1.15.1
+2026-10-30T15:36:47.3562061Z    Compiling aws-lc-sys v0.45.0
+2026-10-30T15:36:47.8933260Z    Compiling aho-corasick v1.1.5
+2026-10-30T15:36:47.9072609Z    Compiling percent-encoding v2.3.2
+2026-10-30T15:36:48.0102141Z    Compiling regex-syntax v0.8.11
+2026-10-30T15:36:48.7302070Z    Compiling log v0.4.34
+2026-10-30T15:36:48.8521897Z    Compiling aws-lc-rs v1.18.1
+2026-10-30T15:36:49.2392119Z    Compiling icu_properties_data v2.3.0
+2026-10-30T15:36:49.3272947Z    Compiling icu_normalizer_data v2.3.0
+2026-10-30T15:36:49.3752192Z    Compiling http-body v1.1.0
+2026-10-30T15:36:49.4517210Z    Compiling regex-automata v0.4.18
+2026-10-30T15:36:49.6682047Z    Compiling hashbrown v0.17.1
+2026-10-30T15:36:49.9934406Z    Compiling equivalent v1.0.2
+2026-10-30T15:36:50.0561840Z    Compiling untrusted v0.9.0
+2026-10-30T15:36:50.1182170Z    Compiling rustls-webpki v0.103.15
+2026-10-30T15:36:50.1272837Z    Compiling serde v1.0.229
+2026-10-30T15:36:50.2081992Z    Compiling indexmap v2.14.2
+2026-10-30T15:36:50.5753411Z    Compiling icu_normalizer v2.3.0
+2026-10-30T15:36:50.7302391Z    Compiling icu_properties v2.3.0
+2026-10-30T15:36:50.8362918Z    Compiling tokio-util v0.7.19
+2026-10-30T15:36:50.9727135Z    Compiling subtle v2.6.1
+2026-10-30T15:36:51.0602290Z    Compiling fnv v1.0.7
+2026-10-30T15:36:51.1092272Z    Compiling rand_core v0.10.1
+2026-10-30T15:36:51.2032089Z    Compiling atomic-waker v1.1.2
+2026-10-30T15:36:51.2692029Z    Compiling try-lock v0.2.5
+2026-10-30T15:36:51.3267642Z    Compiling scopeguard v1.2.0
+2026-10-30T15:36:51.3392058Z    Compiling tower-service v0.3.3
+2026-10-30T15:36:51.3822093Z    Compiling want v0.3.1
+2026-10-30T15:36:51.3882397Z    Compiling h2 v0.4.19
+2026-10-30T15:36:51.4642371Z    Compiling rustls v0.23.46
+2026-10-30T15:36:51.6622351Z    Compiling idna_adapter v1.2.2
+2026-10-30T15:36:51.7301904Z    Compiling zmij v1.0.23
+2026-10-30T15:36:52.0695753Z    Compiling httparse v1.10.1
+2026-10-30T15:36:52.2682424Z    Compiling form_urlencoded v1.2.2
+2026-10-30T15:36:52.3672572Z    Compiling bitflags v2.13.2
+2026-10-30T15:36:52.5132203Z    Compiling cpufeatures v0.3.1
+2026-10-30T15:36:52.5572170Z    Compiling serde_json v1.0.151
+2026-10-30T15:36:53.0572167Z    Compiling idna v1.1.0
+2026-10-30T15:36:53.4112155Z    Compiling getrandom v0.4.3
+2026-10-30T15:36:53.5142295Z    Compiling sync_wrapper v1.0.2
+2026-10-30T15:36:53.5340298Z    Compiling hyper v1.11.1
+2026-10-30T15:36:53.5663319Z    Compiling tower-layer v0.3.3
+2026-10-30T15:36:53.6657989Z    Compiling base64 v0.22.1
+2026-10-30T15:36:53.8972048Z    Compiling ipnet v2.12.2
+2026-10-30T15:36:54.0771910Z    Compiling openssl-probe v0.2.1
+2026-10-30T15:36:54.1620015Z    Compiling rustls-native-certs v0.8.4
+2026-10-30T15:36:54.2617782Z    Compiling tower v0.5.3
+2026-10-30T15:36:54.3352696Z    Compiling multiversion v0.9.0
+2026-10-30T15:36:54.3662389Z    Compiling tokio-rustls v0.26.5
+2026-10-30T15:36:54.5452166Z    Compiling hyper-util v0.1.20
+2026-10-30T15:36:54.6377995Z    Compiling num-traits v0.2.19
+2026-10-30T15:36:54.6557526Z    Compiling url v2.5.8
+2026-10-30T15:36:55.1906097Z    Compiling simdutf8 v0.1.5
+2026-10-30T15:36:55.2022083Z    Compiling ryu v1.0.23
+2026-10-30T15:36:55.3062042Z    Compiling mime v0.3.17
+2026-10-30T15:36:55.3192029Z    Compiling core_detect v1.0.0
+2026-10-30T15:36:55.4422664Z    Compiling lazy_static v1.5.0
+2026-10-30T15:36:55.4499208Z    Compiling option-ext v0.2.0
+2026-10-30T15:36:55.4914731Z    Compiling dirs-sys v0.5.0
+2026-10-30T15:36:55.4988864Z    Compiling sharded-slab v0.1.7
+2026-10-30T15:36:55.5838377Z    Compiling mime_guess v2.0.5
+2026-10-30T15:36:55.6201948Z    Compiling hyper-rustls v0.27.9
+2026-10-30T15:36:55.7531391Z    Compiling encoding_rs v0.8.41
+2026-10-30T15:36:55.7992382Z    Compiling serde_urlencoded v0.7.1
+2026-10-30T15:36:55.8471900Z    Compiling thiserror v2.0.21
+2026-10-30T15:36:55.9042729Z    Compiling tower-http v0.6.11
+2026-10-30T15:36:55.9172646Z    Compiling rustls-platform-verifier v0.7.0
+2026-10-30T15:36:55.9522595Z    Compiling crossbeam-utils v0.8.23
+2026-10-30T15:36:56.0221937Z    Compiling chacha20 v0.10.2
+2026-10-30T15:36:56.1711975Z    Compiling bstr v1.13.1
+2026-10-30T15:36:56.2002058Z    Compiling matchers v0.2.0
+2026-10-30T15:36:56.2801956Z    Compiling tracing-serde v0.2.0
+2026-10-30T15:36:56.2921860Z    Compiling http-body-util v0.1.5
+2026-10-30T15:36:56.4002148Z    Compiling tracing-log v0.2.0
+2026-10-30T15:36:56.5200427Z    Compiling futures-executor v0.3.34
+2026-10-30T15:36:56.5308956Z    Compiling thread_local v1.1.10
+2026-10-30T15:36:56.6601935Z    Compiling deranged v0.5.8
+2026-10-30T15:36:56.6681931Z    Compiling powerfmt v0.2.0
+2026-10-30T15:36:56.7072029Z    Compiling typenum v1.20.1
+2026-10-30T15:36:56.7801984Z    Compiling nu-ansi-term v0.50.3
+2026-10-30T15:36:56.9714896Z    Compiling typewit v1.15.2
+2026-10-30T15:36:57.1752662Z    Compiling base64 v0.23.1
+2026-10-30T15:36:57.2612186Z    Compiling time-core v0.1.9
+2026-10-30T15:36:57.3981965Z    Compiling num-conv v0.2.2
+2026-10-30T15:36:57.4461112Z    Compiling hybrid-array v0.4.15
+2026-10-30T15:36:57.4722159Z    Compiling time v0.3.55
+2026-10-30T15:36:57.4821018Z    Compiling reqwest v0.13.5
+2026-10-30T15:36:57.5281896Z    Compiling const_panic v0.2.17
+2026-10-30T15:36:57.8184564Z    Compiling tracing-subscriber v0.3.23
+2026-10-30T15:36:57.9522082Z    Compiling crossbeam-channel v0.5.17
+2026-10-30T15:36:58.3012436Z    Compiling rand v0.10.2
+2026-10-30T15:36:58.8172099Z    Compiling anyhow v1.0.104
+2026-10-30T15:36:59.0231737Z    Compiling dirs v6.0.0
+2026-10-30T15:36:59.0822177Z    Compiling os_str_bytes v6.6.1
+2026-10-30T15:36:59.2462313Z    Compiling iana-time-zone v0.1.65
+2026-10-30T15:36:59.2852499Z    Compiling link-section v0.19.3
+2026-10-30T15:36:59.3802238Z    Compiling symlink v0.1.0
+2026-10-30T15:36:59.4272048Z    Compiling tracing-appender v0.2.5
+2026-10-30T15:36:59.4487191Z    Compiling ctor v1.0.13
+2026-10-30T15:36:59.4666304Z    Compiling chrono v0.4.45
+2026-10-30T15:36:59.5392198Z    Compiling konst v0.4.3
+2026-10-30T15:37:00.1222663Z    Compiling pin-project v1.1.13
+2026-10-30T15:37:00.1682447Z    Compiling git-version v0.3.9
+2026-10-30T15:37:00.2082606Z    Compiling shellexpand v3.1.2
+2026-10-30T15:37:00.3404084Z    Compiling futures v0.3.34
+2026-10-30T15:37:00.3529341Z    Compiling sysinfo v0.38.4
+2026-10-30T15:37:00.3862568Z    Compiling whoami v2.1.3
+2026-10-30T15:37:00.4371759Z    Compiling const-str v1.1.0
+2026-10-30T15:37:00.5432379Z    Compiling colored v3.1.1
+2026-10-30T15:37:00.6242142Z    Compiling either v1.18.0
+2026-10-30T15:37:00.7511995Z    Compiling constant_time_eq v0.4.2
+2026-10-30T15:37:00.7564377Z    Compiling arrayvec v0.7.8
+2026-10-30T15:37:00.7566919Z    Compiling humantime v2.4.0
+2026-10-30T15:37:00.8622121Z    Compiling oneshot v0.1.13
+2026-10-30T15:37:00.8922344Z    Compiling linux-raw-sys v0.12.1
+2026-10-30T15:37:00.9102248Z    Compiling more-asserts v0.3.1
+2026-10-30T15:37:00.9491991Z    Compiling twox-hash v2.1.4
+2026-10-30T15:37:00.9602949Z    Compiling xet-runtime v1.6.0
+2026-10-30T15:37:01.0442210Z    Compiling lz4_flex v0.13.1
+2026-10-30T15:37:01.2292418Z    Compiling rustix v1.1.5
+2026-10-30T15:37:01.3352079Z    Compiling blake3 v1.8.7
+2026-10-30T15:37:01.5421923Z    Compiling itertools v0.14.0
+2026-10-30T15:37:01.6642097Z    Compiling crypto-common v0.2.2
+2026-10-30T15:37:02.3131874Z    Compiling block-buffer v0.12.1
+2026-10-30T15:37:02.4062479Z    Compiling approx v0.5.1
+2026-10-30T15:37:02.4780134Z    Compiling uuid v1.26.0
+2026-10-30T15:37:02.6355349Z    Compiling regex v1.13.1
+2026-10-30T15:37:02.6754700Z    Compiling countio v0.3.0
+2026-10-30T15:37:02.7452021Z    Compiling fastrand v2.5.0
+2026-10-30T15:37:02.8002365Z    Compiling bytemuck v1.25.2
+2026-10-30T15:37:02.8842222Z    Compiling heapify v0.2.0
+2026-10-30T15:37:02.9312267Z    Compiling static_assertions v1.1.0
+2026-10-30T15:37:02.9402947Z    Compiling const-oid v0.10.2
+2026-10-30T15:37:02.9474391Z    Compiling safe-transmute v0.11.3
+2026-10-30T15:37:02.9702136Z    Compiling tempfile v3.27.0
+2026-10-30T15:37:03.0668271Z    Compiling xet-core-structures v1.6.0
+2026-10-30T15:37:03.0760814Z    Compiling digest v0.11.3
+2026-10-30T15:37:03.1812646Z    Compiling statrs v0.18.0
+2026-10-30T15:37:03.2233165Z    Compiling crc32fast v1.5.2
+2026-10-30T15:37:03.5877971Z    Compiling redb v3.1.3
+2026-10-30T15:37:03.6001964Z    Compiling reqwest-middleware v0.5.2
+2026-10-30T15:37:03.8791847Z    Compiling tokio-retry v0.3.2
+2026-10-30T15:37:03.9062092Z    Compiling urlencoding v2.1.3
+2026-10-30T15:37:03.9832257Z    Compiling sha2 v0.11.0
+2026-10-30T15:37:04.0042396Z    Compiling gearhash v0.1.4
+2026-10-30T15:37:04.1051868Z    Compiling parking_lot_core v0.9.12
+2026-10-30T15:37:04.2581961Z    Compiling lock_api v0.4.14
+2026-10-30T15:37:04.4042266Z    Compiling parking_lot v0.12.5
+2026-10-30T15:37:04.6295817Z    Compiling bon v3.10.1
+2026-10-30T15:37:04.6815242Z    Compiling globset v0.4.20
+2026-10-30T15:37:05.1289156Z    Compiling pathdiff v0.2.3
+2026-10-30T15:37:05.1882564Z    Compiling serial_test v3.5.0
+2026-10-30T15:37:05.6682264Z    Compiling xet-client v1.6.0
+2026-10-30T15:37:09.5557281Z    Compiling xet-data v1.6.0
+2026-10-30T15:37:11.9734488Z    Compiling hf-xet v1.6.0
+2026-10-30T15:37:13.3775194Z    Compiling skippy-hf-hub v0.78.0 (/home/runner/work/mesh-llm/mesh-llm/skippy/crates/skippy-hf-hub)
+2026-10-30T15:37:19.0024690Z warning: linker stderr: Note: mold is unavailable or failed the active target/toolchain link probe.
+2026-10-30T15:37:19.0025818Z          Falling back to lld or the platform linker for this build.
+2026-10-30T15:37:19.0026151Z   |
+2026-10-30T15:37:19.0026454Z   = note: `#[warn(linker_messages)]` on by default
+2026-10-30T15:37:19.0026681Z 
+2026-10-30T15:37:19.0030883Z warning: `skippy-hf-hub` (test "future_size") generated 1 warning
+2026-10-30T15:37:20.7288279Z warning: `skippy-hf-hub` (lib test) generated 1 warning (1 duplicate)
+2026-10-30T15:37:20.7475460Z     Finished `test` profile [unoptimized] target(s) in 36.54s
+2026-10-30T15:37:20.7476077Z      Running unittests src/lib.rs (target/debug/deps/hf_hub-d17e34ef3efbe14e)
+2026-10-30T15:37:20.7501189Z 
+2026-10-30T15:37:20.7501484Z running 210 tests
+2026-10-30T15:37:20.7510945Z test buckets::sync::tests::test_compare_files_identical_not_verbose ... ok
+2026-10-30T15:37:20.7511833Z test buckets::sync::tests::test_compare_files_ignore_existing ... ok
+2026-10-30T15:37:20.7512220Z test buckets::sync::tests::test_compare_files_download_source_newer ... ok
+2026-10-30T15:37:20.7512585Z test buckets::sync::tests::test_compare_files_identical ... ok
+2026-10-30T15:37:20.7512960Z test buckets::sync::tests::test_compare_files_ignore_existing_not_verbose ... ok
+2026-10-30T15:37:20.7513350Z test buckets::sync::tests::test_compare_files_ignore_sizes ... ok
+2026-10-30T15:37:20.7513682Z test buckets::sync::tests::test_compare_files_source_newer ... ok
+2026-10-30T15:37:20.7514044Z test buckets::sync::tests::test_compare_files_ignore_sizes_download ... ok
+2026-10-30T15:37:20.7514431Z test buckets::sync::tests::test_compare_files_ignore_times ... ok
+2026-10-30T15:37:20.7514839Z test buckets::sync::tests::test_compare_files_within_safety_window ... ok
+2026-10-30T15:37:20.7521392Z test buckets::sync::tests::test_days_from_civil_epoch ... ok
+2026-10-30T15:37:20.7521797Z test buckets::sync::tests::test_days_from_civil_known_date ... ok
+2026-10-30T15:37:20.7522196Z test buckets::sync::tests::test_empty_plan ... ok
+2026-10-30T15:37:20.7522540Z test buckets::sync::tests::test_compare_files_size_differs ... ok
+2026-10-30T15:37:20.7522928Z test buckets::sync::tests::test_matches_filters_exclude ... ok
+2026-10-30T15:37:20.7523340Z test buckets::sync::tests::test_matches_filters_no_patterns ... ok
+2026-10-30T15:37:20.7523754Z test buckets::sync::tests::test_parse_iso_mtime_basic ... ok
+2026-10-30T15:37:20.7525205Z test buckets::sync::tests::test_parse_iso_mtime_invalid ... ok
+2026-10-30T15:37:20.7525606Z test buckets::sync::tests::test_parse_iso_mtime_with_frac ... ok
+2026-10-30T15:37:20.7526018Z test buckets::sync::tests::test_plan_counts ... ok
+2026-10-30T15:37:20.7528917Z test buckets::sync::tests::test_matches_filters_include ... ok
+2026-10-30T15:37:20.7529348Z test buckets::sync::tests::test_strip_prefix_empty ... ok
+2026-10-30T15:37:20.7532157Z test buckets::sync::tests::test_strip_prefix_match ... ok
+2026-10-30T15:37:20.7534715Z test buckets::sync::tests::test_strip_prefix_exact_file ... ok
+2026-10-30T15:37:20.7535098Z test buckets::sync::tests::test_strip_prefix_no_match ... ok
+2026-10-30T15:37:20.7535462Z test buckets::sync::tests::test_transfer_bytes ... ok
+2026-10-30T15:37:20.7535813Z test buckets::sync::tests::test_strip_prefix_partial_no_match ... ok
+2026-10-30T15:37:20.7536223Z test buckets::sync::tests::test_validate_params_conflicting_existing ... ok
+2026-10-30T15:37:20.7536532Z test buckets::sync::tests::test_validate_params_conflicting_times_sizes ... ok
+2026-10-30T15:37:20.7536838Z test buckets::tests::test_bucket_copy_file_optional_fields_construct ... ok
+2026-10-30T15:37:20.7537157Z test buckets::sync::tests::test_matches_filters_exclude_takes_priority ... ok
+2026-10-30T15:37:20.7537465Z test buckets::tests::test_bucket_copy_source_type_wire_strings ... ok
+2026-10-30T15:37:20.7635388Z test cache::storage::tests::pointer_fallback_copies_existing_blob ... ok
+2026-10-30T15:37:20.7640353Z test cache::storage::tests::pointer_fallback_moves_new_blob ... ok
+2026-10-30T15:37:20.7647522Z test cache::storage::tests::test_acquire_and_release_lock ... ok
+2026-10-30T15:37:20.7647938Z test cache::storage::tests::test_blob_path ... ok
+2026-10-30T15:37:20.7653890Z test cache::storage::tests::test_create_symlink ... ok
+2026-10-30T15:37:20.7659113Z test cache::storage::tests::test_create_symlink_nested_file ... ok
+2026-10-30T15:37:20.7659488Z test cache::storage::tests::test_is_commit_hash ... ok
+2026-10-30T15:37:20.7659948Z test cache::storage::tests::test_lock_path ... ok
+2026-10-30T15:37:20.7660809Z test cache::storage::tests::test_no_exist_path ... ok
+2026-10-30T15:37:20.7662514Z test cache::storage::tests::test_parse_repo_folder_name_dataset ... ok
+2026-10-30T15:37:20.7662932Z test cache::storage::tests::test_parse_repo_folder_name_invalid ... ok
+2026-10-30T15:37:20.7663514Z test cache::storage::tests::test_parse_repo_folder_name_model ... ok
+2026-10-30T15:37:20.7664063Z test cache::storage::tests::test_parse_repo_folder_name_model_with_org ... ok
+2026-10-30T15:37:20.7670127Z test cache::storage::tests::test_read_commit_refs_nested ... ok
+2026-10-30T15:37:20.7672475Z test cache::storage::tests::test_read_ref_missing ... ok
+2026-10-30T15:37:20.7672922Z test cache::storage::tests::test_ref_path ... ok
+2026-10-30T15:37:20.7673443Z test cache::storage::tests::test_ref_path_pr ... ok
+2026-10-30T15:37:20.7681737Z test cache::storage::tests::test_repo_folder_name_dataset ... ok
+2026-10-30T15:37:20.7682187Z test cache::storage::tests::test_repo_folder_name_model_no_org ... ok
+2026-10-30T15:37:20.7682838Z test cache::storage::tests::test_repo_folder_name_model_with_org ... ok
+2026-10-30T15:37:20.7683316Z test cache::storage::tests::test_repo_folder_name_space ... ok
+2026-10-30T15:37:20.7689498Z test cache::storage::tests::test_scan_cache_deduplicates_blob_sizes ... ok
+2026-10-30T15:37:20.7691876Z test cache::storage::tests::test_scan_cache_empty ... ok
+2026-10-30T15:37:20.7694249Z test cache::storage::tests::test_scan_cache_nonexistent_dir ... ok
+2026-10-30T15:37:20.7700586Z test cache::storage::tests::test_scan_cache_with_repo ... ok
+2026-10-30T15:37:20.7709658Z test cache::storage::tests::test_scan_cached_repo_dir_scopes_to_the_requested_repository ... ok
+2026-10-30T15:37:20.7710147Z test cache::storage::tests::test_snapshot_path ... ok
+2026-10-30T15:37:20.7711135Z test cache::storage::tests::test_snapshot_path_nested_file ... ok
+2026-10-30T15:37:20.7714828Z test cache::storage::tests::test_write_and_read_ref ... ok
+2026-10-30T15:37:20.7716203Z test client::tests::append_path_segments_empty_path_is_noop ... ok
+2026-10-30T15:37:20.7717214Z test client::tests::append_path_segments_encodes_percent_literals ... ok
+2026-10-30T15:37:20.7717799Z test client::tests::append_path_segments_encodes_special_chars ... ok
+2026-10-30T15:37:20.7718763Z test client::tests::append_path_segments_handles_leading_trailing_and_repeated_slashes ... ok
+2026-10-30T15:37:20.7719255Z test client::tests::append_path_segments_handles_unicode ... ok
+2026-10-30T15:37:20.7952758Z test buckets::tests::test_bucket_accessors ... ok
+2026-10-30T15:37:20.8058895Z test cache::storage::tests::partial_download_state_classifies_resume_cases ... ok
+2026-10-30T15:37:20.8140432Z test client::tests::download_url_dataset_prefix ... ok
+2026-10-30T15:37:20.8141262Z test client::tests::encode_ref_encodes_slash_and_reserved_chars ... ok
+2026-10-30T15:37:20.8141807Z test client::tests::encode_ref_encodes_unicode ... ok
+2026-10-30T15:37:20.8142293Z test client::tests::encode_ref_keeps_compare_dots_literal ... ok
+2026-10-30T15:37:20.8142809Z test client::tests::encode_ref_preserves_unreserved_chars ... ok
+2026-10-30T15:37:20.8143307Z test client::tests::is_relative_location_classification ... ok
+2026-10-30T15:37:20.8143782Z test client::tests::split_id_empty_owner_or_name ... ok
+2026-10-30T15:37:20.8144247Z test client::tests::split_id_only_splits_first_slash ... ok
+2026-10-30T15:37:20.8144776Z test client::tests::split_id_ownerless_short_form ... ok
+2026-10-30T15:37:20.8145266Z test client::tests::split_id_splits_owner_and_name ... ok
+2026-10-30T15:37:20.8472408Z test client::tests::download_url_encodes_filename_segments ... ok
+2026-10-30T15:37:20.8549333Z test client::tests::test_builder_cache_dir_default ... ok
+2026-10-30T15:37:20.8584646Z test client::tests::download_url_encodes_revision ... ok
+2026-10-30T15:37:20.8738224Z test cache::storage::tests::cached_ref_rejects_malformed_commits_and_paths_before_join ... ok
+2026-10-30T15:37:20.9031785Z test client::tests::test_builder_cache_dir_explicit ... ok
+2026-10-30T15:37:20.9091632Z test client::tests::test_replace_and_retry_after_abort ... ok
+2026-10-30T15:37:20.9183332Z test client::tests::test_replace_with_stale_generation_is_noop ... ok
+2026-10-30T15:37:20.9361736Z test client::tests::test_xet_session_lazy_creation ... ok
+2026-10-30T15:37:20.9609474Z test client::tests::test_xet_session_recovers_after_sigint_abort ... ok
+2026-10-30T15:37:20.9657716Z test client::tests::test_xet_session_recovers_after_abort ... ok
+2026-10-30T15:37:20.9814488Z test client::tests::test_xet_session_reuse_without_replacement ... ok
+2026-10-30T15:37:20.9922320Z test client::tests::test_xet_session_shared_across_clones ... ok
+2026-10-30T15:37:21.0281947Z test client::tests::token_precedence::test_disable_implicit_token_returns_none ... ok
+2026-10-30T15:37:21.0321696Z test client::tests::token_precedence::test_disable_implicit_token_does_not_block_explicit ... ok
+2026-10-30T15:37:21.0471332Z test client::tests::token_precedence::test_env_token_overrides_token_path_file ... ok
+2026-10-30T15:37:21.0509968Z test client::tests::token_precedence::test_env_token_used_when_no_explicit ... ok
+2026-10-30T15:37:21.0854133Z test client::tests::token_precedence::test_explicit_token_overrides_env ... ok
+2026-10-30T15:37:21.0871593Z test client::tests::token_precedence::token_resolution_child ... ok
+2026-10-30T15:37:21.0901185Z test error::tests::display_includes_request_id_when_present ... ok
+2026-10-30T15:37:21.0931054Z test error::tests::display_includes_server_message_when_present ... ok
+2026-10-30T15:37:21.0960863Z test error::tests::display_omits_message_section_when_absent ... ok
+2026-10-30T15:37:21.0961496Z test error::tests::display_surfaces_server_message_across_variants ... ok
+2026-10-30T15:37:21.0991158Z test client::tests::token_precedence::test_no_token_anywhere_is_none ... ok
+2026-10-30T15:37:21.1007903Z test client::tests::token_precedence::test_token_from_hf_home_file ... ok
+2026-10-30T15:37:21.1021009Z test error::tests::header_string_case_insensitive ... ok
+2026-10-30T15:37:21.1061262Z test error::tests::is_transient_classifies_http_statuses ... ok
+2026-10-30T15:37:21.1100724Z test error::tests::json_error_extraction ... ok
+2026-10-30T15:37:21.1130720Z test error::tests::retry_after_absent ... ok
+2026-10-30T15:37:21.1151794Z test error::tests::retry_after_parses_integer_seconds ... ok
+2026-10-30T15:37:21.1171773Z test error::tests::retry_after_rejects_http_date ... ok
+2026-10-30T15:37:21.1172353Z test client::tests::token_precedence::test_token_path_file_used_when_no_env ... ok
+2026-10-30T15:37:21.1172855Z test error::tests::from_response_extracts_headers_and_body ... ok
+2026-10-30T15:37:21.1173291Z test pagination::tests::only_a_same_origin_next_page_is_requested ... ok
+2026-10-30T15:37:21.1173739Z test pagination::tests::test_parse_link_header_multiple_rels ... ok
+2026-10-30T15:37:21.1174119Z test pagination::tests::test_parse_link_header_next ... ok
+2026-10-30T15:37:21.1174478Z test pagination::tests::test_parse_link_header_no_next ... ok
+2026-10-30T15:37:21.1174832Z test progress::tests::download_file_lifecycle ... ok
+2026-10-30T15:37:21.1175146Z test progress::tests::emit_records_events ... ok
+2026-10-30T15:37:21.1175455Z test progress::tests::emit_with_none_is_noop ... ok
+2026-10-30T15:37:21.1175760Z test progress::tests::handler_is_send_sync ... ok
+2026-10-30T15:37:21.1176069Z test progress::tests::upload_event_ordering ... ok
+2026-10-30T15:37:21.1176420Z test progress::tests::upload_progress_with_per_file_data ... ok
+2026-10-30T15:37:21.1176860Z test repository::commits::tests::test_git_commit_info_with_formatted_fields ... ok
+2026-10-30T15:37:21.1177629Z test repository::commits::tests::test_git_commit_info_without_formatted_fields ... ok
+2026-10-30T15:37:21.1178072Z test repository::diff::tests::binary_copy_with_score ... ok
+2026-10-30T15:37:21.1178433Z test repository::diff::tests::empty_line_error ... ok
+2026-10-30T15:37:21.1178755Z test repository::diff::tests::modified_hf_diff ... ok
+2026-10-30T15:37:21.1179104Z test repository::diff::tests::rename_with_unicode_paths ... ok
+2026-10-30T15:37:21.1179464Z test repository::diff::tests::rename_without_score ... ok
+2026-10-30T15:37:21.1179819Z test repository::diff::tests::single_char_truncated ... ok
+2026-10-30T15:37:21.1180196Z test repository::diff::tests::stream_across_chunk_boundaries ... ok
+2026-10-30T15:37:21.1180725Z test repository::diff::tests::stream_mixed_statuses ... ok
+2026-10-30T15:37:21.1181084Z test repository::diff::tests::stream_modified_hf_diff ... ok
+2026-10-30T15:37:21.1181601Z test repository::diff::tests::truncated_after_size ... ok
+2026-10-30T15:37:21.1181962Z test repository::diff::tests::truncated_after_status ... ok
+2026-10-30T15:37:21.1182337Z test error::tests::from_response_falls_back_to_json_error ... ok
+2026-10-30T15:37:21.1182782Z test repository::diff::tests::truncated_before_mode_pair ... ok
+2026-10-30T15:37:21.1183172Z test repository::diff::tests::truncated_before_old_blob_id ... ok
+2026-10-30T15:37:21.1191169Z test repository::diff::tests::truncated_before_new_blob_id ... ok
+2026-10-30T15:37:21.1191554Z test repository::diff::tests::truncated_before_status ... ok
+2026-10-30T15:37:21.1191894Z test repository::diff::tests::unicode_and_emoji_paths ... ok
+2026-10-30T15:37:21.1192112Z test repository::diff::tests::valid_line_parses_ok ... ok
+2026-10-30T15:37:21.1571667Z test pagination::tests::a_next_page_on_another_origin_never_gets_the_token ... ok
+2026-10-30T15:37:21.1680023Z test pagination::tests::a_same_origin_next_page_is_followed ... ok
+2026-10-30T15:37:21.1681064Z test repository::download::tests::content_range_validation_accepts_expected_range ... ok
+2026-10-30T15:37:21.1711099Z test repository::download::tests::content_range_validation_rejects_wrong_start ... ok
+2026-10-30T15:37:21.1764119Z test repository::download::fallback_tests::cache_download_reuses_regular_snapshot_when_blob_is_absent ... ok
+2026-10-30T15:37:21.1771445Z test repository::files::commit_admission::tests::malformed_and_substituted_commit_cannot_enter_cache_paths ... ok
+2026-10-30T15:37:21.1776853Z test repository::files::tests::extract_file_size_ignores_content_length_on_redirect ... ok
+2026-10-30T15:37:21.1777543Z test repository::files::tests::extract_file_size_prefers_linked_size ... ok
+2026-10-30T15:37:21.1778153Z test repository::files::tests::extract_file_size_trusts_linked_size_on_redirect ... ok
+2026-10-30T15:37:21.1778829Z test repository::files::tests::extract_file_size_uses_content_length_for_non_redirect ... ok
+2026-10-30T15:37:21.1779470Z test repository::files::tests::test_blob_security_info_unsafe_status ... ok
+2026-10-30T15:37:21.1780074Z test repository::files::tests::test_commit_info_no_pr ... ok
+2026-10-30T15:37:21.1780741Z test repository::files::tests::test_commit_info_with_pr ... ok
+2026-10-30T15:37:21.1781302Z test repository::files::tests::test_file_metadata_info_location_optional ... ok
+2026-10-30T15:37:21.1801028Z test repository::files::tests::test_file_metadata_info_location_round_trip ... ok
+2026-10-30T15:37:21.1802122Z test repository::files::tests::test_repo_tree_entry_deserialize_directory ... ok
+2026-10-30T15:37:21.1802779Z test repository::files::tests::test_repo_tree_entry_deserialize_file ... ok
+2026-10-30T15:37:21.1805232Z test repository::files::tests::test_repo_tree_entry_directory_with_last_commit ... ok
+2026-10-30T15:37:21.1808390Z test repository::files::tests::test_repo_tree_entry_file_expanded ... ok
+2026-10-30T15:37:21.1809234Z test repository::download::tests::cache_download_restarts_when_partial_response_is_invalid ... ok
+2026-10-30T15:37:21.2043929Z test repository::download::tests::cache_download_resumes_http_incomplete_blob ... ok
+2026-10-30T15:37:21.2274951Z test repository::download::tests::local_dir_download_resumes_http_partial_file ... ok
+2026-10-30T15:37:21.2301117Z test repository::listing::tests::only_a_same_origin_redirect_is_followed ... ok
+2026-10-30T15:37:21.2331112Z test repository::repo_type::repo_type_any_tests::default_is_model ... ok
+2026-10-30T15:37:21.2360899Z test repository::repo_type::repo_type_any_tests::from_str_accepts_singular_and_plural ... ok
+2026-10-30T15:37:21.2361840Z test repository::repo_type::repo_type_any_tests::from_str_rejects_unknown ... ok
+2026-10-30T15:37:21.2482918Z test repository::listing::tests::metadata_comes_from_the_hub_redirect_not_the_cdn_answer ... ok
+2026-10-30T15:37:21.2484011Z test repository::listing::tests::a_same_host_redirect_is_followed_to_the_file ... ok
+2026-10-30T15:37:21.2484686Z test repository::repo_type::repo_type_any_tests::trait_methods_dispatch_at_runtime ... ok
+2026-10-30T15:37:21.2485744Z test repository::tests::test_dataset_info_new_fields ... ok
+2026-10-30T15:37:21.2486274Z test repository::tests::test_eval_result_entry_minimal ... ok
+2026-10-30T15:37:21.2486795Z test repository::tests::test_eval_result_entry_with_source ... ok
+2026-10-30T15:37:21.2487579Z test repository::tests::test_inference_provider_mapping_dict_form ... ok
+2026-10-30T15:37:21.2488271Z test repository::tests::test_inference_provider_mapping_helper_directly ... ok
+2026-10-30T15:37:21.2489213Z test repository::tests::test_inference_provider_mapping_list_form ... ok
+2026-10-30T15:37:21.2490248Z test repository::tests::test_kernel_info_deserializes_real_response ... ok
+2026-10-30T15:37:21.2491021Z test repository::tests::test_kernel_info_missing_supported_driver_families ... ok
+2026-10-30T15:37:21.2611750Z test repository::listing::tests::metadata_requests_keep_the_supplied_transport_settings ... ok
+2026-10-30T15:37:21.2823718Z test repository::repo_type::repo_type_any_tests::handle_from_str_via_repo_type_any ... ok
+2026-10-30T15:37:21.3051439Z test repository::repo_type::repo_type_any_tests::handle_repo_type_reflects_runtime_kind ... ok
+2026-10-30T15:37:21.3052273Z test repository::tests::test_marker_struct_display ... ok
+2026-10-30T15:37:21.3077749Z test repository::tests::test_marker_struct_singular_and_plural ... ok
+2026-10-30T15:37:21.3078449Z test repository::tests::test_marker_struct_url_prefix ... ok
+2026-10-30T15:37:21.3079045Z test repository::tests::test_model_info_ignores_unknown_and_legacy_fields ... ok
+2026-10-30T15:37:21.3079680Z test repository::tests::test_list_datasets_limit_zero_returns_empty ... ok
+2026-10-30T15:37:21.3080240Z test repository::tests::test_safetensors_info_deserialize ... ok
+2026-10-30T15:37:21.3080879Z test repository::tests::test_space_info_new_fields ... ok
+2026-10-30T15:37:21.3081338Z test repository::tests::test_split_repo_id ... ok
+2026-10-30T15:37:21.3081815Z test repository::tests::test_transformers_info_deserialize ... ok
+2026-10-30T15:37:21.3161481Z test repository::tests::test_list_models_limit_zero_returns_empty ... ok
+2026-10-30T15:37:21.3359360Z test retry::tests::builder_error_is_fatal ... ok
+2026-10-30T15:37:21.3359779Z test retry::tests::retry_delay_budget_is_bounded ... ok
+2026-10-30T15:37:21.3360069Z test retry::tests::status_classification ... ok
+2026-10-30T15:37:21.3363102Z test repository::tests::test_list_spaces_limit_zero_returns_empty ... ok
+2026-10-30T15:37:21.3364168Z test spaces::tests::test_space_runtime_deserialize_hardware ... ok
+2026-10-30T15:37:21.3364805Z test spaces::tests::test_space_runtime_deserialize_minimal ... ok
+2026-10-30T15:37:21.3365572Z test spaces::tests::test_space_runtime_ignores_unknown_fields ... ok
+2026-10-30T15:37:21.3366231Z test spaces::tests::test_space_runtime_sleep_time_from_gc_timeout ... ok
+2026-10-30T15:37:21.3367086Z test spaces::tests::test_space_runtime_volumes_and_hot_reloading ... ok
+2026-10-30T15:37:21.3367683Z test spaces::tests::test_space_variable_deserialize ... ok
+2026-10-30T15:37:21.3368448Z test users::tests::test_organization_full_profile ... ok
+2026-10-30T15:37:21.3369193Z test users::tests::test_user_full_profile ... ok
+2026-10-30T15:37:21.3370048Z test xet::tests::test_session_poisoned_negative ... ok
+2026-10-30T15:37:21.3370613Z test xet::tests::test_session_poisoned_positive ... ok
+2026-10-30T15:37:21.3371169Z test xet::tests::test_xet_error_message_preserved_in_hferror ... ok
+2026-10-30T15:37:21.3376555Z test xet::tests::xet_resume_stream_appends_remaining_bytes ... ok
+2026-10-30T15:37:21.3400866Z test xet::tests::xet_resume_stream_rejects_short_download ... ok
+2026-10-30T15:37:21.3451202Z test retry::tests::connect_error_is_transient ... ok
+2026-10-30T15:37:21.3518361Z test repository::tests::test_repo_path_and_accessors ... ok
+2026-10-30T15:37:21.3732072Z test spaces::tests::test_space_handle_constructor ... ok
+2026-10-30T15:37:21.3732338Z 
+2026-10-30T15:37:21.3732558Z test result: ok. 210 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.62s
+2026-10-30T15:37:21.3732850Z 
+2026-10-30T15:37:21.3750079Z      Running tests/future_size.rs (target/debug/deps/future_size-6602f736273724e1)
+2026-10-30T15:37:21.3765941Z 
+2026-10-30T15:37:21.3766120Z running 2 tests
+2026-10-30T15:37:21.4208504Z test boxed_send_futures_stay_small ... ok
+2026-10-30T15:37:21.4211725Z test nested_consumer_future_stays_shallow ... ok
+2026-10-30T15:37:21.4211926Z 
+2026-10-30T15:37:21.4212139Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+2026-10-30T15:37:21.4212432Z 
+2026-10-30T15:37:21.4219310Z    Doc-tests hf_hub
+2026-10-30T15:37:25.2638920Z 
+2026-10-30T15:37:25.2639553Z running 21 tests
+2026-10-30T15:37:25.2642090Z test skippy/crates/skippy-hf-hub/src/buckets/mod.rs - buckets::HFBucket (line 46) - compile ... ok
+2026-10-30T15:37:25.2642922Z test skippy/crates/skippy-hf-hub/src/client.rs - client::HFClient (line 91) - compile ... ok
+2026-10-30T15:37:25.2644722Z test skippy/crates/skippy-hf-hub/src/buckets/mod.rs - buckets::HFBucket::upload_source_files (line 462) - compile ... ok
+2026-10-30T15:37:25.2645344Z test skippy/crates/skippy-hf-hub/src/lib.rs - (line 115) - compile ... ok
+2026-10-30T15:37:25.2645865Z test skippy/crates/skippy-hf-hub/src/lib.rs - (line 139) - compile ... ok
+2026-10-30T15:37:25.2657112Z test skippy/crates/skippy-hf-hub/src/lib.rs - (line 165) - compile ... ok
+2026-10-30T15:37:25.2657787Z test skippy/crates/skippy-hf-hub/src/lib.rs - (line 16) - compile ... ok
+2026-10-30T15:37:25.2658398Z test skippy/crates/skippy-hf-hub/src/lib.rs - (line 57) - compile ... ok
+2026-10-30T15:37:25.2658980Z test skippy/crates/skippy-hf-hub/src/lib.rs - (line 99) - compile ... ok
+2026-10-30T15:37:25.2659497Z test skippy/crates/skippy-hf-hub/src/lib.rs - (line 77) - compile ... ok
+2026-10-30T15:37:25.2661301Z test skippy/crates/skippy-hf-hub/src/client.rs - client::split_id (line 62) ... ok
+2026-10-30T15:37:25.2661845Z test skippy/crates/skippy-hf-hub/src/progress.rs - progress::ProgressHandler (line 107) ... ok
+2026-10-30T15:37:25.2662367Z test skippy/crates/skippy-hf-hub/src/progress.rs - progress::Progress (line 139) ... ok
+2026-10-30T15:37:25.2672800Z test skippy/crates/skippy-hf-hub/src/repository/files.rs - repository::files::CommitOperation (line 166) - compile ... ok
+2026-10-30T15:37:25.2673399Z test skippy/crates/skippy-hf-hub/src/progress.rs - progress (line 46) ... ok
+2026-10-30T15:37:25.2673890Z test skippy/crates/skippy-hf-hub/src/repository/mod.rs - repository::HFClient::repository (line 627) - compile ... ok
+2026-10-30T15:37:25.2674428Z test skippy/crates/skippy-hf-hub/src/repository/mod.rs - repository::HFRepository (line 541) - compile ... ok
+2026-10-30T15:37:25.2675094Z test skippy/crates/skippy-hf-hub/src/repository/repo_type.rs - repository::repo_type::RepoType (line 51) - compile ... ok
+2026-10-30T15:37:25.2675556Z test skippy/crates/skippy-hf-hub/src/spaces.rs - spaces::HFRepository<RepoTypeSpace>::runtime (line 117) - compile ... ok
+2026-10-30T15:37:25.2675985Z test skippy/crates/skippy-hf-hub/src/repository/repo_type.rs - repository::repo_type::RepoType (line 33) - compile ... ok
+2026-10-30T15:37:25.2676743Z test skippy/crates/skippy-hf-hub/src/spaces.rs - spaces::HFRepository<RepoTypeSpace>::duplicate (line 506) - compile ... ok
+2026-10-30T15:37:25.2676999Z 
+2026-10-30T15:37:25.2677142Z test result: ok. 21 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-30T15:37:25.2677323Z 
+2026-10-30T15:37:25.2846001Z all doctests ran in 2.61s; merged doctests compilation took 2.59s
+2026-10-30T15:37:25.3241661Z ##[endgroup]
+﻿2026-10-30T15:37:25.3365485Z Post job cleanup.
+﻿2026-10-30T15:37:25.3411262Z Post job cleanup.
+2026-10-30T15:37:25.4066826Z [command]/usr/bin/git version
+2026-10-30T15:37:25.4105203Z git version 2.56.0
+2026-10-30T15:37:25.4135200Z Temporarily overriding HOME='/home/runner/work/_temp/16ef729e-3bed-4918-995b-2953ae0732d2' before making global git config changes
+2026-10-30T15:37:25.4135929Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-30T15:37:25.4139993Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/mesh-llm/mesh-llm
+2026-10-30T15:37:25.4186473Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-30T15:37:25.4231007Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-30T15:37:25.4481520Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-30T15:37:25.4521226Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-30T15:37:25.4763340Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-30T15:37:25.4812760Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+﻿2026-10-30T15:37:25.5185675Z Cleaning up orphan processes

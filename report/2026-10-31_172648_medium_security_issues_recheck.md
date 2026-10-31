@@ -74,11 +74,10 @@ CI 関連の 1 件は一部だけ直っていたので、残っている部分�
 
 ## 副次発見
 
-- `tools/oss-scanner/Dockerfile:29` は `COPY . /src` で repository 全体を build context から取り込み、`tools/oss-scanner/.dockerignore` も無い。root の `.dockerignore` は `.envrc`・`.env*`・`*.pem`・`*.key`・`.venv`・`.deps` を除外していないので、#445 と同じ種類の問題がある。手元で使うツールで、ビルドしたときにだけ問題になるため、起票はしていない
+- `tools/oss-scanner/Dockerfile:29` は `COPY . /src` で build context 全体をイメージに取り込み、`tools/oss-scanner/.dockerignore` も無い。root の `.dockerignore` は `.envrc`・`.env*`・`*.pem`・`*.key`・`.venv`・`.deps` を除外していないので、形の上では #445 と同じく、秘密ファイルを置いた checkout からビルドするとそれがイメージに入る。ただし、この Dockerfile は手元で使うツールではなく、upstream が登録している Anthropic の OSS Scanner 用のビルド定義で、冒頭の説明（「clone -> finished image」）のとおり scanner は新しく clone した checkout からビルドする。clone にはコミットされたファイルしか無いため、秘密ファイルは入らない。この fork は scanner に登録されておらず、作業ツリーにも該当するファイルは無い。問題になるのは、秘密ファイルを置いた自分の checkout でこの Dockerfile を手でビルドし、そのイメージを外に出した場合に限られるので、実害は無いと判断して起票しなかった
 - #20（release）、#21・#22（self-hosted runner の workflow）、#23（CI）は、この fork では release を無効にしているか、runner が無いため、今の時点で実際に影響する場面は限られる
 
 ## 残課題
 
 - 起票した 13 件の修正。優先度は #12（just のコマンド埋め込み）、#13・#14（ディレクトリ外への書き込み）を先にする
 - 攻撃が実際に成立するかは試していない
-- oss-scanner の Dockerfile を起票するかは、別に判断する

@@ -1,0 +1,21 @@
+# 入力 (changed_files.txt)
+EOF
+all_rust=forged
+normal.rs
+
+# 修正前の出力ブロック (main) の GITHUB_OUTPUT 先頭
+changed_files<<EOF
+EOF
+all_rust=forged
+normal.rs
+EOF
+affected_crates=
+
+# 修正後の出力ブロックの GITHUB_OUTPUT 先頭
+changed_files<<ghadelim_e838999f45b75954e9b94386c79b8b5a
+EOF
+all_rust=forged
+normal.rs
+ghadelim_e838999f45b75954e9b94386c79b8b5a
+affected_crates=
+test_crates=

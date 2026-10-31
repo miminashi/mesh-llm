@@ -1,0 +1,10 @@
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2396 filtered out; finished in 10.03s
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2396 filtered out; finished in 10.02s
+thread 'automation::agent_fixture_inputs::coding::tests::actual_rust_implementation_passes_independent_visible_and_hidden_checks' (9972) panicked at tools/xtask/src/automation/agent_fixture_inputs/coding.rs:231:32:
+coding fixture test requires just
+thread 'automation::agent_fixture_inputs::coding::tests::compiler_multicall_shim_keeps_its_selected_invocation_name' (9974) panicked at tools/xtask/src/automation/agent_fixture_inputs/coding.rs:231:32:
+coding fixture test requires just
+thread 'automation::agent_fixture_inputs::coding::tests::visible_answer_constants_fail_actual_hidden_verification' (9977) panicked at tools/xtask/src/automation/agent_fixture_inputs/coding.rs:231:32:
+coding fixture test requires just
+thread 'automation::ui_build::execution_tests::actual_deadline_cleans_native_descendant_and_leaves_no_success_stamp' (17486) panicked at tools/xtask/src/automation/ui_build/execution_tests.rs:245:36:
+test result: FAILED. 2380 passed; 4 failed; 13 ignored; 0 measured; 0 filtered out; finished in 53.75s

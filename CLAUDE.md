@@ -18,7 +18,7 @@
 - 既存のブランチで作業を続けるときも、`git worktree add <パス> <branch>` でそのブランチの worktree を作る（すでにあれば、それを使う）
 - 編集・コミット・push は、その worktree の中で行う
 - PR がマージされたら、`git worktree remove <パス>` で片付ける。未コミットの変更が残っている worktree は消さない
-- レポートは、これまでどおりメインチェックアウトの `report/` に置く（「レポート執筆ルール」の「保存先」）
+- PR を作る作業のレポートは、その worktree の `report/` に書き、修正と同じ PR に含める（「レポート執筆ルール」の「保存先」）
 
 ## aws-v100 でのビルドと起動
 
@@ -122,7 +122,8 @@ plan mode で計画を立ててまとまった作業を行った場合、完了�
 ### 保存先
 
 - `report/` ディレクトリ直下（リポジトリルート基準）
-- ワークツリーで作業している場合も、レポートは常にメインチェックアウト（`/home/ubuntu/projects/mesh-llm/report/`）に作成する
+- **PR を作る作業では、レポートを修正と同じ PR に含める**。作業中の worktree の `report/` に書き（添付ファイルも同じ worktree の `report/attachment/` に置く）、修正とは別のコミット（`docs(report): ...`）にして同じブランチに push する。マージ後にレポートを直すときは、新しいブランチの worktree を作って別の PR にする
+- PR を作らない作業（調査だけ、など）のレポートは、メインチェックアウト（`/home/ubuntu/projects/mesh-llm/report/`）に書く
 
 ### ファイル名
 

@@ -1,6 +1,7 @@
 //! Centralized privacy policy for operator logging.
 //! Provides redaction, truncation, hashing, and sanitization primitives that protect sensitive data before any log event is serialized or persisted.
 
+use std::borrow::Cow;
 use std::collections::HashMap;
 
 use mesh_llm_events::logging::events::LifecycleEvent;
@@ -168,15 +169,38 @@ pub fn sanitize_lifecycle_event(event: LifecycleEvent) -> LifecycleEvent {
     }
 }
 
-/// True if `value` starts with an `http`/`https` scheme, matched
-/// case-insensitively.
+/// Redact credentials from `value` if it is an HTTP(S) URL, judged the way
+/// the `url` crate's parser sees it; return `None` for anything else.
 ///
-/// URL schemes are case-insensitive (RFC 3986 §3.1), so an address like
-/// `HTTP://user:pass@host` is still an HTTP URL. A case-sensitive check would
-/// let such an address bypass credential redaction, so every redaction gate
-/// must use this helper rather than a bare `starts_with("http://")`.
-pub(crate) fn is_http_url(value: &str) -> bool {
-    http_url_start(value) == Some(0)
+/// Every redaction gate for a URL that is later dialed through
+/// `url::Url::parse` must use this helper rather than a bare
+/// `starts_with("http://")`, because the gate has to agree with the parser:
+///
+/// - URL schemes are case-insensitive (RFC 3986 §3.1), so
+///   `HTTP://user:pass@host` is still an HTTP URL.
+/// - The WHATWG URL parser drops leading and trailing C0 controls and spaces,
+///   and ASCII tab, LF and CR anywhere in the input. `" http://user:pass@host"`
+///   or `"ht\ttp://user:pass@host"` is dialed as a normal HTTP URL, so it must
+///   be redacted as one.
+///
+/// The returned string is the parser's view of the URL (those characters
+/// removed) with userinfo and sensitive query parameters redacted. An input
+/// with none of those characters is redacted exactly as before.
+pub(crate) fn redact_http_url(value: &str) -> Option<String> {
+    let view = url_parser_view(value);
+    (http_url_start(&view) == Some(0)).then(|| redact_url_query(&view))
+}
+
+/// Return `value` without the characters the WHATWG URL parser ignores:
+/// leading and trailing C0 controls and spaces, and ASCII tab, LF and CR
+/// anywhere in the input.
+fn url_parser_view(value: &str) -> Cow<'_, str> {
+    let trimmed = value.trim_matches(|character: char| character <= ' ');
+    if trimmed.contains(['\t', '\n', '\r']) {
+        Cow::Owned(trimmed.replace(['\t', '\n', '\r'], ""))
+    } else {
+        Cow::Borrowed(trimmed)
+    }
 }
 
 fn http_url_start(value: &str) -> Option<usize> {
@@ -1044,5 +1068,92 @@ mod redaction_corpus_tests {
         assert!(!error.contains("secret"));
         assert!(!error.contains(&home.display().to_string()));
         assert!(error.chars().count() <= MAX_LOG_STRING_LEN + "... [TRUNCATED]".len());
+    }
+}
+
+#[cfg(test)]
+mod http_url_redaction_tests {
+    use super::*;
+
+    const SECRET_URL: &str = "https://alice:s3cret@endpoint.example/v1?api_key=abc123";
+
+    fn parses_as_http(value: &str) -> bool {
+        url::Url::parse(value).is_ok_and(|url| matches!(url.scheme(), "http" | "https"))
+    }
+
+    fn assert_no_credentials(value: &str) {
+        let redacted = redact_http_url(value)
+            .unwrap_or_else(|| panic!("{value:?} was not treated as an HTTP URL"));
+        assert!(
+            !redacted.contains("s3cret"),
+            "userinfo leaked for {value:?}: {redacted}"
+        );
+        assert!(
+            !redacted.contains("abc123"),
+            "api_key leaked for {value:?}: {redacted}"
+        );
+        assert!(
+            redacted.contains("endpoint.example"),
+            "host lost for {value:?}: {redacted}"
+        );
+    }
+
+    #[test]
+    fn redaction_gate_agrees_with_url_parser() {
+        let inputs = [
+            SECRET_URL,
+            "HTTP://alice:s3cret@endpoint.example/v1",
+            " https://alice:s3cret@endpoint.example/v1",
+            "\thttps://alice:s3cret@endpoint.example/v1",
+            "\n\r https://alice:s3cret@endpoint.example/v1",
+            "\u{1}https://alice:s3cret@endpoint.example/v1",
+            "https://alice:s3cret@endpoint.example/v1 \u{1f}",
+            "ht\ttp://alice:s3cret@endpoint.example/v1",
+            "HTTP\n://alice:s3cret@endpoint.example/v1",
+            "127.0.0.1:9001",
+            "localhost:9001",
+            "stdio:/usr/local/bin/server",
+            "/usr/local/bin/my-mcp-server --flag value",
+            " tcp://alice:s3cret@endpoint.example",
+            "x https://alice:s3cret@endpoint.example/v1",
+            "",
+            "   ",
+        ];
+        for input in inputs {
+            assert_eq!(
+                redact_http_url(input).is_some(),
+                parses_as_http(input),
+                "redaction gate and url parser disagree on {input:?}"
+            );
+        }
+    }
+
+    #[test]
+    fn credentials_hidden_by_parser_ignored_characters_are_redacted() {
+        for input in [
+            " https://alice:s3cret@endpoint.example/v1?api_key=abc123",
+            "\t\nhttps://alice:s3cret@endpoint.example/v1?api_key=abc123",
+            "\u{0}https://alice:s3cret@endpoint.example/v1?api_key=abc123",
+            "https://alice:s3cret@endpoint.example/v1?api_key=abc123 ",
+            "ht\ttp://alice:s3cret@endpoint.example/v1?api_key=abc123",
+            "https://alice:s3cret@endpoint.example/v1?api\t_key=abc123",
+        ] {
+            assert!(parses_as_http(input), "{input:?} must be dialable");
+            assert_no_credentials(input);
+        }
+    }
+
+    #[test]
+    fn plain_http_urls_are_redacted_exactly_as_before() {
+        for input in [
+            SECRET_URL,
+            "HTTPS://alice:s3cret@endpoint.example/v1?api_key=abc123",
+        ] {
+            assert_eq!(
+                redact_http_url(input).as_deref(),
+                Some(redact_url_query(input).as_str())
+            );
+            assert_no_credentials(input);
+        }
     }
 }

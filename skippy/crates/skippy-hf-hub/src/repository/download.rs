@@ -665,9 +665,15 @@ impl<T: RepoType> HFRepository<T> {
             };
 
         let dl_headers = self.hf_client.auth_headers();
+        let resolved_url = self.hf_client.download_url(
+            self.repo_type.url_prefix(),
+            &repo_path,
+            &commit_hash,
+            &params.filename,
+        )?;
         let (response, write_offset) = self
             .http_download_response(
-                &url,
+                &resolved_url,
                 &repo_path,
                 &params.filename,
                 dl_headers,

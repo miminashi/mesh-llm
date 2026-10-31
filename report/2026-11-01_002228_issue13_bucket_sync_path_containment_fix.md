@@ -24,7 +24,7 @@
 
 ## 核心発見サマリ
 
-**結論**: `skippy/crates/skippy-hf-hub/src/buckets/sync.rs` に `contained_local_path(root, rel)` を追加した。`Path::new(rel).components()` がすべて `Component::Normal` であることを要求し（`ParentDir`・`CurDir`・`RootDir`・`Prefix`・空文字列を拒否）、各 component を push するたびに `symlink_metadata` で symlink でないことを確かめ、最後に `<path>.incomplete` も symlink でないことを確かめる。`execute_download_plan` は冒頭で Download / Delete の全操作についてこれを呼んでから、`create_dir_all`・xet ダウンロード・`remove_file`・空ディレクトリ掃除に検査済みの path だけを使う。テストは新規 6 件を含めて `buckets::sync` 36 passed。検査を一時的に無効にすると、新規 6 件のうち 4 件（拒否系）が FAILED になる。
+**結論**: `skippy/crates/skippy-hf-hub/src/buckets/sync.rs` に `contained_local_path(root, rel)` を追加した。`Path::new(rel).components()` がすべて `Component::Normal` であることを要求し（`ParentDir`・`CurDir`・`RootDir`・`Prefix`・空文字列を拒否）、各 component を push するたびに `symlink_metadata` で symlink でないことを確かめ、最後に `<path>.incomplete` も symlink でないことを確かめる。`execute_download_plan` は冒頭で Download / Delete の全操作についてこれを呼んでから、`create_dir_all`・xet ダウンロード・`remove_file`・空ディレクトリ掃除に検査済みの path だけを使う。テストは新規 6 件を含めて `buckets::sync` 36 passed。PR #35 の CI はすべて pass。検査を一時的に無効にすると、新規 6 件のうち 4 件（拒否系）が FAILED になる。
 
 ## 前提・目的
 
@@ -36,6 +36,8 @@
 
 - ワークステーション（aws-v100 は使っていない）
 - worktree: `/home/ubuntu/projects/mesh-llm-worktrees/fix-bucket-sync-path-containment`（ブランチ `fix/bucket-sync-path-containment`、base `6e83e2d0a`）
+- コミット: `4fef4a0bd fix(skippy-hf-hub): keep bucket sync downloads inside the local directory`
+- PR: https://github.com/miminashi/mesh-llm/pull/35
 - 変更ファイル: `skippy/crates/skippy-hf-hub/src/buckets/sync.rs`、`skippy/crates/skippy-hf-hub/SOURCE_PROVENANCE.json`
 
 ## 再現方法
@@ -59,6 +61,7 @@ cargo fmt --all --check
 | `cargo clippy -p skippy-hf-hub --all-targets --all-features -- -D warnings` | 警告なし |
 | `cargo fmt --all --check` | pass |
 | `cargo xtool repository affected-crates` | `test_crates` は `skippy-hf-hub` のみ |
+| PR #35 の CI | 全ジョブ pass（pass 10 / skipping 11）。fork の Clippy and tests で新規 6 件が実行されたことをログで確認（`skippy-hf-hub` lib 216 passed。CI は `--all-features` を付けないので blocking feature のテスト分だけ少ない） |
 
 追加したテスト:
 

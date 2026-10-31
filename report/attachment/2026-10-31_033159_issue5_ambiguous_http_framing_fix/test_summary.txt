@@ -1,0 +1,20 @@
+== test_request_parse
+test result: ok. 84 passed; 0 failed; 0 ignored; 0 measured; 4154 filtered out; finished in 1.53s
+== test_lib
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4237 filtered out; finished in 0.01s
+failures:
+thread 'runtime::tests::startup_models::layer_diagnostics::unresolved_layer_package_ref_surfaces_actionable_diagnostic' (1318782) panicked at mesh/crates/mesh-llm-host-runtime/src/runtime/tests/startup_models/layer_diagnostics.rs:60:28:
+failures:
+    runtime::tests::startup_models::layer_diagnostics::unresolved_layer_package_ref_surfaces_actionable_diagnostic
+test result: FAILED. 4211 passed; 1 failed; 26 ignored; 0 measured; 0 filtered out; finished in 136.27s
+== test_integ
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.79s
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 11.90s
+== test_doc
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+== clippy
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 4m 26s

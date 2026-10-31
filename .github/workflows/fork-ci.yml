@@ -127,9 +127,10 @@ jobs:
             mapfile -t crates < <(jq -r '.test_crates[]' <<<"$selection")
           fi
           # A change to this workflow exercises both selection paths on
-          # one crate that builds on CPU alone and one that needs native.
+          # one crate that builds on CPU alone and one that needs native,
+          # plus the separate xtask test path.
           if grep -Fqx .github/workflows/fork-ci.yml "$changed"; then
-            crates+=(skippy-hf-hub skippy-runtime)
+            crates+=(skippy-hf-hub skippy-runtime xtask)
           fi
 
           selected=()
@@ -160,7 +161,16 @@ jobs:
               printf -- '- `%s`\n' "${skipped[@]}"
             fi
           } >> "$GITHUB_STEP_SUMMARY"
-          echo "crates=${selected[*]}" >> "$GITHUB_OUTPUT"
+          xtask=false
+          for crate in "${selected[@]}"; do
+            if [[ "$crate" == xtask ]]; then
+              xtask=true
+            fi
+          done
+          {
+            echo "crates=${selected[*]}"
+            echo "xtask=$xtask"
+          } >> "$GITHUB_OUTPUT"
       - name: Clippy
         if: ${{ steps.select.outputs.crates != '' }}
         env:
@@ -183,10 +193,40 @@ jobs:
           # Hosted runners have no sccache, which .cargo/config.toml selects.
           export RUSTC_WRAPPER='' CARGO_BUILD_RUSTC_WRAPPER=''
           for crate in $CRATES; do
+            # xtask needs serial execution and fixture tools; see below.
+            if [[ "$crate" == xtask ]]; then
+              continue
+            fi
             echo "::group::cargo test -p $crate"
             cargo test --locked -p "$crate"
             echo "::endgroup::"
           done
+      # xtask fixtures spawn just and node and own process-global signal
+      # scopes, so upstream runs them serially (just/ci.just). Its integration
+      # targets build empty without automation-contracts; run the finite CI
+      # action-script contracts from that set, which need no further harness.
+      - name: Prepare Node for xtask fixtures
+        if: ${{ steps.select.outputs.xtask == 'true' }}
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24.20.0
+          package-manager-cache: false
+      - name: Install just for xtask fixtures
+        if: ${{ steps.select.outputs.xtask == 'true' }}
+        uses: taiki-e/install-action@3d23c1bbdafe696dfccad2664945a04f47d03dc3 # just
+      - name: xtask tests
+        if: ${{ steps.select.outputs.xtask == 'true' }}
+        run: |
+          set -euo pipefail
+          # Hosted runners have no sccache, which .cargo/config.toml selects.
+          export RUSTC_WRAPPER='' CARGO_BUILD_RUSTC_WRAPPER=''
+          echo "::group::cargo test -p xtask"
+          cargo test --locked -p xtask -- --test-threads=1
+          echo "::endgroup::"
+          echo "::group::cargo test -p xtask --test migration_lifecycle source_layout_action"
+          cargo test --locked -p xtask --features automation-contracts \
+            --test migration_lifecycle source_layout_action -- --test-threads=1
+          echo "::endgroup::"
       - name: Save Cargo cache
         if: ${{ github.event_name == 'push' && steps.cargo_cache.outputs.cache-hit != 'true' }}
         uses: actions/cache/save@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0

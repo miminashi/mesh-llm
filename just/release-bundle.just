@@ -1,13 +1,17 @@
 # Create release archive(s) for the current platform.
+# Arguments arrive as "$1".."$4" rather than being spliced into the command line,
+# so values are never parsed as shell syntax.
 
 # `version` should be a tag like v0.30.0.
 [unix]
+[positional-arguments]
 release-bundle version output="dist" flavor="" arch="":
-    @MESH_RELEASE_FLAVOR="{{ flavor }}" MESH_RELEASE_ARCH="{{ arch }}" scripts/package-release.sh "{{ version }}" "{{ output }}"
+    @MESH_RELEASE_FLAVOR="$3" MESH_RELEASE_ARCH="$4" scripts/package-release.sh "$1" "$2"
 
 [windows]
+[positional-arguments]
 release-bundle version output="dist" flavor="":
-    @powershell -NoProfile -ExecutionPolicy Bypass -File scripts/package-release.ps1 -Version "{{ version }}" -OutputDir "{{ output }}" -Flavor "{{ flavor }}"
+    @powershell -NoProfile -ExecutionPolicy Bypass -File scripts/package-release.ps1 -Version "$1" -OutputDir "$2" -Flavor "$3"
 
 # Run repo-level release-target consistency checks.
 [unix]

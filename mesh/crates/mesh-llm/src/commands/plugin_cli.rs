@@ -122,7 +122,7 @@ fn resolve_configured_cli_plugin(
     let config = plugin::load_config(cli.config.as_deref())?;
     if let Some(entry) = config.plugins.iter().find(|entry| entry.name == command) {
         if !entry.enabled.unwrap_or(true) {
-            return plugin::bundled_cli_plugin_spec(command);
+            bail!("Plugin command '{command}' is disabled in configuration");
         }
         let options = plugin_runtime_options_from_cli(cli);
         let resolved = plugin::load_resolved_plugins(&options)?;
@@ -304,6 +304,20 @@ mod tests {
         ])
     }
 
+    fn cli_with_disabled_plugin_config(temp: &TempDir, name: &str) -> Cli {
+        let path = temp.path().join("config.toml");
+        std::fs::write(
+            &path,
+            format!("version = 1\n\n[[plugins]]\nname = '{name}'\nenabled = false\n"),
+        )
+        .unwrap();
+        Cli::parse_from(vec![
+            OsString::from("mesh-llm"),
+            OsString::from("--config"),
+            path.into_os_string(),
+        ])
+    }
+
     fn installed_metadata(name: &str, install_path: PathBuf) -> InstalledPluginMetadata {
         InstalledPluginMetadata {
             name: name.to_string(),
@@ -358,5 +372,24 @@ mod tests {
             .expect_err("missing executable should be reported");
 
         assert!(err.to_string().contains("installed but not runnable"));
+    }
+
+    #[test]
+    #[serial]
+    fn disabled_configured_plugin_does_not_fall_back_to_installed_plugin() {
+        let temp = TempDir::new().unwrap();
+        let _plugin_dir = EnvGuard::set("MESH_LLM_PLUGIN_DIR", temp.path());
+        let install_path = temp.path().join("installed").join("demo");
+        std::fs::create_dir_all(&install_path).unwrap();
+        let executable = install_path.join(format!("demo{}", std::env::consts::EXE_SUFFIX));
+        std::fs::write(&executable, "").unwrap();
+        PluginStore::new(temp.path())
+            .save(&installed_metadata("demo", install_path))
+            .unwrap();
+
+        let err = resolve_required_cli_plugin(&cli_with_disabled_plugin_config(&temp, "demo"), "demo")
+            .expect_err("explicitly disabled plugin must not be runnable");
+
+        assert!(err.to_string().contains("disabled in configuration"));
     }
 }

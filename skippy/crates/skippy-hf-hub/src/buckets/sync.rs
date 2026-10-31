@@ -17,7 +17,7 @@
 //!   unnecessary transfers.
 
 use std::collections::{BTreeSet, HashMap};
-use std::path::{Path, PathBuf};
+use std::path::{Component, Path, PathBuf};
 use std::time::UNIX_EPOCH;
 
 use bon::bon;
@@ -240,6 +240,54 @@ fn strip_prefix<'a>(path: &'a str, prefix: &str) -> Option<&'a str> {
         format!("{prefix}/")
     };
     path.strip_prefix(&with_slash)
+}
+
+/// Resolves a bucket-relative path to a location under `root` for a local file operation.
+///
+/// The relative path comes from the server's tree listing, so it is untrusted. Every
+/// component must be a plain name: `..`, a leading `.`, a root, or a drive prefix would
+/// let the key escape `root` (an absolute path even replaces `root` in [`Path::join`]).
+/// Components that already exist under `root` must not be symlinks, so an existing link
+/// cannot redirect the write or delete outside `root`. The `.incomplete` staging file
+/// next to the target is checked the same way, because the download writes through it.
+fn contained_local_path(root: &Path, rel: &str) -> HFResult<PathBuf> {
+    let reject =
+        |reason: &str| HFError::InvalidParameter(format!("refusing bucket path {rel:?}: {reason}"));
+    if rel.is_empty() {
+        return Err(reject("path is empty"));
+    }
+
+    let mut local = root.to_path_buf();
+    for component in Path::new(rel).components() {
+        match component {
+            Component::Normal(name) => local.push(name),
+            Component::ParentDir => return Err(reject("path contains '..'")),
+            Component::CurDir => return Err(reject("path starts with '.'")),
+            Component::RootDir | Component::Prefix(_) => {
+                return Err(reject("path is not relative"));
+            }
+        }
+        if is_symlink(&local)? {
+            return Err(reject("path goes through a symlink"));
+        }
+    }
+
+    let mut incomplete = local.clone().into_os_string();
+    incomplete.push(".incomplete");
+    if is_symlink(Path::new(&incomplete))? {
+        return Err(reject("staging file is a symlink"));
+    }
+
+    Ok(local)
+}
+
+/// Whether `path` itself is a symlink; a missing path is not.
+fn is_symlink(path: &Path) -> HFResult<bool> {
+    match std::fs::symlink_metadata(path) {
+        Ok(meta) => Ok(meta.file_type().is_symlink()),
+        Err(e) if e.kind() == std::io::ErrorKind::NotFound => Ok(false),
+        Err(e) => Err(e.into()),
+    }
 }
 
 fn days_from_civil(y: i64, m: i64, d: i64) -> i64 {
@@ -669,6 +717,19 @@ impl HFBucket {
         plan: &BucketSyncPlan,
         params: &BucketSyncParams,
     ) -> HFResult<()> {
+        // Check every path before touching the filesystem, so one bad listing entry
+        // cannot leave a partially applied sync behind.
+        let mut local_paths: HashMap<&str, PathBuf> = HashMap::new();
+        for op in plan.operations.iter().filter(|op| {
+            matches!(
+                op.action,
+                BucketSyncAction::Download | BucketSyncAction::Delete
+            )
+        }) {
+            let local_path = contained_local_path(&params.local_path, &op.path)?;
+            local_paths.insert(op.path.as_str(), local_path);
+        }
+
         let mut xet_batch_files = Vec::new();
         let mut total_bytes: u64 = 0;
 
@@ -686,7 +747,7 @@ impl HFBucket {
                         context: None,
                     })?;
 
-            let local_path = params.local_path.join(&op.path);
+            let local_path = local_paths[op.path.as_str()].clone();
             if let Some(parent) = local_path.parent() {
                 std::fs::create_dir_all(parent)?;
             }
@@ -731,16 +792,16 @@ impl HFBucket {
             .collect();
 
         for rel_path in &delete_paths {
-            let local_path = params.local_path.join(rel_path);
+            let local_path = &local_paths[rel_path];
             if local_path.is_file() {
-                std::fs::remove_file(&local_path)?;
+                std::fs::remove_file(local_path)?;
             }
         }
 
         // Clean up empty parent directories (leaf-first)
         let mut dirs_to_check: BTreeSet<PathBuf> = BTreeSet::new();
         for rel_path in &delete_paths {
-            let local_path = params.local_path.join(rel_path);
+            let local_path = &local_paths[rel_path];
             let mut parent = local_path.parent().map(Path::to_path_buf);
             while let Some(p) = parent {
                 if p == params.local_path || !p.starts_with(&params.local_path) {
@@ -1381,5 +1442,169 @@ mod tests {
             &params,
         );
         assert!(op.is_none());
+    }
+
+    fn assert_rejected(root: &Path, rel: &str) {
+        let err = contained_local_path(root, rel).expect_err(rel);
+        assert!(
+            matches!(err, HFError::InvalidParameter(_)),
+            "{rel}: unexpected error {err:?}"
+        );
+    }
+
+    #[test]
+    fn test_contained_local_path_accepts_nested_relative_paths() {
+        let root = tempfile::tempdir().unwrap();
+        std::fs::create_dir_all(root.path().join("models")).unwrap();
+        std::fs::write(root.path().join("models/existing.bin"), b"").unwrap();
+
+        for rel in ["a.txt", "models/existing.bin", "models/new/deep/file.gguf"] {
+            assert_eq!(
+                contained_local_path(root.path(), rel).unwrap(),
+                root.path().join(rel)
+            );
+        }
+    }
+
+    #[test]
+    fn test_contained_local_path_rejects_escaping_paths() {
+        let root = tempfile::tempdir().unwrap();
+        for rel in [
+            "",
+            "..",
+            "../outside.txt",
+            "a/../../outside.txt",
+            "a/..",
+            "./a.txt",
+            "/etc/passwd",
+        ] {
+            assert_rejected(root.path(), rel);
+        }
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn test_contained_local_path_rejects_existing_symlinks() {
+        let root = tempfile::tempdir().unwrap();
+        let outside = tempfile::tempdir().unwrap();
+        std::os::unix::fs::symlink(outside.path(), root.path().join("link")).unwrap();
+        std::os::unix::fs::symlink(outside.path().join("target"), root.path().join("file"))
+            .unwrap();
+        std::os::unix::fs::symlink(
+            outside.path().join("staging"),
+            root.path().join("staged.incomplete"),
+        )
+        .unwrap();
+
+        assert_rejected(root.path(), "link/payload.txt");
+        assert_rejected(root.path(), "link");
+        assert_rejected(root.path(), "file");
+        assert_rejected(root.path(), "staged");
+    }
+
+    fn download_params(root: &Path) -> BucketSyncParams {
+        BucketSyncParams {
+            local_path: root.to_path_buf(),
+            ..make_params(BucketSyncDirection::Download)
+        }
+    }
+
+    fn test_bucket() -> HFBucket {
+        crate::HFClient::builder()
+            .build()
+            .unwrap()
+            .bucket("user", "bucket")
+    }
+
+    #[tokio::test]
+    async fn test_download_plan_rejects_escaping_download_before_writing() {
+        let parent = tempfile::tempdir().unwrap();
+        let root = parent.path().join("root");
+        std::fs::create_dir(&root).unwrap();
+        let rel = "../escaped/payload.txt".to_string();
+
+        let mut download_entries = HashMap::new();
+        download_entries.insert(
+            rel.clone(),
+            BucketTreeEntry::File {
+                path: rel.clone(),
+                size: 1,
+                xet_hash: "0".repeat(64),
+                mtime: None,
+                uploaded_at: None,
+            },
+        );
+        let plan = BucketSyncPlan {
+            direction: BucketSyncDirection::Download,
+            operations: vec![BucketSyncOperation {
+                action: BucketSyncAction::Download,
+                path: rel,
+                size: Some(1),
+                reason: "new file".to_string(),
+            }],
+            download_entries,
+        };
+
+        let err = test_bucket()
+            .execute_download_plan(&plan, &download_params(&root))
+            .await
+            .unwrap_err();
+        assert!(matches!(err, HFError::InvalidParameter(_)), "{err:?}");
+        assert!(!parent.path().join("escaped").exists());
+    }
+
+    #[tokio::test]
+    async fn test_download_plan_rejects_escaping_delete_before_removing_anything() {
+        let parent = tempfile::tempdir().unwrap();
+        let root = parent.path().join("root");
+        std::fs::create_dir(&root).unwrap();
+        std::fs::write(root.join("stale.txt"), b"stale").unwrap();
+        std::fs::write(parent.path().join("victim.txt"), b"keep").unwrap();
+
+        let delete = |path: &str| BucketSyncOperation {
+            action: BucketSyncAction::Delete,
+            path: path.to_string(),
+            size: None,
+            reason: "not in source (--delete)".to_string(),
+        };
+        let plan = BucketSyncPlan {
+            direction: BucketSyncDirection::Download,
+            operations: vec![delete("stale.txt"), delete("../victim.txt")],
+            download_entries: HashMap::new(),
+        };
+
+        let err = test_bucket()
+            .execute_download_plan(&plan, &download_params(&root))
+            .await
+            .unwrap_err();
+        assert!(matches!(err, HFError::InvalidParameter(_)), "{err:?}");
+        assert!(parent.path().join("victim.txt").exists());
+        assert!(root.join("stale.txt").exists());
+    }
+
+    #[tokio::test]
+    async fn test_download_plan_still_deletes_contained_nested_files() {
+        let root = tempfile::tempdir().unwrap();
+        std::fs::create_dir_all(root.path().join("a/b")).unwrap();
+        std::fs::write(root.path().join("a/b/stale.txt"), b"").unwrap();
+        std::fs::write(root.path().join("keep.txt"), b"").unwrap();
+
+        let plan = BucketSyncPlan {
+            direction: BucketSyncDirection::Download,
+            operations: vec![BucketSyncOperation {
+                action: BucketSyncAction::Delete,
+                path: "a/b/stale.txt".to_string(),
+                size: Some(0),
+                reason: "not in source (--delete)".to_string(),
+            }],
+            download_entries: HashMap::new(),
+        };
+
+        test_bucket()
+            .execute_download_plan(&plan, &download_params(root.path()))
+            .await
+            .unwrap();
+        assert!(!root.path().join("a").exists());
+        assert!(root.path().join("keep.txt").exists());
     }
 }

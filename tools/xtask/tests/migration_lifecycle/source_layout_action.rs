@@ -9,6 +9,8 @@ use std::{collections::BTreeMap, fs, num::NonZeroUsize, path::Path, time::Durati
 mod classification;
 #[path = "source_layout_action/node_addon.rs"]
 mod node_addon;
+#[path = "source_layout_action/output_framing.rs"]
+mod output_framing;
 #[path = "source_layout_action/workflows.rs"]
 mod workflows;
 

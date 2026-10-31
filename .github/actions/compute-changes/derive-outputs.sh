@@ -423,10 +423,20 @@ else
 fi
 
 # Set outputs using GITHUB_OUTPUT
+# Changed paths are untrusted text: a path named like a fixed delimiter would
+# close the multiline value early and turn later paths into output commands.
+CHANGED_FILES_DELIMITER="ghadelim_$(od -An -tx1 -N16 /dev/urandom | tr -d ' \n')"
+if [[ "$CHANGED_FILES_DELIMITER" == "ghadelim_" ]] ||
+    printf '%s\n' "$CHANGED_FILES" | grep -qxF "$CHANGED_FILES_DELIMITER"; then
+  echo "could not choose a changed_files output delimiter" >&2
+  exit 1
+fi
 {
-  echo "changed_files<<EOF"
-  cat /tmp/changed_files.txt | grep -v "^__force_all__$" || true
-  echo "EOF"
+  echo "changed_files<<$CHANGED_FILES_DELIMITER"
+  if [[ -n "$CHANGED_FILES" ]]; then
+    printf '%s\n' "$CHANGED_FILES"
+  fi
+  echo "$CHANGED_FILES_DELIMITER"
   echo "affected_crates=$AFFECTED_CRATES"
   echo "test_crates=$TEST_CRATES"
   echo "all_rust=$ALL_RUST"

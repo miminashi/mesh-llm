@@ -84,6 +84,8 @@ pub struct Node {
     pub(crate) owner_keypair: Option<crate::crypto::OwnerKeypair>,
     pub(crate) local_mesh_requirements: crate::MeshRequirements,
     pub(crate) state: Arc<Mutex<MembershipState>>,
+    pub(crate) gossip_verification: Arc<super::signed_records::VerificationGate>,
+    pub(crate) gossip_encoder: Arc<crate::protocol::GossipFrameEncoder>,
     pub(crate) plugin_message_history: Arc<Mutex<super::plugin_mesh::PluginMessageHistory>>,
     /// Relay-disabled same-identity endpoints that own recovered direct connections.
     /// See [`super::direct_rescue`] for the ownership and shutdown rules.
@@ -221,8 +223,11 @@ pub struct Node {
         >,
     >,
     pub(crate) owner_lifecycle_response_cache: OwnerLifecycleResponseCache,
-    /// Channel to send model lifecycle intents from owner-control commands to the reconciler.
-    /// Set during runtime initialization; None when running outside the control loop.
+    /// Shared request leases and residency policy across host memberships.
+    pub(crate) native_model_lifecycle:
+        Arc<std::sync::OnceLock<Arc<crate::runtime::native_model_lifecycle::NativeModelLifecycle>>>,
+    /// Channel to send model lifecycle intents to the reconciler.
+    /// Set during runtime initialization; None outside the control loop.
     pub(crate) model_intent_tx:
         Arc<tokio::sync::Mutex<Option<tokio::sync::mpsc::Sender<crate::runtime::ModelIntent>>>>,
     /// Further meshes this node serves its models into (`node::membership`).
@@ -783,11 +788,7 @@ impl Node {
         let (tunnel_http_tx, tunnel_http_rx) = tokio::sync::mpsc::channel(256);
         let (stage_transport_tx, stage_transport_rx) = tokio::sync::mpsc::channel(256);
 
-        let config_state_init = {
-            let path = crate::plugin::config_path(config_path)
-                .unwrap_or_else(|_| std::path::PathBuf::from("config.toml"));
-            crate::runtime::config_state::ConfigState::load(&path)?
-        };
+        let config_state_init = startup::load_config_state(config_path)?;
         let hardware =
             advertised_hardware_for_start(config_state_init.config(), &role, max_vram_gb);
         let owner_runtime = init_owner_runtime(
@@ -863,6 +864,8 @@ impl Node {
             mesh_id: Arc::new(Mutex::new(None)),
             mesh_policy_hash: Arc::new(Mutex::new(None)),
             signed_genesis_policy: Arc::new(Mutex::new(None)),
+            gossip_verification: Arc::default(),
+            gossip_encoder: Arc::default(),
             bootstrap_token: Arc::new(Mutex::new(None)),
             join_targets: Arc::new(Mutex::new(Vec::new())),
             first_joined_mesh_ts: Arc::new(Mutex::new(None)),
@@ -936,6 +939,7 @@ impl Node {
             runtime_intents: Arc::new(std::sync::Mutex::new(Vec::new())),
             runtime_instance_lifecycles: Arc::new(std::sync::Mutex::new(HashMap::new())),
             owner_lifecycle_response_cache: OwnerLifecycleResponseCache::default(),
+            native_model_lifecycle: Arc::default(),
             model_intent_tx: Arc::new(tokio::sync::Mutex::new(None)),
             memberships: MeshMemberships::default(),
             owner_attestation_path: saved_owner_attestation_path(),
@@ -1053,6 +1057,8 @@ impl Node {
             mesh_id: Arc::new(Mutex::new(None)),
             mesh_policy_hash: Arc::new(Mutex::new(None)),
             signed_genesis_policy: Arc::new(Mutex::new(None)),
+            gossip_verification: Arc::default(),
+            gossip_encoder: Arc::default(),
             bootstrap_token: Arc::new(Mutex::new(None)),
             join_targets: Arc::new(Mutex::new(Vec::new())),
             first_joined_mesh_ts: Arc::new(Mutex::new(None)),
@@ -1128,6 +1134,7 @@ impl Node {
             runtime_intents: Arc::new(std::sync::Mutex::new(Vec::new())),
             runtime_instance_lifecycles: Arc::new(std::sync::Mutex::new(HashMap::new())),
             owner_lifecycle_response_cache: OwnerLifecycleResponseCache::default(),
+            native_model_lifecycle: Arc::default(),
             model_intent_tx: Arc::new(tokio::sync::Mutex::new(None)),
             memberships: MeshMemberships::default(),
             owner_attestation_path: None,
@@ -1602,15 +1609,20 @@ impl Node {
         let Some(lifecycle) = lifecycle else {
             return Ok(None);
         };
+        let residency = match self.native_model_lifecycle.get() {
+            Some(service) => service.lease_port(port).await,
+            None => None,
+        };
         let record = lifecycle.lock().await;
         if !record.is_accepting_work() {
             return Err(crate::runtime::InstanceAdmissionError::NotAccepting {
                 state: record.state(),
             });
         }
-        Ok(Some(crate::runtime::InstanceRequestGuard::new(
-            record.in_flight_tracker(),
-        )))
+        Ok(Some(
+            crate::runtime::InstanceRequestGuard::new(record.in_flight_tracker())
+                .with_residency(residency),
+        ))
     }
 
     pub(crate) async fn refresh_served_model_descriptors(&self) {

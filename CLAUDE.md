@@ -1,6 +1,24 @@
 # CLAUDE.md
 
-リポジトリ全体の開発ルールは [AGENTS.md](AGENTS.md) に従う。本ファイルでは、aws-v100 でのビルド・起動手順と、Claude Code による作業レポートの執筆ルールを定める。
+リポジトリ全体の開発ルールは [AGENTS.md](AGENTS.md) に従う。本ファイルでは、ブランチの扱い、aws-v100 でのビルド・起動手順、Claude Code による作業レポートの執筆ルールを定める。
+
+## ブランチと worktree
+
+複数の Claude Code セッションが同じチェックアウトで並行して動くことがある。あるセッションが `git switch` すると、別のセッションの編集やコミットが、意図しないブランチに乗ってしまう。2026-10-31 には、#12 の修正コミットが別の PR（#27）のブランチに入り込んだ。
+
+- **ブランチを切り替える必要があるときは、必ず worktree を作成する**。メインチェックアウト（`/home/ubuntu/projects/mesh-llm`）では `git switch` / `git checkout <branch>` / `git checkout -b` をしない。メインチェックアウトは `main` のままにしておく
+- worktree は `/home/ubuntu/projects/mesh-llm-worktrees/<名前>` に作る。`<名前>` はブランチ名の `/` を `-` に置き換えたもの:
+
+  ```bash
+  git fetch origin
+  git worktree add -b fix/foo /home/ubuntu/projects/mesh-llm-worktrees/fix-foo origin/main
+  cd /home/ubuntu/projects/mesh-llm-worktrees/fix-foo
+  ```
+
+- 既存のブランチで作業を続けるときも、`git worktree add <パス> <branch>` でそのブランチの worktree を作る（すでにあれば、それを使う）
+- 編集・コミット・push は、その worktree の中で行う
+- PR がマージされたら、`git worktree remove <パス>` で片付ける。未コミットの変更が残っている worktree は消さない
+- レポートは、これまでどおりメインチェックアウトの `report/` に置く（「レポート執筆ルール」の「保存先」）
 
 ## aws-v100 でのビルドと起動
 

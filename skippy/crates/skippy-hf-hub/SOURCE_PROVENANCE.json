@@ -34,12 +34,13 @@
     "rustfmt --edition 2024 over all Rust sources and tests",
     "src/client.rs: preserve eight token-precedence scenarios in subprocess environments with a filtered child assertion worker",
     "src/client.rs: remove uncalled private head_with_relative_redirects; retain is_relative_location and its classification test under cfg(test)",
-    "src/repository/download.rs: box the four inner download implementation futures before awaiting them inside existing public async finishers; signatures remain async, while future representation and allocation change; original 2048/4096-byte limits retained"
+    "src/repository/download.rs: box the four inner download implementation futures before awaiting them inside existing public async finishers; signatures remain async, while future representation and allocation change; original 2048/4096-byte limits retained",
+    "src/buckets/sync.rs: reject listing paths that are not plain relative components or that pass through an existing symlink before download sync creates, writes, renames or deletes local files"
   ],
   "imported_sha256": {
     "src/blocking.rs": "ca8360d3688bb7a28f40012cc169c372e2cb53e91a99fb4915746a14b186d1d8",
     "src/buckets/mod.rs": "4319afd7f0ab8d8604f1facdc48c2f4c63dac7b3da173c16c30c96cd4e46e559",
-    "src/buckets/sync.rs": "8feefbfaa9a43c98be87dd1b30cd8c0fffea66d8b010e93cd2ac210c5dd5e4c0",
+    "src/buckets/sync.rs": "87a20dcf45b111b3e2548c031d0fbd54fd1b5c5cbc8c9739d4df572d1ab7c331",
     "src/cache/mod.rs": "fb7e12426dbc5aada673e3fd297248010e5ac98f645109d365a25dc3a25396f0",
     "src/cache/storage.rs": "6848eb6cf13b836d582f1797c60be98c2723492b59ed327a7356579ddb0c8dd4",
     "src/client.rs": "6567e1d850d291480a2793cc7cbf8e6a773e6f28e471339b4b869907b675538e",

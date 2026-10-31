@@ -33,5 +33,10 @@ zeroize = { version = "1", features = ["derive"] }
 # keyring v4's Apple backend requires protected-data support on iOS.
 apple-native-keyring-store = { version = "1", features = ["protected"] }
 
+[target.'cfg(unix)'.dependencies]
+# Only the `O_NOFOLLOW`/`O_NONBLOCK`/`O_CLOEXEC` constants, for opening the
+# node key without following a symlink; no unsafe calls.
+libc = "0.2"
+
 [dev-dependencies]
 serial_test = "4"

@@ -1,10 +1,10 @@
 use std::{
     collections::HashSet,
     fs,
-    path::{Path, PathBuf},
+    path::{Component, Path, PathBuf},
 };
 
-use anyhow::{Context, Result};
+use anyhow::{Context, Result, bail};
 use serde::{Deserialize, Serialize};
 
 const MARKER_FILE: &str = ".mesh-llm-skill.json";
@@ -117,6 +117,9 @@ pub fn install_skills(
     skills: &[SkillPackage],
     options: &SkillInstallOptions,
 ) -> Result<SkillInstallReport> {
+    for skill in skills {
+        ensure_skill_name_is_single_component(&skill.name)?;
+    }
     let targets = resolve_targets(options);
     let mut actions = Vec::new();
 
@@ -190,6 +193,21 @@ pub fn is_valid_skill_name(value: &str) -> bool {
         previous_hyphen = ch == '-';
     }
     true
+}
+
+/// Skill names become a directory under the agent's skill root, so a name that
+/// is absolute, contains `..`, or spans several path components would place
+/// (or, with `force`, delete) files outside that root.
+fn ensure_skill_name_is_single_component(name: &str) -> Result<()> {
+    let mut components = Path::new(name).components();
+    let single_normal = matches!(
+        (components.next(), components.next()),
+        (Some(Component::Normal(component)), None) if component == name
+    );
+    if !single_normal {
+        bail!("invalid skill name {name:?}: must be a single path component");
+    }
+    Ok(())
 }
 
 fn install_skill_to_target(
@@ -423,6 +441,73 @@ mod tests {
         assert!(!is_valid_skill_name("Demo"));
         assert!(!is_valid_skill_name("-demo"));
         assert!(!is_valid_skill_name("demo--skill"));
+    }
+
+    fn options_for(home_dir: PathBuf, dry_run: bool) -> SkillInstallOptions {
+        SkillInstallOptions {
+            home_dir,
+            agents: vec![SkillAgent::Claude],
+            detected_only: false,
+            dry_run,
+            force: true,
+        }
+    }
+
+    #[test]
+    fn accepts_single_component_skill_names() {
+        for name in ["demo-skill", "Cool.Plugin_1", ".hidden"] {
+            ensure_skill_name_is_single_component(name).unwrap();
+        }
+    }
+
+    #[test]
+    fn rejects_path_like_skill_names_before_touching_files() {
+        let temp = TempDir::new().unwrap();
+        let source_dir = write_skill(&temp.path().join("source"), "demo-skill");
+        let home_dir = temp.path().join("home");
+        let outside = temp.path().join("outside");
+        let outside_name = outside.to_str().unwrap().to_string();
+
+        for name in [
+            "",
+            ".",
+            "..",
+            "../escape",
+            "a/b",
+            "demo/",
+            "demo/.",
+            "./demo",
+            outside_name.as_str(),
+        ] {
+            for dry_run in [false, true] {
+                let options = options_for(home_dir.clone(), dry_run);
+                let error = install_skills(&[skill(name, source_dir.clone())], &options)
+                    .expect_err(&format!("{name:?} (dry_run={dry_run}) should be rejected"));
+                assert!(
+                    error.to_string().contains("invalid skill name"),
+                    "unexpected error for {name:?}: {error}"
+                );
+            }
+        }
+        assert!(!home_dir.exists());
+        assert!(!outside.exists());
+        assert!(!temp.path().join("escape").exists());
+    }
+
+    #[test]
+    fn rejects_whole_batch_when_any_skill_name_is_invalid() {
+        let temp = TempDir::new().unwrap();
+        let source_dir = write_skill(&temp.path().join("source"), "demo-skill");
+        let home_dir = temp.path().join("home");
+
+        let skills = [
+            skill("demo-skill", source_dir.clone()),
+            skill("../escape", source_dir),
+        ];
+        install_skills(&skills, &options_for(home_dir.clone(), false)).unwrap_err();
+
+        assert!(!home_dir.join(".claude/skills/demo-skill").exists());
+        assert!(!temp.path().join("escape").exists());
     }
 
     #[test]

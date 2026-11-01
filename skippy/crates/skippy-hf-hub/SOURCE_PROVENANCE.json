@@ -36,7 +36,8 @@
     "src/client.rs: remove uncalled private head_with_relative_redirects; retain is_relative_location and its classification test under cfg(test)",
     "src/constants.rs, src/client.rs: treat an empty or whitespace-only HF_ENDPOINT, HF_HOME, XDG_CACHE_HOME, HF_HUB_CACHE, HUGGINGFACE_HUB_CACHE or HF_TOKEN_PATH as unset; the empty-variable case is tested in a child process",
     "src/repository/download.rs: box the four inner download implementation futures before awaiting them inside existing public async finishers; signatures remain async, while future representation and allocation change; original 2048/4096-byte limits retained",
-    "src/buckets/sync.rs: reject listing paths that are not plain relative components or that pass through an existing symlink before download sync creates, writes, renames or deletes local files"
+    "src/buckets/sync.rs: reject listing paths that are not plain relative components or that pass through an existing symlink before download sync creates, writes, renames or deletes local files",
+    "src/repository/download.rs, src/error.rs: download_file_to_bytes reserves at most 8 MiB from the advertised size and takes an optional max_bytes limit, returning the new HFError::ResponseTooLarge when the advertised size or the received body exceeds it"
   ],
   "imported_sha256": {
     "src/blocking.rs": "ca8360d3688bb7a28f40012cc169c372e2cb53e91a99fb4915746a14b186d1d8",
@@ -46,13 +47,13 @@
     "src/cache/storage.rs": "6848eb6cf13b836d582f1797c60be98c2723492b59ed327a7356579ddb0c8dd4",
     "src/client.rs": "6567e1d850d291480a2793cc7cbf8e6a773e6f28e471339b4b869907b675538e",
     "src/constants.rs": "ab742819b90a62c3e1fdb63d98bf12b4f38b3fc440e29fa80dfe13cb2a869417",
-    "src/error.rs": "4b3aeb8a9f3eaed8e0a6d7bf16f470acaf11d38f3b587966baaa006e7017a0b6",
+    "src/error.rs": "2c4adefa377a2d792b07f0477ae9ea144a6c065dbbb02e69bdae20c3e648ce3b",
     "src/lib.rs": "bf6bbc049c84fb0c183db4d295837513763b0c295e821f0faee6be836c01d89b",
     "src/pagination.rs": "8735ab942120711d391f761bdf7e9f4f5de76a1e923722cfcafa98c77c8aff00",
     "src/progress.rs": "9bdc1a9ca8b89f39a48d9045fdc55558d7660bad684ce9a61cc215c98a94c92e",
     "src/repository/commits.rs": "a9beb194ee45b30636844de7a85cf0fc5fe83698c1c77202da2fb33a2912f3a5",
     "src/repository/diff.rs": "d75a0064385b96d36c678aff8aa65909b58634a5c3336de8f96490561fa40ac5",
-    "src/repository/download.rs": "1289dd4617039ed3b04e985159c36ad2f1edaa868d5bc4e998ddc86b38c04209",
+    "src/repository/download.rs": "da3c4a09bf1c1149b4733bef208640dbc4a011d451bb6b4bf4e4f81ed506ab5e",
     "src/repository/files.rs": "80eb8d67d577bf32eab83544eca49cdca391eab808c769dce5c15b4bf9c22b1d",
     "src/repository/listing.rs": "d829e36e498066ee5815dbf5f4a6a98f41b647f6a40ea14d91a1e591c17cf318",
     "src/repository/mod.rs": "b479c9fcf8c6547f31e27369f04b103faff8bb77176cca3027e1836c41ce2941",

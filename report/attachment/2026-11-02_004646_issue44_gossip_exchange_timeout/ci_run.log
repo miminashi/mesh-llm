@@ -1,0 +1,351 @@
+CPU(s):                                  4
+Model name:                              AMD EPYC 7763 64-Core Processor
+NUMA node0 CPU(s):                       0-3
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves user_shstk clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload umip vaes vpclmulqdq rdpid fsrm
+[36;1m  echo "=== RUN $i"[0m
+[36;1m    | grep -E '\[T44\]|test result|panicked'[0m
+=== RUN 1
+[T44] setup(sign+receive+collect) 1.461s
+[T44] init.collect_outbound 0.045s
+[T44] encode 0.042s bytes=8073956
+[T44] encode+write 0.345s
+[T44] init.write_done 0.868s
+[T44] resp.read_frame 0.336s bytes=8073956
+[T44] resp.decode 0.400s signed_records=14
+[T44] resp.validate_direct 0.400s
+[T44] resp.resolve_inbound(verify) 0.599s
+[T44] resp.validate_capture 0.599s
+[T44] encode 0.000s bytes=930
+[T44] encode+write 0.000s
+[T44] resp.reply_written 0.600s
+[T44] resp.done 0.603s
+[T44] init.reply_read 1.174s
+[T44] init.reply_resolved 1.195s
+[T44] ROUND 1 total 1.261s received=13
+[T44] init.collect_outbound 0.008s
+[T44] encode 0.041s bytes=8074867
+[T44] encode+write 0.295s
+[T44] init.write_done 0.730s
+[T44] resp.read_frame 0.259s bytes=8074867
+[T44] resp.decode 0.321s signed_records=15
+[T44] resp.validate_direct 0.321s
+[T44] resp.resolve_inbound(verify) 0.529s
+[T44] resp.validate_capture 0.529s
+[T44] encode 0.016s bytes=8074869
+[T44] encode+write 0.242s
+[T44] resp.reply_written 0.833s
+[T44] resp.done 0.836s
+[T44] init.reply_read 1.348s
+[T44] init.reply_resolved 1.486s
+[T44] ROUND 2 total 1.560s received=26
+[T44] init.collect_outbound 0.008s
+[T44] encode 0.041s bytes=8074278
+[T44] encode+write 0.296s
+[T44] init.write_done 0.732s
+[T44] resp.read_frame 0.263s bytes=8074278
+[T44] resp.decode 0.324s signed_records=14
+[T44] resp.validate_direct 0.325s
+[T44] resp.resolve_inbound(verify) 0.514s
+[T44] resp.validate_capture 0.514s
+[T44] encode 0.022s bytes=8073956
+[T44] encode+write 0.234s
+[T44] resp.reply_written 0.872s
+[T44] resp.done 0.875s
+[T44] init.reply_read 1.393s
+[T44] init.reply_resolved 1.511s
+[T44] ROUND 3 total 1.585s received=39
+[T44] init.collect_outbound 0.008s
+[T44] encode 0.042s bytes=8073956
+[T44] encode+write 0.260s
+[T44] init.write_done 0.697s
+[T44] resp.read_frame 0.239s bytes=8073956
+[T44] resp.decode 0.302s signed_records=14
+[T44] resp.validate_direct 0.302s
+[T44] resp.resolve_inbound(verify) 0.492s
+[T44] resp.validate_capture 0.492s
+[T44] encode 0.025s bytes=8073956
+[T44] encode+write 0.223s
+[T44] resp.reply_written 0.901s
+[T44] resp.done 0.903s
+[T44] init.reply_read 1.418s
+[T44] init.reply_resolved 1.535s
+[T44] ROUND 4 total 1.611s received=52
+[T44] init.collect_outbound 0.008s
+[T44] encode 0.041s bytes=8073956
+[T44] encode+write 0.303s
+[T44] init.write_done 0.739s
+[T44] resp.read_frame 0.286s bytes=8073956
+[T44] resp.decode 0.348s signed_records=14
+[T44] resp.validate_direct 0.348s
+[T44] resp.resolve_inbound(verify) 0.538s
+[T44] resp.validate_capture 0.538s
+[T44] encode 0.032s bytes=8075235
+[T44] encode+write 0.246s
+[T44] resp.reply_written 1.036s
+[T44] resp.done 1.039s
+[T44] init.reply_read 1.531s
+[T44] init.reply_resolved 1.659s
+[T44] ROUND 5 total 1.732s received=65
+[T44] init.collect_outbound 0.008s
+[T44] encode 0.042s bytes=8073956
+[T44] encode+write 0.263s
+[T44] init.write_done 0.692s
+[T44] resp.read_frame 0.240s bytes=8073956
+[T44] resp.decode 0.303s signed_records=14
+[T44] resp.validate_direct 0.304s
+[T44] resp.resolve_inbound(verify) 0.494s
+[T44] resp.validate_capture 0.495s
+[T44] encode 0.035s bytes=8073956
+[T44] encode+write 0.258s
+[T44] resp.reply_written 1.109s
+[T44] resp.done 1.112s
+[T44] init.reply_read 1.591s
+[T44] init.reply_resolved 1.711s
+[T44] ROUND 6 total 1.784s received=78
+[T44] init.collect_outbound 0.009s
+[T44] encode 0.037s bytes=8073956
+[T44] encode+write 0.256s
+[T44] init.write_done 0.693s
+[T44] resp.read_frame 0.251s bytes=8073956
+[T44] resp.decode 0.312s signed_records=14
+[T44] resp.validate_direct 0.312s
+[T44] resp.resolve_inbound(verify) 0.500s
+[T44] resp.validate_capture 0.500s
+[T44] encode 0.039s bytes=8073956
+[T44] encode+write 0.293s
+[T44] resp.reply_written 1.177s
+[T44] resp.done 1.180s
+[T44] init.reply_read 1.699s
+[T44] init.reply_resolved 1.818s
+[T44] ROUND 7 total 1.891s received=90
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4408 filtered out; finished in 12.96s
+=== RUN 2
+[T44] setup(sign+receive+collect) 1.453s
+[T44] init.collect_outbound 0.050s
+[T44] encode 0.041s bytes=8073956
+[T44] encode+write 0.340s
+[T44] init.write_done 0.875s
+[T44] resp.read_frame 0.336s bytes=8073956
+[T44] resp.decode 0.398s signed_records=14
+[T44] resp.validate_direct 0.398s
+[T44] resp.resolve_inbound(verify) 0.606s
+[T44] resp.validate_capture 0.606s
+[T44] encode 0.000s bytes=930
+[T44] encode+write 0.000s
+[T44] resp.reply_written 0.607s
+[T44] resp.done 0.610s
+[T44] init.reply_read 1.190s
+[T44] init.reply_resolved 1.212s
+[T44] ROUND 1 total 1.283s received=13
+[T44] init.collect_outbound 0.008s
+[T44] encode 0.041s bytes=8073956
+[T44] encode+write 0.300s
+[T44] init.write_done 0.736s
+[T44] resp.read_frame 0.266s bytes=8073956
+[T44] resp.decode 0.328s signed_records=14
+[T44] resp.validate_direct 0.328s
+[T44] resp.resolve_inbound(verify) 0.529s
+[T44] resp.validate_capture 0.529s
+[T44] encode 0.015s bytes=8074869
+[T44] encode+write 0.234s
+[T44] resp.reply_written 0.825s
+[T44] resp.done 0.828s
+[T44] init.reply_read 1.338s
+[T44] init.reply_resolved 1.485s
+[T44] ROUND 2 total 1.559s received=26
+[T44] init.collect_outbound 0.008s
+[T44] encode 0.041s bytes=8074278
+[T44] encode+write 0.302s
+[T44] init.write_done 0.742s
+[T44] resp.read_frame 0.270s bytes=8074278
+[T44] resp.decode 0.334s signed_records=14
+[T44] resp.validate_direct 0.334s
+[T44] resp.resolve_inbound(verify) 0.532s
+[T44] resp.validate_capture 0.532s
+[T44] encode 0.021s bytes=8073956
+[T44] encode+write 0.233s
+[T44] resp.reply_written 0.889s
+[T44] resp.done 0.891s
+[T44] init.reply_read 1.413s
+[T44] init.reply_resolved 1.532s
+[T44] ROUND 3 total 1.609s received=39
+[T44] init.collect_outbound 0.010s
+[T44] encode 0.041s bytes=8073956
+[T44] encode+write 0.259s
+[T44] init.write_done 0.700s
+[T44] resp.read_frame 0.238s bytes=8073956
+[T44] resp.decode 0.301s signed_records=14
+[T44] resp.validate_direct 0.301s
+[T44] resp.resolve_inbound(verify) 0.493s
+[T44] resp.validate_capture 0.493s
+[T44] encode 0.025s bytes=8074869
+[T44] encode+write 0.235s
+[T44] resp.reply_written 0.930s
+[T44] resp.done 0.932s
+[T44] init.reply_read 1.446s
+[T44] init.reply_resolved 1.578s
+[T44] ROUND 4 total 1.653s received=52
+[T44] init.collect_outbound 0.008s
+[T44] encode 0.041s bytes=8074867
+[T44] encode+write 0.257s
+[T44] init.write_done 0.704s
+[T44] resp.read_frame 0.239s bytes=8074867
+[T44] resp.decode 0.300s signed_records=15
+[T44] resp.validate_direct 0.300s
+[T44] resp.resolve_inbound(verify) 0.510s
+[T44] resp.validate_capture 0.511s
+[T44] encode 0.033s bytes=8074322
+[T44] encode+write 0.246s
+[T44] resp.reply_written 1.003s
+[T44] resp.done 1.006s
+[T44] init.reply_read 1.518s
+[T44] init.reply_resolved 1.636s
+[T44] ROUND 5 total 1.711s received=65
+[T44] init.collect_outbound 0.008s
+[T44] encode 0.041s bytes=8073956
+[T44] encode+write 0.254s
+[T44] init.write_done 0.684s
+[T44] resp.read_frame 0.237s bytes=8073956
+[T44] resp.decode 0.298s signed_records=14
+[T44] resp.validate_direct 0.298s
+[T44] resp.resolve_inbound(verify) 0.488s
+[T44] resp.validate_capture 0.488s
+[T44] encode 0.037s bytes=8073956
+[T44] encode+write 0.241s
+[T44] resp.reply_written 1.047s
+[T44] resp.done 1.050s
+[T44] init.reply_read 1.560s
+[T44] init.reply_resolved 1.676s
+[T44] ROUND 6 total 1.750s received=78
+[T44] init.collect_outbound 0.009s
+[T44] encode 0.037s bytes=8073956
+[T44] encode+write 0.265s
+[T44] init.write_done 0.693s
+[T44] resp.read_frame 0.239s bytes=8073956
+[T44] resp.decode 0.300s signed_records=14
+[T44] resp.validate_direct 0.301s
+[T44] resp.resolve_inbound(verify) 0.479s
+[T44] resp.validate_capture 0.479s
+[T44] encode 0.038s bytes=8073956
+[T44] encode+write 0.248s
+[T44] resp.reply_written 1.108s
+[T44] resp.done 1.110s
+[T44] init.reply_read 1.599s
+[T44] init.reply_resolved 1.717s
+[T44] ROUND 7 total 1.791s received=90
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4408 filtered out; finished in 12.89s
+=== RUN 3
+[T44] setup(sign+receive+collect) 1.435s
+[T44] init.collect_outbound 0.045s
+[T44] encode 0.042s bytes=8073956
+[T44] encode+write 0.333s
+[T44] init.write_done 0.855s
+[T44] resp.read_frame 0.325s bytes=8073956
+[T44] resp.decode 0.386s signed_records=14
+[T44] resp.validate_direct 0.386s
+[T44] resp.resolve_inbound(verify) 0.586s
+[T44] resp.validate_capture 0.586s
+[T44] encode 0.000s bytes=930
+[T44] encode+write 0.000s
+[T44] resp.reply_written 0.587s
+[T44] resp.done 0.590s
+[T44] init.reply_read 1.157s
+[T44] init.reply_resolved 1.178s
+[T44] ROUND 1 total 1.245s received=13
+[T44] init.collect_outbound 0.008s
+[T44] encode 0.040s bytes=8073956
+[T44] encode+write 0.293s
+[T44] init.write_done 0.728s
+[T44] resp.read_frame 0.259s bytes=8073956
+[T44] resp.decode 0.322s signed_records=14
+[T44] resp.validate_direct 0.322s
+[T44] resp.resolve_inbound(verify) 0.511s
+[T44] resp.validate_capture 0.511s
+[T44] encode 0.016s bytes=8074869
+[T44] encode+write 0.233s
+[T44] resp.reply_written 0.807s
+[T44] resp.done 0.809s
+[T44] init.reply_read 1.329s
+[T44] init.reply_resolved 1.466s
+[T44] ROUND 2 total 1.541s received=26
+[T44] init.collect_outbound 0.008s
+[T44] encode 0.041s bytes=8074278
+[T44] encode+write 0.297s
+[T44] init.write_done 0.733s
+[T44] resp.read_frame 0.264s bytes=8074278
+[T44] resp.decode 0.330s signed_records=14
+[T44] resp.validate_direct 0.330s
+[T44] resp.resolve_inbound(verify) 0.520s
+[T44] resp.validate_capture 0.520s
+[T44] encode 0.023s bytes=8073956
+[T44] encode+write 0.249s
+[T44] resp.reply_written 0.894s
+[T44] resp.done 0.897s
+[T44] init.reply_read 1.401s
+[T44] init.reply_resolved 1.519s
+[T44] ROUND 3 total 1.594s received=39
+[T44] init.collect_outbound 0.009s
+[T44] encode 0.041s bytes=8074867
+[T44] encode+write 0.258s
+[T44] init.write_done 0.697s
+[T44] resp.read_frame 0.229s bytes=8074867
+[T44] resp.decode 0.291s signed_records=15
+[T44] resp.validate_direct 0.291s
+[T44] resp.resolve_inbound(verify) 0.500s
+[T44] resp.validate_capture 0.500s
+[T44] encode 0.024s bytes=8073956
+[T44] encode+write 0.251s
+[T44] resp.reply_written 0.936s
+[T44] resp.done 0.939s
+[T44] init.reply_read 1.427s
+[T44] init.reply_resolved 1.544s
+[T44] ROUND 4 total 1.616s received=52
+[T44] init.collect_outbound 0.008s
+[T44] encode 0.046s bytes=8073956
+[T44] encode+write 0.265s
+[T44] init.write_done 0.695s
+[T44] resp.read_frame 0.239s bytes=8073956
+[T44] resp.decode 0.301s signed_records=14
+[T44] resp.validate_direct 0.301s
+[T44] resp.resolve_inbound(verify) 0.490s
+[T44] resp.validate_capture 0.490s
+[T44] encode 0.032s bytes=8074322
+[T44] encode+write 0.237s
+[T44] resp.reply_written 0.978s
+[T44] resp.done 0.981s
+[T44] init.reply_read 1.486s
+[T44] init.reply_resolved 1.603s
+[T44] ROUND 5 total 1.676s received=65
+[T44] init.collect_outbound 0.008s
+[T44] encode 0.040s bytes=8073956
+[T44] encode+write 0.245s
+[T44] init.write_done 0.673s
+[T44] resp.read_frame 0.228s bytes=8073956
+[T44] resp.decode 0.289s signed_records=14
+[T44] resp.validate_direct 0.289s
+[T44] resp.resolve_inbound(verify) 0.479s
+[T44] resp.validate_capture 0.479s
+[T44] encode 0.035s bytes=8073956
+[T44] encode+write 0.258s
+[T44] resp.reply_written 1.067s
+[T44] resp.done 1.070s
+[T44] init.reply_read 1.547s
+[T44] init.reply_resolved 1.663s
+[T44] ROUND 6 total 1.736s received=78
+[T44] init.collect_outbound 0.008s
+[T44] encode 0.036s bytes=8073956
+[T44] encode+write 0.249s
+[T44] init.write_done 0.677s
+[T44] resp.read_frame 0.232s bytes=8073956
+[T44] resp.decode 0.294s signed_records=14
+[T44] resp.validate_direct 0.294s
+[T44] resp.resolve_inbound(verify) 0.472s
+[T44] resp.validate_capture 0.472s
+[T44] encode 0.038s bytes=8074869
+[T44] encode+write 0.241s
+[T44] resp.reply_written 1.098s
+[T44] resp.done 1.101s
+[T44] init.reply_read 1.599s
+[T44] init.reply_resolved 1.725s
+[T44] ROUND 7 total 1.798s received=90
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4408 filtered out; finished in 12.72s

@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-リポジトリ全体の開発ルールは [AGENTS.md](AGENTS.md) に従う。本ファイルでは、ブランチの扱い、aws-v100 でのビルド・起動手順、Claude Code による作業レポートの執筆ルールを定める。
+リポジトリ全体の開発ルールは [AGENTS.md](AGENTS.md) に従う。本ファイルでは、ブランチの扱い、ワークステーションでの cargo 実行時のメモリ対策、aws-v100 でのビルド・起動手順、Claude Code による作業レポートの執筆ルールを定める。
 
 ## ブランチと worktree
 
@@ -19,6 +19,29 @@
 - 編集・コミット・push は、その worktree の中で行う
 - PR がマージされたら、`git worktree remove <パス>` で片付ける。未コミットの変更が残っている worktree は消さない
 - PR を作る作業のレポートは、その worktree の `report/` に書き、修正と同じ PR に含める（「レポート執筆ルール」の「保存先」）
+
+## ワークステーションでの cargo 実行（メモリ対策）
+
+ワークステーション（32 コア、メモリ 31GB、swap 4GB）には mold も lld も入っておらず、`sudo` にもパスワードが要る。そのため `scripts/cargo-linker` は GNU `ld` に fallback する。GNU `ld` はテストバイナリ 1 本のリンクに約 5GB を使い、`cargo test` が統合テストを並列にリンクすると数本で 25GB を超える。2026-11-01 には、`cargo test -j 8 -p mesh-llm-host-runtime` で空きメモリが 1.4GB まで落ち、Claude Code がバックグラウンドのコマンドを止めた。
+
+- **cargo を実行する前に、rustup 同梱の lld を PATH の先頭に足す**:
+
+  ```bash
+  export PATH=$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin/gcc-ld:$PATH
+  scripts/cargo-linker-linux-x86_64 --mesh-probe   # lld と出れば -fuse-ld=lld でリンクされる
+  ```
+
+  変わるのはリンカーだけなので、再コンパイルは起きない。同じテストで空きメモリの最低値は約 19.5GB になった
+- lld の RSS は ps では 1 本あたり約 5.5GB に見えるが、うち約 4.5GB は mmap した入力ファイル（回収できるページキャッシュ）で、本当に占有している anon は約 1GB。メモリ逼迫の判断は `free` の available か `/proc/<pid>/status` の `RssAnon` で行う
+- 並列数は `-j 8` 程度に抑え、複数のセッションで同時に重い cargo（test / clippy / build）を走らせない
+- `CARGO_TARGET_DIR=/home/ubuntu/projects/mesh-llm/target` で worktree 間の target を共有すると、ビルド済みのものを使い回せる
+- ワークステーションには sccache も無いので、`.cargo/config.toml` の `rustc-wrapper = "sccache"` を `RUSTC_WRAPPER=` で外す。まとめると:
+
+  ```bash
+  export PATH=$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin/gcc-ld:$PATH
+  export RUSTC_WRAPPER= CARGO_TARGET_DIR=/home/ubuntu/projects/mesh-llm/target
+  cargo test -j 8 -p <crate>
+  ```
 
 ## aws-v100 でのビルドと起動
 

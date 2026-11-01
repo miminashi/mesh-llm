@@ -1,0 +1,9 @@
+test plugin::installed::tests::metadata_naming_another_plugin_is_reported_not_started ... ok
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4409 filtered out; finished in 0.00s
+test store::tests::delete_of_mismatched_metadata_keeps_its_install_path ... ok
+test store::tests::load_rejects_metadata_naming_another_plugin ... ok
+test store::tests::list_skips_and_reports_metadata_naming_another_plugin ... ok
+    Checking skippy-commands v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue33-plugin-metadata-name/skippy/crates/skippy-commands)
+    Checking mesh-llm-host-runtime v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue33-plugin-metadata-name/mesh/crates/mesh-llm-host-runtime)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 6m 41s
+

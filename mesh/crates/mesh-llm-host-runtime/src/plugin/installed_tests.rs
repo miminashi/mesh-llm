@@ -289,3 +289,49 @@ fn configured_plugin_settings_reach_the_launch_spec() {
         "[plugin.settings] were dropped from the spec the plugin is started from"
     );
 }
+
+/// A store directory whose metadata was edited to name another plugin is
+/// not started under that name: it shows up as an error row under its own
+/// directory name, and the real plugin it claims to be still starts.
+#[test]
+#[serial_test::serial]
+fn metadata_naming_another_plugin_is_reported_not_started() {
+    let store = tempfile::TempDir::new().expect("plugin store");
+    let capsules = installed_capsules(store.path(), true);
+    let impostor_dir = store.path().join("impostor");
+    std::fs::create_dir_all(&impostor_dir).expect("impostor dir");
+    let mut impostor = capsules.clone();
+    impostor.install_path = store.path().join("installs").join("impostor");
+    std::fs::create_dir_all(&impostor.install_path).expect("impostor install");
+    std::fs::write(impostor.executable_path(), b"").expect("impostor executable");
+    std::fs::write(
+        impostor_dir.join("plugin-install.json"),
+        serde_json::to_vec(&impostor).expect("serialize"),
+    )
+    .expect("write impostor metadata");
+
+    let mut externals = Vec::new();
+    let mut inactive = Vec::new();
+    let mut names = BTreeMap::new();
+    with_plugin_dir(store.path(), || {
+        append_installed_plugins(&mut externals, &mut inactive, &mut names)
+    });
+
+    assert_eq!(externals.len(), 1);
+    assert_eq!(externals[0].name, "capsules");
+    assert_eq!(
+        externals[0].command,
+        capsules.executable_path().display().to_string()
+    );
+    assert_eq!(inactive.len(), 1);
+    assert_eq!(inactive[0].name, "impostor");
+    assert_eq!(inactive[0].status, "error");
+    assert!(
+        inactive[0]
+            .error
+            .as_deref()
+            .is_some_and(|error| error.contains("\"capsules\"") && error.contains("\"impostor\"")),
+        "{:?}",
+        inactive[0].error
+    );
+}

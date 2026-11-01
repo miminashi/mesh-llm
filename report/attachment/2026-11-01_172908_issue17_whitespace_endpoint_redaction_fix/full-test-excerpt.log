@@ -1,0 +1,32 @@
+# cargo test -j 8 -p mesh-llm-host-runtime / -p skippy-hf-hub (rust-lld) の抜粋: 失敗・結果行・新規テスト
+     Running unittests src/lib.rs (target/debug/deps/mesh_llm_host_runtime-c6523ffd0f8926ce)
+test api::routes::logs::delete::tests::accepted_delete_timeout_returns_pending_without_a_failure_audit ... FAILED
+test logging::policy::http_url_redaction_tests::plain_http_urls_are_redacted_exactly_as_before ... ok
+test logging::policy::http_url_redaction_tests::credentials_hidden_by_parser_ignored_characters_are_redacted ... ok
+test logging::policy::http_url_redaction_tests::redaction_gate_agrees_with_url_parser ... ok
+test network::metrics::tests::leading_whitespace_endpoint_label_is_redacted_in_snapshot ... ok
+test network::metrics::tests::uppercase_scheme_endpoint_label_is_still_redacted_in_snapshot ... ok
+test plugin::types::tests::leading_whitespace_address_is_redacted_for_network ... ok
+test plugin::types::tests::uppercase_scheme_address_is_still_redacted_for_network ... ok
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4342 filtered out; finished in 0.02s
+test sdk::embedded_lifecycle_tests::cancelling_startup_releases_runtime_and_restarts ... FAILED
+test mesh::gossip::tests::signed_records::bounded_exchange::oversized_snapshots_complete_real_quic_exchanges_in_both_directions ... FAILED
+thread 'api::routes::logs::delete::tests::accepted_delete_timeout_returns_pending_without_a_failure_audit' (1780565) panicked at mesh/crates/mesh-llm-host-runtime/src/api/routes/logs/delete.rs:367:10:
+accepted timeout response: MaintenanceCancelled
+thread 'sdk::embedded_lifecycle_tests::cancelling_startup_releases_runtime_and_restarts' (1789322) panicked at mesh/crates/mesh-llm-host-runtime/src/sdk/embedded_lifecycle_tests.rs:185:5:
+child failed or leaked runtime threads: Some(ExitStatus(unix_wait_status(25856)))
+thread 'sdk::embedded_lifecycle_tests::cancelling_startup_releases_runtime_and_restarts' (1789453) panicked at mesh/crates/mesh-llm-host-runtime/src/sdk/embedded_lifecycle_tests.rs:316:6:
+startup is dialing the fixture: Elapsed(())
+test sdk::embedded_lifecycle_tests::cancelling_startup_releases_runtime_and_restarts ... FAILED
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 4342 filtered out; finished in 13.44s
+thread 'mesh::gossip::tests::signed_records::bounded_exchange::oversized_snapshots_complete_real_quic_exchanges_in_both_directions' (1782639) panicked at mesh/crates/mesh-llm-host-runtime/src/mesh/tests/gossip/bounded_exchange.rs:79:10:
+called `Result::unwrap()` on an `Err` value: Elapsed(())
+test result: FAILED. 4314 passed; 3 failed; 26 ignored; 0 measured; 0 filtered out; finished in 212.59s
+HR_EXIT=101
+     Running unittests src/lib.rs (target/debug/deps/hf_hub-6f78e3cb86c6edf4)
+test result: ok. 210 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.11s
+     Running tests/future_size.rs (target/debug/deps/future_size-b9bf0ff9d9105430)
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
+   Doc-tests hf_hub
+test result: ok. 21 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+HF_EXIT=0

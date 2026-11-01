@@ -208,6 +208,7 @@
 // `dead_code`; allow them wholesale.
 #![cfg_attr(target_family = "wasm", allow(dead_code))]
 
+mod body;
 mod client;
 pub(crate) mod constants;
 mod error;

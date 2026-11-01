@@ -92,7 +92,7 @@ impl HFClient {
                     state.done = true;
                 }
 
-                let items: Vec<serde_json::Value> = response.json().await?;
+                let items: Vec<serde_json::Value> = crate::body::json_limited(response).await?;
                 state.buffer = VecDeque::from(items);
 
                 match state.buffer.pop_front() {

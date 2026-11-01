@@ -130,7 +130,7 @@ impl<T: RepoType> HFRepository<T> {
                 },
             )
             .await?;
-        Ok(response.json().await?)
+        crate::body::json_limited(response).await
     }
 
     /// Fetch metadata for a single file via a HEAD request on its resolve URL.

@@ -63,7 +63,7 @@ async fn fetch_xet_connection_info(
         .check_response(response, not_found_id, not_found_ctx)
         .await?;
 
-    let token_resp: XetTokenResponse = response.json().await?;
+    let token_resp: XetTokenResponse = crate::body::json_limited(response).await?;
     Ok(XetConnectionInfo {
         endpoint: token_resp.cas_url,
         access_token: token_resp.access_token,

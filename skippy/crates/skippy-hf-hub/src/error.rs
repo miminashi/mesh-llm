@@ -23,14 +23,15 @@ pub struct HttpErrorContext {
 }
 
 impl HttpErrorContext {
-    /// Build context from a non-success response. Drains the response body.
+    /// Build context from a non-success response. Keeps at most
+    /// `crate::body::MAX_ERROR_BODY_BYTES` of the body and drops the rest.
     pub(crate) async fn from_response(response: reqwest::Response) -> Self {
         let status = response.status();
         let url = response.url().to_string();
         let request_id = header_string(response.headers(), "x-request-id");
         let error_code = header_string(response.headers(), "x-error-code");
         let header_message = header_string(response.headers(), "x-error-message");
-        let body = response.text().await.unwrap_or_default();
+        let body = crate::body::text_prefix(response, crate::body::MAX_ERROR_BODY_BYTES).await;
         let server_message = header_message.or_else(|| extract_json_error(&body));
         Self {
             status,
@@ -253,15 +254,17 @@ pub enum HFError {
         url: Option<String>,
     },
 
-    /// A response body exceeded the caller's `max_bytes` limit.
+    /// A response body exceeded its size limit: the caller's `max_bytes` for a
+    /// file download, or the library's built-in cap for an API response.
     ///
     /// Raised before the body is read when the advertised size is already
     /// over the limit, or as soon as the received bytes go over it.
     #[error("Response for {path} exceeds the {limit}-byte limit")]
     ResponseTooLarge {
-        /// Repository-relative path of the file being downloaded.
+        /// Repository-relative path of the file being downloaded, or the
+        /// request URL for an API response.
         path: String,
-        /// The `max_bytes` limit the caller set.
+        /// The limit that was exceeded.
         limit: u64,
     },
 
@@ -607,5 +610,43 @@ mod tests {
 
         assert_eq!(ctx.request_id, None);
         assert_eq!(ctx.server_message.as_deref(), Some("repo is gated"));
+    }
+
+    #[tokio::test]
+    async fn from_response_keeps_only_a_prefix_of_a_huge_error_body() {
+        // A chunked 500 whose body is far larger than the error-body cap: only
+        // the first `cap` bytes are kept, and the header message still wins.
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let addr = listener.local_addr().unwrap();
+        let cap = crate::body::MAX_ERROR_BODY_BYTES;
+
+        tokio::spawn(async move {
+            use tokio::io::{AsyncReadExt, AsyncWriteExt};
+            let (mut sock, _) = listener.accept().await.unwrap();
+            let mut buf = vec![0u8; 1024];
+            let _ = sock.read(&mut buf).await;
+            let head = "HTTP/1.1 500 Internal Server Error\r\n\
+                        Transfer-Encoding: chunked\r\n\
+                        X-Error-Message: boom\r\n\r\n";
+            if sock.write_all(head.as_bytes()).await.is_err() {
+                return;
+            }
+            let part = vec![b'x'; 8192];
+            // 64 MiB of filler; the reader must stop long before the end.
+            for _ in 0..(64 * 1024 * 1024 / part.len()) {
+                let frame = [format!("{:x}\r\n", part.len()).as_bytes(), &part, b"\r\n"].concat();
+                if sock.write_all(&frame).await.is_err() {
+                    return;
+                }
+            }
+            let _ = sock.write_all(b"0\r\n\r\n").await;
+        });
+
+        let response = reqwest::get(format!("http://{addr}/")).await.unwrap();
+        let ctx = HttpErrorContext::from_response(response).await;
+
+        assert_eq!(ctx.status, StatusCode::INTERNAL_SERVER_ERROR);
+        assert_eq!(ctx.server_message.as_deref(), Some("boom"));
+        assert_eq!(ctx.body.len(), cap);
     }
 }

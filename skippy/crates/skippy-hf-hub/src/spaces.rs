@@ -146,7 +146,7 @@ impl HFRepository<RepoTypeSpace> {
                 crate::error::NotFoundContext::Repo,
             )
             .await?;
-        Ok(response.json().await?)
+        crate::body::json_limited(response).await
     }
 
     /// Request an upgrade or downgrade of the Space's hardware tier.
@@ -192,7 +192,7 @@ impl HFRepository<RepoTypeSpace> {
                 crate::error::NotFoundContext::Repo,
             )
             .await?;
-        Ok(response.json().await?)
+        crate::body::json_limited(response).await
     }
 
     /// Configure the number of seconds of inactivity before the Space is put to sleep.
@@ -261,7 +261,7 @@ impl HFRepository<RepoTypeSpace> {
                 crate::error::NotFoundContext::Repo,
             )
             .await?;
-        Ok(response.json().await?)
+        crate::body::json_limited(response).await
     }
 
     /// Restart a paused or errored Space.
@@ -291,7 +291,7 @@ impl HFRepository<RepoTypeSpace> {
                 crate::error::NotFoundContext::Repo,
             )
             .await?;
-        Ok(response.json().await?)
+        crate::body::json_limited(response).await
     }
 
     /// Add or update a secret (encrypted environment variable) on the Space.
@@ -578,7 +578,7 @@ impl HFRepository<RepoTypeSpace> {
                 crate::error::NotFoundContext::Repo,
             )
             .await?;
-        Ok(response.json().await?)
+        crate::body::json_limited(response).await
     }
 }
 

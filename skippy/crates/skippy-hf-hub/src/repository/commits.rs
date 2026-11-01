@@ -185,7 +185,7 @@ impl<T: RepoType> HFRepository<T> {
                 crate::error::NotFoundContext::Repo,
             )
             .await?;
-        Ok(response.json().await?)
+        crate::body::json_limited(response).await
     }
 
     /// Fetch the Hub's non-raw compare payload as text.
@@ -239,7 +239,7 @@ impl<T: RepoType> HFRepository<T> {
                 crate::error::NotFoundContext::Repo,
             )
             .await?;
-        Ok(response.text().await?)
+        crate::body::text_limited(response, crate::body::MAX_DIFF_RESPONSE_BYTES).await
     }
 
     /// Fetch the raw diff payload between two revisions as a string.
@@ -293,7 +293,7 @@ impl<T: RepoType> HFRepository<T> {
                 crate::error::NotFoundContext::Repo,
             )
             .await?;
-        Ok(response.text().await?)
+        crate::body::text_limited(response, crate::body::MAX_DIFF_RESPONSE_BYTES).await
     }
 
     /// Fetch the raw diff between two revisions as a parsed stream of [`HFFileDiff`] entries.

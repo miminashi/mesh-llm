@@ -296,19 +296,31 @@ fn try_create_dirs(root: &Path, store: &Path, artifacts: &Path) -> bool {
         }
     }
 
-    // Verify the root is actually writable by attempting a quick write test.
-    let test_file = root.join(".write_test");
-    if std::fs::write(&test_file, "").is_err() {
+    if !root_accepts_new_files(root) {
         tracing::debug!(
             root = LOGGING_ROOT_LABEL,
             "logging application-state root exists but is not writable"
         );
         return false;
     }
-
-    // Clean up the test file.
-    let _ = std::fs::remove_file(&test_file);
     true
+}
+
+/// Probe writability by creating a fresh, uniquely named file in `root`.
+///
+/// The probe is opened with `create_new` (`O_EXCL`), so it never opens, truncates, or follows an
+/// entry that already exists, and only the file created here is removed afterwards.
+fn root_accepts_new_files(root: &Path) -> bool {
+    match tempfile::Builder::new()
+        .prefix(".write_test-")
+        .tempfile_in(root)
+    {
+        Ok(probe) => {
+            let _ = probe.close();
+            true
+        }
+        Err(_) => false,
+    }
 }
 
 /// Stable diagnostic label for the logging application-state root.
@@ -388,6 +400,74 @@ mod tests {
         assert!(f2.is_healthy());
         assert_eq!(f2.app_state_root(), &root);
 
+        std::fs::remove_dir_all(&root).ok();
+    }
+
+    fn write_probe_leftovers(root: &Path) -> Vec<OsString> {
+        std::fs::read_dir(root)
+            .unwrap()
+            .map(|entry| entry.unwrap().file_name())
+            .filter(|name| name.to_string_lossy().starts_with(".write_test-"))
+            .collect()
+    }
+
+    #[test]
+    fn init_leaves_existing_write_test_file_untouched() {
+        let root = temp_root();
+        std::fs::create_dir_all(&root).unwrap();
+        let existing = root.join(".write_test");
+        std::fs::write(&existing, "keep me").unwrap();
+
+        let foundation = LoggingFoundation::init(true, Some(&root));
+
+        assert!(foundation.is_healthy());
+        assert_eq!(std::fs::read_to_string(&existing).unwrap(), "keep me");
+        assert!(write_probe_leftovers(&root).is_empty());
+        std::fs::remove_dir_all(&root).ok();
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn init_does_not_write_through_existing_write_test_symlink() {
+        let root = temp_root();
+        std::fs::create_dir_all(&root).unwrap();
+        let outside = temp_root();
+        std::fs::write(&outside, "outside the logging root").unwrap();
+        let link = root.join(".write_test");
+        std::os::unix::fs::symlink(&outside, &link).unwrap();
+
+        let foundation = LoggingFoundation::init(true, Some(&root));
+
+        assert!(foundation.is_healthy());
+        assert_eq!(
+            std::fs::read_to_string(&outside).unwrap(),
+            "outside the logging root"
+        );
+        assert_eq!(std::fs::read_link(&link).unwrap(), outside);
+        assert!(write_probe_leftovers(&root).is_empty());
+        std::fs::remove_dir_all(&root).ok();
+        std::fs::remove_file(&outside).ok();
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn init_read_only_root_fails_open() {
+        use std::os::unix::fs::PermissionsExt;
+
+        let root = temp_root();
+        for dir in [&root, &root.join("store"), &root.join("artifacts")] {
+            std::fs::create_dir_all(dir).unwrap();
+        }
+        std::fs::set_permissions(&root, std::fs::Permissions::from_mode(0o555)).unwrap();
+        let root_is_enforced = std::fs::File::create(root.join("probe")).is_err();
+
+        let foundation = LoggingFoundation::init(true, Some(&root));
+
+        std::fs::set_permissions(&root, std::fs::Permissions::from_mode(0o755)).unwrap();
+        // Permission bits do not bind privileged users (e.g. root in CI containers).
+        if root_is_enforced {
+            assert!(!foundation.is_healthy(), "a read-only root must fail open");
+        }
         std::fs::remove_dir_all(&root).ok();
     }
 

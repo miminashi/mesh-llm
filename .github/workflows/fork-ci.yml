@@ -128,9 +128,9 @@ jobs:
           fi
           # A change to this workflow exercises both selection paths on
           # one crate that builds on CPU alone and one that needs native,
-          # plus the separate xtask test path.
+          # plus the separate xtask and llama.cpp source paths.
           if grep -Fqx .github/workflows/fork-ci.yml "$changed"; then
-            crates+=(skippy-hf-hub skippy-runtime xtask)
+            crates+=(skippy-hf-hub skippy-runtime skippy-quantize xtask)
           fi
 
           selected=()
@@ -162,14 +162,19 @@ jobs:
             fi
           } >> "$GITHUB_STEP_SUMMARY"
           xtask=false
+          llama_source=false
           for crate in "${selected[@]}"; do
-            if [[ "$crate" == xtask ]]; then
-              xtask=true
-            fi
+            case "$crate" in
+              xtask) xtask=true ;;
+              # These tests read the pinned llama.cpp source tree
+              # (skippy-quantize parses tools/quantize/quantize.cpp).
+              skippy-quantize) llama_source=true ;;
+            esac
           done
           {
             echo "crates=${selected[*]}"
             echo "xtask=$xtask"
+            echo "llama_source=$llama_source"
           } >> "$GITHUB_OUTPUT"
       - name: Clippy
         if: ${{ steps.select.outputs.crates != '' }}
@@ -184,6 +189,11 @@ jobs:
             cargo clippy --locked -p "$crate" --all-targets -- -D warnings
             echo "::endgroup::"
           done
+      # Clone llama.cpp at the pin and apply the patches, with the same
+      # script upstream's test lanes run first. Nothing is built from it.
+      - name: Prepare pinned llama.cpp source
+        if: ${{ steps.select.outputs.llama_source == 'true' }}
+        run: scripts/prepare-llama.sh pinned
       - name: Tests
         if: ${{ steps.select.outputs.crates != '' }}
         env:

@@ -322,6 +322,23 @@ pub struct PluginStore {
     root: PathBuf,
 }
 
+/// A store directory whose `plugin-install.json` names a different plugin
+/// than the directory it sits in. Its metadata is not used: every other part
+/// of the host trusts `name`, so it must match the checked directory name.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RejectedPluginMetadata {
+    /// The store directory name, which passed the plugin name check.
+    pub directory: String,
+    pub reason: String,
+}
+
+/// What [`PluginStore::list_checked`] found in the store.
+#[derive(Debug, Clone, Default)]
+pub struct PluginListing {
+    pub plugins: Vec<InstalledPluginMetadata>,
+    pub rejected: Vec<RejectedPluginMetadata>,
+}
+
 impl PluginStore {
     pub fn new(root: impl Into<PathBuf>) -> Self {
         Self { root: root.into() }
@@ -358,6 +375,18 @@ impl PluginStore {
     }
 
     pub fn try_load(&self, name: &str) -> Result<Option<InstalledPluginMetadata>> {
+        let Some(metadata) = self.read_metadata(name)? else {
+            return Ok(None);
+        };
+        if let Some(reason) = self.name_mismatch(name, &metadata) {
+            bail!(reason);
+        }
+        Ok(Some(metadata))
+    }
+
+    /// Read and parse `<name>/plugin-install.json` without checking that the
+    /// `name` inside it matches. Callers must check it with `name_mismatch`.
+    fn read_metadata(&self, name: &str) -> Result<Option<InstalledPluginMetadata>> {
         validate_plugin_name(name)?;
         let metadata_path = self.metadata_path(name);
         if !metadata_path.exists() {
@@ -370,16 +399,36 @@ impl PluginStore {
         )?))
     }
 
+    /// `save` places metadata in the directory named by `metadata.name`, so
+    /// the two always match unless the file was edited by hand.
+    fn name_mismatch(&self, name: &str, metadata: &InstalledPluginMetadata) -> Option<String> {
+        (metadata.name != name).then(|| {
+            format!(
+                "plugin metadata {} names plugin {:?}, but it is stored under {:?}",
+                self.metadata_path(name).display(),
+                metadata.name,
+                name
+            )
+        })
+    }
+
     pub fn load_optional(&self, name: &str) -> Result<Option<InstalledPluginMetadata>> {
         self.try_load(name)
     }
 
+    /// The installed plugins. A directory whose metadata names a different
+    /// plugin is left out, so one edited file cannot stop the others from
+    /// loading; use [`Self::list_checked`] to report it.
     pub fn list(&self) -> Result<Vec<InstalledPluginMetadata>> {
+        Ok(self.list_checked()?.plugins)
+    }
+
+    pub fn list_checked(&self) -> Result<PluginListing> {
+        let mut listing = PluginListing::default();
         if !self.root.exists() {
-            return Ok(Vec::new());
+            return Ok(listing);
         }
 
-        let mut plugins = Vec::new();
         for entry in fs::read_dir(&self.root)
             .with_context(|| format!("read plugin store {}", self.root.display()))?
         {
@@ -395,12 +444,27 @@ impl PluginStore {
             let Some(name) = entry.file_name().to_str().map(str::to_string) else {
                 continue;
             };
-            if is_valid_name(&name) && self.metadata_path(&name).exists() {
-                plugins.push(self.load(&name)?);
+            if !is_valid_name(&name) {
+                continue;
+            }
+            let Some(metadata) = self.read_metadata(&name)? else {
+                continue;
+            };
+            match self.name_mismatch(&name, &metadata) {
+                None => listing.plugins.push(metadata),
+                Some(reason) => listing.rejected.push(RejectedPluginMetadata {
+                    directory: name,
+                    reason,
+                }),
             }
         }
-        plugins.sort_by(|left, right| left.name.cmp(&right.name));
-        Ok(plugins)
+        listing
+            .plugins
+            .sort_by(|left, right| left.name.cmp(&right.name));
+        listing
+            .rejected
+            .sort_by(|left, right| left.directory.cmp(&right.directory));
+        Ok(listing)
     }
 
     pub fn set_enabled(&self, name: &str, enabled: bool) -> Result<InstalledPluginMetadata> {
@@ -671,6 +735,79 @@ mod tests {
         store.delete("blackboard").unwrap();
         assert!(store.list().unwrap().is_empty());
         assert!(!install_path.exists());
+    }
+
+    /// Hand-edit `<dir>/plugin-install.json` so its `name` differs from `dir`.
+    fn rename_in_metadata(store_root: &Path, dir: &str, name: &str) {
+        let path = store_root.join(dir).join(METADATA_FILE);
+        let mut value: serde_json::Value =
+            serde_json::from_slice(&std::fs::read(&path).unwrap()).unwrap();
+        value["name"] = serde_json::Value::String(name.to_string());
+        std::fs::write(&path, serde_json::to_vec(&value).unwrap()).unwrap();
+    }
+
+    #[test]
+    fn load_rejects_metadata_naming_another_plugin() {
+        let temp = TempDir::new().unwrap();
+        let store = PluginStore::new(temp.path());
+        store.save(&metadata("demo")).unwrap();
+        rename_in_metadata(temp.path(), "demo", "../../escape");
+
+        let error = store.load("demo").unwrap_err().to_string();
+        assert!(error.contains("\"../../escape\""), "{error}");
+        assert!(error.contains("\"demo\""), "{error}");
+        assert!(store.try_load("demo").is_err());
+        assert!(store.set_enabled("demo", false).is_err());
+    }
+
+    #[test]
+    fn list_skips_and_reports_metadata_naming_another_plugin() {
+        let temp = TempDir::new().unwrap();
+        let store = PluginStore::new(temp.path());
+        store.save(&metadata("blackboard")).unwrap();
+        store.save(&metadata("demo")).unwrap();
+        store.save(&metadata("notes")).unwrap();
+        rename_in_metadata(temp.path(), "demo", "../../escape");
+        // A valid name that belongs to another plugin is rejected too.
+        rename_in_metadata(temp.path(), "notes", "blackboard");
+
+        let names = |plugins: &[InstalledPluginMetadata]| {
+            plugins
+                .iter()
+                .map(|plugin| plugin.name.clone())
+                .collect::<Vec<_>>()
+        };
+        assert_eq!(names(&store.list().unwrap()), vec!["blackboard"]);
+
+        let listing = store.list_checked().unwrap();
+        assert_eq!(names(&listing.plugins), vec!["blackboard"]);
+        assert_eq!(
+            listing
+                .rejected
+                .iter()
+                .map(|rejected| rejected.directory.as_str())
+                .collect::<Vec<_>>(),
+            vec!["demo", "notes"]
+        );
+        assert!(listing.rejected[0].reason.contains("\"../../escape\""));
+    }
+
+    #[test]
+    fn delete_of_mismatched_metadata_keeps_its_install_path() {
+        let temp = TempDir::new().unwrap();
+        let store = PluginStore::new(temp.path());
+        let elsewhere = TempDir::new().unwrap();
+        let mut item = metadata("demo");
+        item.install_path = elsewhere.path().to_path_buf();
+        store.save(&item).unwrap();
+        rename_in_metadata(temp.path(), "demo", "other");
+
+        store.delete("demo").unwrap();
+        assert!(!temp.path().join("demo").exists());
+        assert!(
+            elsewhere.path().exists(),
+            "metadata that fails the name check must not pick what delete removes"
+        );
     }
 
     #[test]

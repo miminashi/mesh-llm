@@ -2,7 +2,9 @@ use super::config::{ExternalPluginSpec, PluginConfigEntry};
 use super::startup::PluginStartupOptions;
 use super::{PluginSummary, PluginWebUiState, derive_plugin_web_ui_state};
 use anyhow::{Context, Result, bail};
-use mesh_llm_plugin_manager::{InstalledPluginMetadata, PluginStore, default_store_root};
+use mesh_llm_plugin_manager::{
+    InstalledPluginMetadata, PluginStore, RejectedPluginMetadata, default_store_root,
+};
 use std::collections::BTreeMap;
 use std::path::{Path, PathBuf};
 
@@ -166,15 +168,18 @@ pub(crate) fn append_installed_plugins(
         return;
     };
     let store = PluginStore::new(root);
-    let installed = match store.list() {
-        Ok(installed) => installed,
+    let listing = match store.list_checked() {
+        Ok(listing) => listing,
         Err(error) => {
             inactive.push(installed_store_error_summary(error));
             return;
         }
     };
 
-    for metadata in installed {
+    for rejected in listing.rejected {
+        inactive.push(rejected_installed_plugin_summary(rejected));
+    }
+    for metadata in listing.plugins {
         if names.contains_key(&metadata.name) {
             continue;
         }
@@ -290,9 +295,19 @@ fn missing_installed_plugin_summary(
     )
 }
 
+/// A store directory whose metadata names another plugin is not started; it
+/// is listed under its directory name so the operator can find and fix it.
+fn rejected_installed_plugin_summary(rejected: RejectedPluginMetadata) -> PluginSummary {
+    store_error_summary(rejected.directory, rejected.reason)
+}
+
 fn installed_store_error_summary(error: anyhow::Error) -> PluginSummary {
+    store_error_summary("installed-plugins".to_string(), error.to_string())
+}
+
+fn store_error_summary(name: String, error: String) -> PluginSummary {
     PluginSummary {
-        name: "installed-plugins".to_string(),
+        name,
         kind: "installed".to_string(),
         enabled: false,
         status: "error".to_string(),
@@ -305,7 +320,7 @@ fn installed_store_error_summary(error: anyhow::Error) -> PluginSummary {
         manifest: None,
         web_ui: PluginWebUiState::default(),
         startup: None,
-        error: Some(error.to_string()),
+        error: Some(error),
     }
 }
 

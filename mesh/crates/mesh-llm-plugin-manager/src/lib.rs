@@ -35,6 +35,7 @@ pub use store::{
     InstalledPluginObjectProperty, InstalledPluginOptionsSource,
     InstalledPluginPresentationMetadata, InstalledPluginRestartScope, InstalledPluginSettingSchema,
     InstalledPluginTextFormat, InstalledPluginValueKind, InstalledPluginValueSchema,
-    InstalledPluginVisibility, PluginStore, SUPPORTED_PLUGIN_SCHEMA_VERSION, default_store_root,
+    InstalledPluginVisibility, PluginListing, PluginStore, RejectedPluginMetadata,
+    SUPPORTED_PLUGIN_SCHEMA_VERSION, default_store_root,
 };
 pub use target::{ArchiveExt, PluginTarget, UnsupportedTarget};

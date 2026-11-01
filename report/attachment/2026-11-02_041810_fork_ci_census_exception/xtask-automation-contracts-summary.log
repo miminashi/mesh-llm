@@ -1,0 +1,368 @@
+     Running unittests src/main.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/xtask-9ebab8b4d84c6c29)
+test automation::binary_stage_readiness::tests::cancelling_real_closed_socket_wait_is_observed_within_one_poll_interval ... FAILED
+test automation::agent_fixture_inputs::coding::tests::actual_rust_implementation_passes_independent_visible_and_hidden_checks ... FAILED
+test automation::agent_fixture_inputs::coding::tests::visible_answer_constants_fail_actual_hidden_verification ... FAILED
+test automation::agent_fixture_inputs::coding::tests::compiler_multicall_shim_keeps_its_selected_invocation_name ... FAILED
+test automation::canary_package_closure::process::tests::git_payload_overflow_and_nonzero_exit_do_not_publish_partial_capture ... FAILED
+test automation::canary_package_closure::process::tests::git_payload_preserves_model_names_long_lines_and_nul_source_inventory ... FAILED
+test automation::canary_source_plan::payload_identity::tests::unchanged_files_reuse_receipts_but_replacements_and_preserved_mtime_edits_rehash ... FAILED
+test automation::canary_package_closure::local_inspection::tests::local_authority_composes_dirty_manifest_parity_and_split_write_check_without_workflow_identity ... FAILED
+test automation::canary_package_closure::local_inspection::tests::split_output_rejects_special_paths_in_local_and_workflow_check_and_write_without_escaped_writes ... FAILED
+test automation::canary_package_closure::local_inspection::tests::policy_documents_reject_special_escaping_and_oversize_sources_in_local_and_workflow_compositions ... FAILED
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2320 filtered out; finished in 10.08s
+test automation::mtp_scheduler::final_publication::tests::mtp_scheduler_final_publication_preserves_rows_and_refuses_late_terminal_states ... FAILED
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2320 filtered out; finished in 10.16s
+test result: FAILED. 2297 passed; 11 failed; 13 ignored; 0 measured; 0 filtered out; finished in 575.14s
+     Running tests/automation_selector.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/automation_selector-e8698e580fb1bd1b)
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+     Running tests/canary_cache_configuration.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/canary_cache_configuration-1ae06dec3a133e59)
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+     Running tests/canary_controller_plan.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/canary_controller_plan-44762a760c031e13)
+test result: ok. 22 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.15s
+     Running tests/canary_result_gate.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/canary_result_gate-a34b6c768afc6140)
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+     Running tests/ci_runner_cache_contract.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/ci_runner_cache_contract-b8054bd2b9a84106)
+test windows_composition::cfg_census::every_current_windows_catalog_unit_owner_selects_the_native_planner_row ... FAILED
+test artifact_workflows::planner::change_transport::artifact_plan_large_file_input_survives_without_bulk_argv_or_environment ... FAILED
+test windows_composition::cfg_census::wallet_dependency_closure_preserves_direct_domain_pr_routing_and_full_cadence ... FAILED
+test authority_remaining::resource_audit::authority_actual_resource_diagnostics_preserve_all_variable_classification_without_values ... FAILED
+test authority_local::authority_actual_manual_delivery_verifies_supplied_identity_before_native_endpoint_calls ... FAILED
+test result: FAILED. 250 passed; 5 failed; 0 ignored; 0 measured; 0 filtered out; finished in 303.80s
+     Running tests/family_battery_environment.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/family_battery_environment-334cf5c246f31aac)
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+     Running tests/family_battery_prepared_source.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/family_battery_prepared_source-89a57aa6159252c6)
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+     Running tests/l4_producers.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/l4_producers-37c5ac36e2a88323)
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.74s
+     Running tests/lane_l11_optional_tooling.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/lane_l11_optional_tooling-48c486718650dba5)
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.34s
+     Running tests/lane_l12_build_llama.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/lane_l12_build_llama-85f7971db598ba59)
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.31s
+     Running tests/lane_l1_ui_delivery.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/lane_l1_ui_delivery-1633ec1e53907b96)
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+     Running tests/lane_l2_authority.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/lane_l2_authority-36e06098bbdee4d2)
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/lane_l2_hosted_bootstrap.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/lane_l2_hosted_bootstrap-01a44b5b4670a2ea)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+     Running tests/lane_l2_quality_contracts.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/lane_l2_quality_contracts-a7a30a2853dba0ba)
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.67s
+     Running tests/lane_l2_registry_pulls.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/lane_l2_registry_pulls-f42f3de1e8b71fb7)
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+     Running tests/lane_l2_runtime_lifecycle.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/lane_l2_runtime_lifecycle-beef6ef54d63beab)
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.62s
+     Running tests/lane_l2_runtime_seed.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/lane_l2_runtime_seed-20281974399c9534)
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.78s
+     Running tests/lane_l3_abi_restore.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/lane_l3_abi_restore-79cd013d2b9d010c)
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.36s
+     Running tests/lane_l3_cache_metadata.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/lane_l3_cache_metadata-74bffe14e251a8c6)
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+     Running tests/lane_l3_display_projection.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/lane_l3_display_projection-9f8df17e02147378)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+     Running tests/lane_l3_l2_dispatch.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/lane_l3_l2_dispatch-9c4397cc8761266f)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+     Running tests/lane_l5_adapter_contracts.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/lane_l5_adapter_contracts-74afd2dea3ebb23c)
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+     Running tests/lane_l5_release_product.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/lane_l5_release_product-b6cc4c79bc7d921b)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.05s
+     Running tests/lane_l6_sdk_swift.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/lane_l6_sdk_swift-1c4e15cf7305779c)
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+     Running tests/lane_l7_control_plane.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/lane_l7_control_plane-fc2586bf20d3fca2)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 11.80s
+     Running tests/lane_l7_daemon_lifecycle.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/lane_l7_daemon_lifecycle-60bcd5879f15ab82)
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 10.26s
+     Running tests/lane_l7_logging_console.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/lane_l7_logging_console-f0a6241136245a59)
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.54s
+     Running tests/lane_l7_logging_recovery.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/lane_l7_logging_recovery-3b7c4ec2d1b16324)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.29s
+     Running tests/lane_l7_plans.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/lane_l7_plans-9567729bf3f302a7)
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+     Running tests/lane_l7_sdk_fixture.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/lane_l7_sdk_fixture-f226335280a13692)
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.29s
+     Running tests/lane_l7_split_recovery.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/lane_l7_split_recovery-53cf1a1e8ffc77d7)
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 13.47s
+     Running tests/lane_l7_standalone.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/lane_l7_standalone-24b3651b6efab0dd)
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.68s
+     Running tests/lane_l8_smoke.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/lane_l8_smoke-9254c488ccbe8072)
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+     Running tests/laya_cli_fixture.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/laya_cli_fixture-6380bce568338e7f)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.50s
+     Running tests/local_ports.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/local_ports-aee71e85c36e4cfb)
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+     Running tests/migration_archives.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_archives-e9e34c8bc8bb279f)
+test zip_extract::migration_archives_zip_rejects_non_zip_bytes ... FAILED
+test zip_extract::migration_archives_zip_rejects_unsupported_method_and_encryption ... FAILED
+test zip_extract::migration_archives_zip_rejects_bad_crc_after_creating_file ... FAILED
+test result: FAILED. 49 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+     Running tests/migration_bootstrap.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_bootstrap-8ee9f97091fb116a)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 17.33s
+     Running tests/migration_canary_aggregate_cli.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_canary_aggregate_cli-cbfb64bdd1999314)
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+     Running tests/migration_canary_receipts.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_canary_receipts-eddb572e57019d05)
+test results::migration_canary_receipts_accepts_adjacent_pretty_and_battery_objects ... ok
+test results::migration_canary_receipts_nonchat_projector_is_consolidated_in_workload_row ... ok
+test results::migration_canary_receipts_preserves_legacy_zero_exit_comparison ... ok
+test results::migration_canary_receipts_preserves_workload_class_and_oracle_requirement ... ok
+test results::migration_canary_receipts_rejects_duplicate_core_and_battery_certifications ... ok
+test results::migration_canary_receipts_rejects_incomplete_result_streams ... ok
+test results::migration_canary_receipts_rejects_positional_arrays_as_lane_objects ... ok
+test results::migration_canary_receipts_requires_all_planned_native_heads_lane ... ok
+test results::migration_canary_receipts_requires_exact_causal_projector_smoke_count ... ok
+test results::migration_canary_receipts_requires_one_passing_result_per_lane ... ok
+test results::migration_canary_receipts_requires_passing_global_preflight ... ok
+test results::migration_canary_receipts_supplied_native_heads_lane_can_certify ... ok
+test results::migration_canary_receipts_zero_split_and_unrelated_lanes_follow_legacy_semantics ... ok
+test result: ok. 137 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 225.52s
+     Running tests/migration_canary_receipts_parity.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_canary_receipts_parity-1178deabb8e3f86c)
+test result: ok. 56 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 209.31s
+     Running tests/migration_cargo_metadata.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_cargo_metadata-ac16ecda9b6a4ee2)
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.76s
+     Running tests/migration_cargo_packages_cli.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_cargo_packages_cli-3ba48ad1850061f3)
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+     Running tests/migration_ci_graph.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_ci_graph-9898152fb96e064f)
+test result_failures::migration_ci_graph_duplicate_row_id_is_rejected ... ok
+test result_failures::migration_ci_graph_invalid_json_keeps_prefix_and_status ... ok
+test result_failures::migration_ci_graph_required_lane_needs_planned_jobs ... ok
+test result_failures::migration_ci_graph_selected_skip_is_rejected ... ok
+test result_failures::migration_ci_graph_planned_failure_is_rejected ... ok
+test result_failures::macos_checks_require_macos_authority_without_a_linux_ui_producer ... ok
+test result_failures::migration_ci_graph_unplanned_job_must_skip ... ok
+test result_failures::migration_ci_graph_windows_smoke_rejects_skipped_consumer ... ok
+test result_failures::lane_inline_and_reordered_exact_options_reach_domain_validation ... ok
+test result_failures::migration_ci_graph_planned_cancellation_is_rejected ... ok
+test result_failures::migration_ci_graph_unknown_and_absent_results_are_rejected ... ok
+test result_failures::migration_ci_graph_malformed_plans_keep_legacy_diagnostics ... ok
+test result_failures::selected_native_authority_cannot_fail_cancel_skip_or_disappear ... ok
+test result_failures::lane_argument_admission_rejects_missing_unknown_ambiguous_and_positional_inputs ... ok
+test result: ok. 36 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.88s
+     Running tests/migration_ci_operations.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_ci_operations-df410155bf0f9b1a)
+test result: ok. 80 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 15.04s
+     Running tests/migration_ci_plan.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_ci_plan-74fbbb6eea6f9b04)
+test result: ok. 31 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.52s
+     Running tests/migration_cli.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_cli-d18f97f227c0b2f4)
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 153.38s
+     Running tests/migration_family_plan.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_family_plan-565f4d61320c1935)
+test result: ok. 38 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.70s
+     Running tests/migration_hf_artifact_cli.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_hf_artifact_cli-f16aef2066c4070e)
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+     Running tests/migration_hf_artifact_controls.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_hf_artifact_controls-22cd6ae8249d4b01)
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+     Running tests/migration_hf_converted_artifact.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_hf_converted_artifact-cad33f71ce61b635)
+test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+     Running tests/migration_lifecycle.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_lifecycle-5d4c82e4e205f4a6)
+test agent_live_coding_fixture::actual_shared_helper_retains_answer_and_coding_tool_event_requirements ... FAILED
+test agent_live_coding_fixture::actual_helper_preserves_file_driven_goose_and_isolated_pi_verification ... FAILED
+test build_product::development::actual_development_product_normalizes_documented_named_recipe_arch_arguments ... FAILED
+test build_product::development::actual_development_product_builds_skippy_runtime_cli_then_mesh_host ... FAILED
+test build_product::development::actual_linux_entry_rejects_unknown_option_before_product_side_effects ... FAILED
+test build_product::host::actual_host_profiles_stamp_sha_only_for_nonrelease_builds ... FAILED
+test agent_live_coding_fixture::guarded_shared_helper_refuses_unchanged_source_and_constant_visible_answers_before_answer_validation ... FAILED
+test build_product::host::neutral_release_host_features_are_backend_independent_of_legacy_wallet_selection ... FAILED
+test build_product::host::release_entry_delegates_profile_to_canonical_host ... FAILED
+test build_product::host::unsupported_static_host_is_rejected_before_ui_or_cargo ... FAILED
+test canary_workflow_contract::actual_scheduled_alert_reconciles_first_failure_repeated_failure_and_recovery_with_finite_api ... FAILED
+test compute_changes_justfiles::compute_changes_justfiles_backend_attributes_and_two_sided_recipe_hunks_are_backend_inputs ... FAILED
+test compute_changes_justfiles::compute_changes_justfiles_exported_backend_assignment_is_an_input ... FAILED
+test compute_changes_justfiles::compute_changes_justfiles_global_assignments_follow_cross_import_backend_use ... FAILED
+test compute_changes_justfiles::compute_changes_justfiles_light_assignment_after_backend_recipe_stays_light ... FAILED
+test compute_changes_justfiles::compute_changes_justfiles_nested_added_deleted_import_and_root_changes_preserve_policy ... FAILED
+test compute_changes_justfiles::compute_changes_justfiles_pr_old_side_uses_merge_base_after_base_branch_advances ... FAILED
+test compute_changes_justfiles::compute_changes_justfiles_recipe_free_settings_exports_and_unknown_sources_fail_open ... FAILED
+test compute_changes_justfiles::compute_changes_justfiles_standalone_quantize_build_and_release_select_backend ... FAILED
+test compute_changes_justfiles::compute_changes_justfiles_unreadable_revision_and_unknown_change_status_fail_open ... FAILED
+test compute_changes_justfiles::event_range::push_diff_includes_earlier_commits_and_uses_payload_head_not_checkout_head ... FAILED
+test compute_changes_justfiles::event_range::push_unknown_or_zero_event_history_and_manual_dispatch_fail_open ... FAILED
+test competitive_run_native::competitive_matrix_actual_cli_executes_complete_ladder_and_refuses_corrupted_resume ... FAILED
+test canary_mode_dispatch::all_five_admitted_modes_use_actual_typed_timeout_and_preserve_child_status ... FAILED
+test competitive_cell_native::competitive_workers_interrupt_actual_held_readiness_before_forced_cleanup ... FAILED
+test cache_matrix_cli::zero_and_missing_warm_usage_retain_comparisons_and_exploration_never_invents_a_hit ... FAILED
+test daemon::framing::d13_short_chunk ... FAILED
+test family_build_dispatch::actual_build_dispatch_uses_frozen_controller_wrapper_and_preserves_selected_source ... FAILED
+test cache_family_full_matrix_cli::cache_matrix_actual_full_causal_later_arm_cancellation_preserves_prior_evidence ... FAILED
+test daemon::additional::d05_each_malformed_or_mismatched_status_fails_cli ... FAILED
+test interruption::migration_lifecycle_interrupt_repeated_during_cancelled_cleanup ... FAILED
+test interruption::migration_lifecycle_interrupt_stubborn_tree_is_forced_after_repeated_interrupts ... FAILED
+test just_automation_argv::actual_just_automation_recipe_accepts_no_args_and_blocks_binary_on_bootstrap_failure ... FAILED
+test just_automation_argv::actual_just_automation_recipe_preserves_empty_and_shell_sensitive_arguments ... FAILED
+test just_layout_contracts::just_layout_actual_facade_keeps_flat_imports_recipe_owners_and_native_visibility ... FAILED
+test just_layout_contracts::just_layout_recipe_move_preserves_native_parse_but_refuses_wrong_owner ... FAILED
+test just_layout_contracts::just_layout_import_reorder_and_default_change_are_refused ... FAILED
+test just_layout_contracts::just_layout_private_facade_exposure_is_refused_by_native_metadata_and_summary ... FAILED
+test just_layout_contracts::product_behaviors::just_layout_short_products_preserve_independent_mesh_and_composition_order ... FAILED
+test just_layout_contracts::product_behaviors::just_layout_quality_windows_skips_only_unix_conformance_then_runs_portable_checks ... FAILED
+test just_layout_contracts::product_behaviors::just_layout_exemplar_packages_selected_cargo_artifact_and_refuses_missing_output ... FAILED
+test lld_shell_contract::lld_shell_contract_native_with_lld_probes_before_command_and_preserves_operator_environment ... FAILED
+test macos_deployment_target::actual_just_facade_exports_default_empty_and_explicit_override ... FAILED
+test native_release_recipes::native_release_bundle_preserves_flavor_arch_version_and_output_arguments ... FAILED
+test native_release_recipes::native_release_recipes_aarch_cuda_boundary_detection_and_target_are_preserved ... FAILED
+test native_release_recipes::native_release_recipes_bundle_copies_product_and_checksum_not_host_binary ... FAILED
+test native_release_recipes::native_release_recipes_execute_runtime_then_skippy_then_mesh_for_all_six_products ... FAILED
+test native_release_recipes::native_release_recipes_platform_default_is_metal_on_darwin_and_cpu_elsewhere ... FAILED
+test native_release_recipes::native_release_recipes_runtime_arguments_survive_empty_defaults_under_nounset ... FAILED
+test native_release_recipes::native_release_recipes_windows_select_dynamic_hosts_and_cuda12_pascal_default ... FAILED
+test native_release_recipes::native_release_recipes_x86_cuda_boundary_detection_and_override_reach_packager ... FAILED
+test native_sdk_restore::kotlin_consumer::kotlin_actual_consumer_refuses_corrupt_or_extra_sdk_upload_before_client ... FAILED
+test native_sdk_restore::kotlin_consumer::kotlin_actual_consumer_propagates_runtime_and_client_failures_and_cleans_extraction ... FAILED
+test native_sdk_restore::kotlin_consumer::kotlin_actual_consumer_refuses_invalid_sdk_identity_before_runtime_or_client ... FAILED
+test native_sdk_restore::kotlin_consumer::kotlin_actual_consumer_stops_before_client_on_console_build_or_argument_failure ... FAILED
+test native_sdk_restore::kotlin_consumer::kotlin_actual_consumer_uses_verified_sdk_library_and_selected_host_reuse ... FAILED
+test native_sdk_restore::kotlin_consumer::kotlin_actual_handoff_body_failure_propagates_and_cleans_the_verified_library ... FAILED
+test native_sdk_restore::kotlin_consumer::kotlin_actual_handoff_body_keeps_spaces_quotes_and_dollar_in_repository_path_literal ... FAILED
+test native_sdk_restore::swift_consumer::swift_actual_handoff_keeps_literal_root_and_restores_producer_archive_bytes ... FAILED
+test native_sdk_restore::swift_consumer::swift_actual_handoff_propagates_client_failure_after_verified_restore ... FAILED
+test native_sdk_restore::swift_consumer::swift_actual_handoff_refuses_archive_escape_before_client_and_preserves_sentinel ... FAILED
+test native_sdk_restore::swift_consumer::swift_actual_handoff_stops_on_artifact_component_failure ... FAILED
+test opencode_coding_fixture::actual_adapter_refuses_unchanged_source_and_visible_answer_constants ... FAILED
+test opencode_coding_fixture::actual_adapter_setup_and_verifier_accept_file_driven_solution_despite_changed_visible_tests ... FAILED
+test parity_local_plan_cli::boundary_selection::parity_frontdoor_publishes_source_bound_next_gap_and_refuses_stale_runnable_gap ... FAILED
+test parity_local_plan_cli::parity_frontdoor_actual_cli_composes_full_source_roster_offline_defaults_and_retained_run ... FAILED
+test parity_local_plan_cli::parity_frontdoor_actual_cli_refuses_wrong_controller_and_unpinned_outside_cache ... FAILED
+test pr_sibling_cancellation::sibling_monitor_is_protected_and_pr_entrypoints_have_no_actions_authority ... FAILED
+test required_sdk_environment_admission::embedding_admission_defers_execution_to_supervised_client_and_nonembedding_needs_no_sdk ... FAILED
+test runner_cleanup_contracts::actual_cleanup_replay_removes_owned_and_missing_worktrees_and_keeps_unrelated_registration ... FAILED
+test runner_cleanup_contracts::actual_cleanup_locked_replay_worktree_refusal_preserves_file_targets_and_registration ... FAILED
+test runtime_events_gate::child_failure_remains_failure_without_an_executed_marker ... FAILED
+test source_layout_action::workflows::website_just_evaluation_and_workflow_environments_use_the_resolved_directory ... FAILED
+test repair_family_plan::actual_repair_cache_caller_uses_selected_root_full_plan_256_and_certificate_plan_one ... FAILED
+test repair_family_plan::actual_verify_preimport_cache_uses_frozen_typed_owner_and_refuses_corrupt_cache ... FAILED
+test verification_source_cli::copied_plan_step_revalidates_after_failed_child_and_preserves_clean_child_status ... FAILED
+test result: FAILED. 1019 passed; 76 failed; 10 ignored; 0 measured; 0 filtered out; finished in 185.20s
+     Running tests/migration_models.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_models-fbe7d9bb1976bdce)
+test result: ok. 27 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.63s
+     Running tests/migration_native_fixtures.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_native_fixtures-8c5bbaa4b62dc70e)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.35s
+     Running tests/migration_native_generator.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_native_generator-263fde43b9d7da40)
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.72s
+     Running tests/migration_native_policy.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_native_policy-d20e2195eacbc364)
+test result: ok. 25 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.61s
+     Running tests/migration_optional_isolation.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_optional_isolation-ac3a03a520692499)
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.40s
+     Running tests/migration_optional_observations.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_optional_observations-349e106f649b8212)
+test actual_research_caller_fragments_delegate_and_preserve_fallbacks ... FAILED
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+     Running tests/migration_package_source_version.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_package_source_version-cb5d27b373933dc8)
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.45s
+     Running tests/migration_patch_bytes.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_patch_bytes-54ad79965a4f02e2)
+test result: ok. 35 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+     Running tests/migration_patch_shards.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_patch_shards-b3911de53c98fbbd)
+test result: ok. 31 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+     Running tests/migration_prepared_inputs.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_prepared_inputs-0c5e286936876bc5)
+test result: ok. 67 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.38s
+     Running tests/migration_process.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_process-adb66286cbb299bb)
+test result: ok. 71 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.36s
+     Running tests/migration_product.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_product-61ec16dcdcf2b131)
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.47s
+     Running tests/migration_release.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_release-87b09af11fb26d08)
+test notes_generate::migration_release_generate_keeps_deterministic_notes_when_agent_plan_is_invalid ... FAILED
+test notes_generate::migration_release_generate_ignores_stale_agent_plan_after_failed_review ... FAILED
+test notes_generate::migration_release_generate_rejects_unapproved_publication_after_render ... FAILED
+test notes_generate::migration_release_generate_times_out_agent_review_and_keeps_deterministic_notes ... FAILED
+test result: FAILED. 34 passed; 4 failed; 0 ignored; 0 measured; 0 filtered out; finished in 90.34s
+     Running tests/migration_report_contract.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_report_contract-a8a2a208b6ae474e)
+test result: ok. 13 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.98s
+     Running tests/migration_report_safety.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_report_safety-785ef8bae045fc74)
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+     Running tests/migration_repository.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_repository-c60135d1f5ac66e0)
+test sdk_isolation_contract::sdk_four_clients_keep_only_ecosystem_imports_and_isolated_actual_invocations ... FAILED
+test sdk_isolation_contract::sdk_setup_keeps_closed_class_project_locks_and_preserved_required_cadence ... FAILED
+test result: FAILED. 38 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 20.55s
+     Running tests/migration_run_family.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_run_family-825a74c2e2089b61)
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.63s
+     Running tests/migration_stability.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_stability-b6bdbaecfe36b949)
+test result: ok. 28 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.98s
+     Running tests/migration_workload_oracle_cli.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_workload_oracle_cli-265b0a19bc95bdb3)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+     Running tests/migration_xcframework_cli.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/migration_xcframework_cli-f32e98639936851b)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+     Running tests/opencode_config_adapter.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/opencode_config_adapter-79e2348d8844cc11)
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+     Running tests/opencode_fixture_evidence.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/opencode_fixture_evidence-f3b4410f47ec2d4d)
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+     Running tests/prepared_source.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/prepared_source-6d5296018f505e13)
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.34s
+     Running tests/release_inventory_evidence.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/release_inventory_evidence-2c179907afa9d096)
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.18s
+     Running tests/release_inventory_provenance.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/release_inventory_provenance-05eeb603d856a6ce)
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 18.16s
+     Running tests/release_inventory_publication.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/release_inventory_publication-9c6462fdc7ff1377)
+test public_contracts::release_inventory_publication_native_just_positional_facade_preserves_argv_and_failure ... FAILED
+test result: FAILED. 16 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 9.72s
+     Running tests/replay_acceptance_gates.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/replay_acceptance_gates-9721f4bdace59685)
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+     Running tests/replay_arm_pass.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/replay_arm_pass-3d1c268f74fbbcad)
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s
+     Running tests/replay_build_arm.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/replay_build_arm-1f1d0e93c298326d)
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.64s
+     Running tests/replay_context_preflight.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/replay_context_preflight-b38d1fc9608c93b3)
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.60s
+     Running tests/replay_external_engines.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/replay_external_engines-95d14d94471d16a7)
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.33s
+     Running tests/replay_external_run.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/replay_external_run-356e4035da616636)
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.20s
+     Running tests/replay_history.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/replay_history-c624c1c297f340a6)
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.31s
+     Running tests/replay_history_hub.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/replay_history_hub-457ea73b9e506d2f)
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.52s
+     Running tests/replay_interruption.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/replay_interruption-4a84fce28e248292)
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+     Running tests/replay_l3.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/replay_l3-561da2288258a535)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+     Running tests/replay_manifest_preflight.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/replay_manifest_preflight-57983cde6009429d)
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+     Running tests/replay_manual_profile.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/replay_manual_profile-14c2ccdb44752e5a)
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+     Running tests/replay_manual_resume_refs.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/replay_manual_resume_refs-9c59dd2bbc744650)
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+     Running tests/replay_model_preflight.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/replay_model_preflight-81cdc46724c5c6d4)
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+     Running tests/replay_pass_schedule.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/replay_pass_schedule-0d6fd85736eb2c99)
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+     Running tests/replay_pooled_rows.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/replay_pooled_rows-a0375c739a83a58a)
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+     Running tests/replay_progress.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/replay_progress-9e35082d7442af00)
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s
+     Running tests/replay_publication_prepare.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/replay_publication_prepare-a6b1f58ae7cf7953)
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+     Running tests/replay_report.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/replay_report-d3bc9a5dd0a5c360)
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+     Running tests/replay_retirement.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/replay_retirement-5486fa97b19b0e0b)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+     Running tests/replay_run_execution.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/replay_run_execution-d7e90af3c628094a)
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.53s
+     Running tests/replay_server_cell.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/replay_server_cell-51667d2f980f54c9)
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+     Running tests/replay_session_evidence.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/replay_session_evidence-b1d054295dbcb16b)
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.09s
+     Running tests/replay_trajectory_execution.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/replay_trajectory_execution-3a0ff21e5d000a59)
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+     Running tests/swift_api_checksum.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/swift_api_checksum-8980ba1af3e55f8b)
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+     Running tests/swift_privacy_adapter.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/swift_privacy_adapter-07b5cea1b87cdc76)
+test emits_only_template_success_when_framework_option_is_absent ... FAILED
+test forwards_exact_raw_stderr_before_reporting_native_failure ... FAILED
+test forwards_raw_diagnostics_when_native_stderr_contains_credentials ... FAILED
+test interleaves_lint_when_all_embedded_bytes_match ... FAILED
+test lifecycle::cancels_owned_descendant_without_stopping_unrelated_sentinel ... FAILED
+test lifecycle::fails_without_success_output_when_template_native_lint_times_out ... FAILED
+test accepts_embedded_file_symlink_without_following_directory_symlinks ... FAILED
+test lifecycle::fails_without_success_output_when_raw_capture_exceeds_cap ... FAILED
+test lifecycle::reports_unavailable_raw_stderr_without_substituting_partial_diagnostics ... FAILED
+test lifecycle::times_out_owned_descendant_without_stopping_unrelated_sentinel ... FAILED
+test retains_template_success_when_framework_has_no_embedding ... FAILED
+test retains_template_success_when_framework_is_missing ... FAILED
+test stops_before_embedded_lint_when_bytes_differ ... FAILED
+test retains_template_success_when_second_lint_fails ... FAILED
+test emits_no_success_when_template_native_lint_fails ... FAILED
+test launches_no_child_when_template_policy_is_invalid ... FAILED
+test preserves_first_lint_failure_before_later_byte_difference ... FAILED
+test result: FAILED. 1 passed; 17 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+     Running tests/swift_producer_environment.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/swift_producer_environment-b6056293211aca7c)
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.28s
+     Running tests/workload_certify_contract.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/workload_certify_contract-11ae4ead0f36c33e)
+test executable_embedding_sdk_admission_defers_import_to_supervised_client ... FAILED
+test result: FAILED. 9 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.51s
+     Running tests/workload_oracle_producer_contract.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/workload_oracle_producer_contract-204fe2119e419a8f)
+test review_regressions::regression_inkling_weight_and_metadata_vocab_fallbacks_stay_consistent ... FAILED
+test review_regressions::regression_generated_tensor_guard_precedes_preparation_and_rejects_bad_index_membership ... FAILED
+test result: FAILED. 22 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.57s
+     Running tests/workload_start_retry.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/workload_start_retry-46e0aa69d5f36ab6)
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s

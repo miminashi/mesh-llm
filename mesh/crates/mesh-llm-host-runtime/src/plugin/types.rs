@@ -1,7 +1,7 @@
 use super::proto;
 use super::startup::PluginStartupSummary;
 use super::{PluginWebUiManifestOverview, PluginWebUiState};
-use crate::logging::policy::is_http_url;
+use crate::logging::policy::redact_http_url;
 use serde::Serialize;
 use std::future::Future;
 use std::pin::Pin;
@@ -212,9 +212,9 @@ impl PluginEndpointSummary {
     /// verbatim for local consumers that reconstruct the transport.
     pub(crate) fn redacted_for_network(mut self) -> Self {
         if let Some(address) = self.address.as_deref()
-            && is_http_url(address)
+            && let Some(redacted) = redact_http_url(address)
         {
-            self.address = Some(crate::logging::policy::redact_url_query(address));
+            self.address = Some(redacted);
         }
         if let Some(detail) = self.detail.as_deref() {
             self.detail = Some(crate::logging::policy::redact_urls_in_text(detail));
@@ -343,6 +343,27 @@ mod tests {
             !address.contains("abc123"),
             "api_key leaked for uppercase scheme: {address}"
         );
+    }
+
+    #[test]
+    fn leading_whitespace_address_is_redacted_for_network() {
+        // The url parser strips leading whitespace, so the plugin endpoint is
+        // probed and dialed as a normal HTTP URL; it must be redacted as one.
+        let redacted = summary_with(
+            Some(" https://alice:s3cret@host:8000/v1?api_key=abc123"),
+            None,
+        )
+        .redacted_for_network();
+        let address = redacted.address.expect("address present");
+        assert!(
+            !address.contains("alice:s3cret"),
+            "userinfo leaked for leading whitespace: {address}"
+        );
+        assert!(
+            !address.contains("abc123"),
+            "api_key leaked for leading whitespace: {address}"
+        );
+        assert!(address.contains("host:8000"), "host lost: {address}");
     }
 
     #[test]

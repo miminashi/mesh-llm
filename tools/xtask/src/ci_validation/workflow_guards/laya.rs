@@ -271,6 +271,27 @@ fn laya_step(job: &Node) -> DynResult<&Node> {
     )?
     .1)
 }
+// The Hugging Face token only serves the model restore inside the Laya smoke
+// action. A job-level binding would also hand it to checkout, the source-bound
+// `just automation-bootstrap` build (dependency build scripts included),
+// admission and cleanup, so only the action step may carry it.
+fn model_token_scope(job: &Node, steps: &[Node], invoke: usize) -> DynResult<()> {
+    let binds = |node: &Node| {
+        node.get("env")
+            .is_some_and(|env| env.get("HF_TOKEN").is_some())
+    };
+    if binds(job) {
+        return Err("Laya smoke must not bind HF_TOKEN on the whole job".into());
+    }
+    if steps
+        .iter()
+        .enumerate()
+        .any(|(index, step)| index != invoke && binds(step))
+    {
+        return Err("Laya smoke HF_TOKEN must reach only the Laya smoke action step".into());
+    }
+    Ok(())
+}
 fn row(job: &Node, backend: &str, device: &str, plan: &str, smoke: &str) -> DynResult<()> {
     let qualification = match device {
         "Vulkan0" => " && needs.gpu_runner_gate.outputs.vulkan_enabled == 'true'",
@@ -306,6 +327,7 @@ fn row(job: &Node, backend: &str, device: &str, plan: &str, smoke: &str) -> DynR
     let checkout = h::checkout(steps, "${{ inputs.source_sha }}", None)?;
     let (invoke, action) = h::step(steps, "uses", "./.github/actions/run-laya-product-smoke")?;
     h::before(checkout, invoke)?;
+    model_token_scope(job, steps, invoke)?;
     let inputs = h::member(action, "with")?;
     h::binding(inputs, "expected_backend", backend)?;
     h::binding(inputs, "device", device)?;
@@ -466,6 +488,62 @@ mod tests {
             .unwrap();
         h::replace(step, &["with", "device"], Node::Scalar("CPU".into()));
         assert!(platforms(&nodes).is_err());
+    }
+    fn bind_model_token(node: &mut Node) {
+        let Node::Map(fields) = node else {
+            unreachable!()
+        };
+        if !fields.iter().any(|(name, _)| name == "env") {
+            fields.push(("env".into(), Node::Map(Vec::new())));
+        }
+        let Node::Map(env) = h::mutable(node, "env") else {
+            unreachable!()
+        };
+        env.push((
+            "HF_TOKEN".into(),
+            Node::Scalar("${{ secrets.HF_TOKEN }}".into()),
+        ));
+    }
+    #[test]
+    fn model_token_reaches_only_the_laya_smoke_action_step() {
+        for (workflow, job) in [
+            ("ci-linux-product-smoke-slice.yml", "laya_cpu"),
+            ("ci-linux-product-smoke-slice.yml", "laya_cuda"),
+            ("ci-linux-product-smoke-slice.yml", "laya_vulkan"),
+            ("ci-linux-product-smoke-slice.yml", "laya_rocm"),
+            ("ci-macos-product-smoke-slice.yml", "laya_metal"),
+        ] {
+            // A job-level binding hands the token to every step again.
+            let mut nodes = workflows();
+            bind_model_token(h::mutable(
+                h::mutable(nodes.get_mut(workflow).unwrap(), "jobs"),
+                job,
+            ));
+            assert!(platforms(&nodes).is_err(), "{job}: job-level token");
+            // So does a binding on checkout, preparation, admission or cleanup.
+            let pristine = workflows();
+            let others: Vec<usize> = h::steps(h::job(&pristine[workflow], job).unwrap())
+                .unwrap()
+                .iter()
+                .enumerate()
+                .filter(|(_, step)| {
+                    super::super::field(step, "uses")
+                        != Some("./.github/actions/run-laya-product-smoke")
+                })
+                .map(|(index, _)| index)
+                .collect();
+            assert!(!others.is_empty());
+            for index in others {
+                let mut nodes = workflows();
+                let job_node =
+                    h::mutable(h::mutable(nodes.get_mut(workflow).unwrap(), "jobs"), job);
+                let Node::Seq(steps) = h::mutable(job_node, "steps") else {
+                    unreachable!()
+                };
+                bind_model_token(&mut steps[index]);
+                assert!(platforms(&nodes).is_err(), "{job}: token on step {index}");
+            }
+        }
     }
     #[test]
     fn gpu_phase_floor_preserves_larger_inputs_and_cannot_leak_to_cpu() {

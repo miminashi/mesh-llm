@@ -1,0 +1,191 @@
+17:01:56 avail=29544MB top=claude 316MB
+17:02:01 avail=29433MB top=claude 321MB
+17:02:06 avail=29380MB top=claude 321MB
+17:02:11 avail=29392MB top=claude 320MB
+17:02:16 avail=28750MB top=rustc 640MB
+17:02:21 avail=28701MB top=rustc 836MB
+17:02:26 avail=28639MB top=rustc 1026MB
+17:02:31 avail=28577MB top=rustc 1230MB
+17:02:36 avail=28495MB top=rustc 1402MB
+17:02:41 avail=28427MB top=rustc 1599MB
+17:02:46 avail=28154MB top=rustc 1177MB
+17:02:52 avail=27831MB top=rustc 1480MB
+17:02:57 avail=27815MB top=rustc 1560MB
+17:03:02 avail=27814MB top=rustc 1605MB
+17:03:07 avail=27714MB top=rustc 1689MB
+17:03:12 avail=27378MB top=rustc 1863MB
+17:03:17 avail=27191MB top=rustc 2057MB
+17:03:22 avail=27038MB top=rustc 2168MB
+17:03:27 avail=26893MB top=rustc 2303MB
+17:03:32 avail=26564MB top=rustc 2470MB
+17:03:37 avail=26261MB top=rustc 2507MB
+17:03:42 avail=25807MB top=rustc 2636MB
+17:03:47 avail=25334MB top=rustc 2975MB
+17:03:52 avail=25092MB top=rustc 3026MB
+17:03:58 avail=24683MB top=rustc 3068MB
+17:04:03 avail=24263MB top=rustc 3122MB
+17:04:08 avail=23735MB top=rustc 3202MB
+17:04:13 avail=23300MB top=rustc 3305MB
+17:04:18 avail=22291MB top=rustc 3402MB
+17:04:23 avail=21884MB top=rustc 3513MB
+17:04:28 avail=21525MB top=rustc 3561MB
+17:04:33 avail=21253MB top=rustc 3590MB
+17:04:38 avail=21127MB top=rustc 3611MB
+17:04:43 avail=21058MB top=rustc 3643MB
+17:04:48 avail=20952MB top=rustc 3687MB
+17:04:53 avail=20633MB top=rustc 3819MB
+17:04:59 avail=20452MB top=rustc 3804MB
+17:05:04 avail=20232MB top=rustc 3908MB
+17:05:09 avail=19695MB top=rustc 4266MB
+17:05:14 avail=19297MB top=rustc 3978MB
+17:05:19 avail=21214MB top=ld 1515MB
+17:05:24 avail=20698MB top=ld 1600MB
+17:05:29 avail=20288MB top=ld 1677MB
+17:05:35 avail=19955MB top=ld 1716MB
+17:05:40 avail=19758MB top=ld 1738MB
+17:05:45 avail=19395MB top=ld 1804MB
+17:05:50 avail=18970MB top=ld 1875MB
+17:05:55 avail=18654MB top=ld 1925MB
+17:06:00 avail=18232MB top=ld 1984MB
+17:06:05 avail=17920MB top=ld 2036MB
+17:06:10 avail=17508MB top=ld 2089MB
+17:06:15 avail=17222MB top=ld 2151MB
+17:06:20 avail=16925MB top=ld 2200MB
+17:06:25 avail=16701MB top=ld 2232MB
+17:06:31 avail=16397MB top=ld 2272MB
+17:06:36 avail=16041MB top=ld 2303MB
+17:06:41 avail=15055MB top=ld 2377MB
+17:06:46 avail=14165MB top=ld 2950MB
+17:06:51 avail=13612MB top=ld 3143MB
+17:06:56 avail=13042MB top=ld 3258MB
+17:07:01 avail=12650MB top=ld 3323MB
+17:07:06 avail=12378MB top=ld 3372MB
+17:07:11 avail=11766MB top=ld 3485MB
+17:07:17 avail=11365MB top=ld 3566MB
+17:07:22 avail=10776MB top=ld 3670MB
+17:07:27 avail=9704MB top=ld 3883MB
+17:07:32 avail=8538MB top=ld 4160MB
+17:07:40 avail=8483MB top=ld 4181MB
+17:07:45 avail=7611MB top=ld 4427MB
+17:07:50 avail=6770MB top=ld 4546MB
+17:07:55 avail=6630MB top=ld 4603MB
+17:08:00 avail=6545MB top=ld 4642MB
+17:08:05 avail=6471MB top=ld 4667MB
+17:08:11 avail=6448MB top=ld 4681MB
+17:08:16 avail=6351MB top=ld 4696MB
+17:08:21 avail=6277MB top=ld 4712MB
+17:08:26 avail=6272MB top=ld 4712MB
+17:08:35 avail=5634MB top=ld 4730MB
+17:08:41 avail=3275MB top=ld 4890MB
+17:08:46 avail=2533MB top=ld 4995MB
+17:08:51 avail=2320MB top=ld 4999MB
+17:08:57 avail=2179MB top=ld 5000MB
+17:09:02 avail=2069MB top=ld 5000MB
+17:09:10 avail=1646MB ld=5
+17:09:16 avail=1612MB ld=5
+17:09:21 avail=1596MB ld=5
+17:09:26 avail=1557MB ld=5
+17:09:31 avail=1520MB ld=5
+17:09:36 avail=1553MB ld=5
+17:09:48 avail=1471MB ld=5
+17:10:05 avail=1470MB ld=5
+17:11:11 avail=1431MB ld=5
+17:11:39 avail=1441MB ld=5
+17:11:56 avail=1464MB ld=5
+17:12:06 avail=1459MB ld=5
+17:12:39 avail=1474MB ld=5
+17:12:56 avail=1491MB ld=5
+17:13:05 avail=1504MB ld=5
+17:13:19 avail=1486MB ld=5
+17:13:26 avail=1507MB ld=5
+17:13:38 avail=1527MB ld=5
+17:14:15 avail=1516MB ld=5
+17:14:43 avail=1545MB ld=5
+17:15:20 avail=1560MB ld=5
+17:15:46 avail=1575MB ld=5
+17:16:25 avail=1555MB ld=5
+17:16:43 avail=1585MB ld=5
+17:16:52 avail=1603MB ld=5
+17:17:15 avail=1610MB ld=5
+17:17:41 avail=1626MB ld=5
+17:18:01 avail=1656MB ld=5
+17:18:20 avail=1652MB ld=5
+17:18:49 avail=1689MB ld=5
+17:19:08 avail=1710MB ld=5
+17:19:20 avail=1746MB ld=5
+17:19:25 avail=1582MB ld=5
+17:19:30 avail=27425MB ld=0
+17:19:35 avail=27517MB ld=0
+17:19:41 avail=27509MB ld=0
+17:19:46 avail=27541MB ld=0
+17:19:51 avail=27546MB ld=0
+17:19:56 avail=27533MB ld=0
+17:20:01 avail=27534MB ld=0
+17:20:06 avail=27562MB ld=0
+17:20:11 avail=27585MB ld=0
+17:20:16 avail=27588MB ld=0
+17:20:21 avail=27506MB ld=0
+17:20:26 avail=27488MB ld=0
+17:20:31 avail=27465MB ld=0
+17:20:36 avail=27415MB ld=0
+17:20:41 avail=27410MB ld=0
+17:20:47 avail=27273MB ld=0
+17:20:52 avail=26693MB ld=0
+17:20:57 avail=26551MB ld=0
+17:21:02 avail=26457MB ld=0
+17:21:07 avail=26292MB ld=0
+17:21:12 avail=26196MB ld=0
+17:21:17 avail=25906MB ld=0
+17:21:22 avail=25660MB ld=0
+17:21:27 avail=25684MB ld=0
+17:21:32 avail=25707MB ld=0
+17:21:37 avail=25695MB ld=0
+17:21:42 avail=25690MB ld=0
+17:21:47 avail=25682MB ld=0
+17:21:52 avail=25598MB ld=0
+17:21:58 avail=25320MB ld=0
+17:22:03 avail=25103MB ld=0
+17:22:08 avail=24928MB ld=0
+17:22:13 avail=24628MB ld=0
+17:22:18 avail=24670MB ld=0
+17:22:23 avail=24383MB ld=0
+17:22:28 avail=24226MB ld=0
+17:22:33 avail=24215MB ld=0
+17:22:38 avail=24120MB ld=0
+17:22:43 avail=24021MB ld=0
+17:22:48 avail=23871MB ld=0
+17:22:53 avail=23801MB ld=0
+17:22:58 avail=23687MB ld=0
+17:23:04 avail=23704MB ld=0
+17:23:09 avail=22211MB ld=0
+17:23:14 avail=21934MB ld=0
+17:23:19 avail=21802MB ld=0
+17:23:24 avail=21651MB ld=0
+17:23:29 avail=21541MB ld=0
+17:23:34 avail=21443MB ld=0
+17:23:39 avail=21320MB ld=0
+17:23:44 avail=21161MB ld=0
+17:23:49 avail=20103MB ld=0
+17:23:54 avail=19574MB ld=0
+17:24:00 avail=21816MB ld=0
+17:24:05 avail=21840MB ld=0
+17:24:10 avail=21850MB ld=0
+17:24:15 avail=21830MB ld=0
+17:24:20 avail=21832MB ld=0
+17:24:25 avail=21801MB ld=0
+17:24:30 avail=21806MB ld=0
+17:24:35 avail=21786MB ld=0
+17:24:40 avail=21793MB ld=0
+17:24:45 avail=21009MB ld=0
+17:24:50 avail=25400MB ld=0
+17:24:56 avail=25408MB ld=0
+17:25:01 avail=25410MB ld=0
+17:25:06 avail=25437MB ld=0
+17:25:11 avail=24814MB ld=0
+17:25:16 avail=24786MB ld=0
+17:25:21 avail=24743MB ld=0
+17:25:26 avail=27235MB ld=0
+17:25:32 avail=27232MB ld=0
+17:25:37 avail=27280MB ld=0
+17:25:42 avail=27242MB ld=0
+17:25:48 avail=27261MB ld=0

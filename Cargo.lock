@@ -5035,6 +5035,7 @@ dependencies = [
  "ed25519-dalek",
  "hex",
  "keyring",
+ "libc",
  "rand 0.10.2",
  "serde",
  "serde_json",

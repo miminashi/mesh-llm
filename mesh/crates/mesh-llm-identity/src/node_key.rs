@@ -1,4 +1,4 @@
-use std::io::Write;
+use std::io::{Read, Write};
 use std::path::{Path, PathBuf};
 
 use crate::CryptoError;
@@ -42,9 +42,11 @@ pub fn home_node_key_path() -> Result<PathBuf, CryptoError> {
 }
 
 pub fn load_node_key_bytes_from_path(path: &Path) -> Result<[u8; NODE_KEY_BYTES], CryptoError> {
-    ensure_private_node_key_file(path)?;
-
-    let hex = std::fs::read_to_string(path)?;
+    // Read through the descriptor that passed the checks, so that swapping
+    // the path for a symlink afterwards cannot make us read another file.
+    let mut file = open_private_node_key_file(path)?;
+    let mut hex = String::new();
+    file.read_to_string(&mut hex)?;
     let bytes = hex::decode(hex.trim()).map_err(|err| CryptoError::InvalidKeyMaterial {
         reason: format!("bad node key hex in {}: {err}", path.display()),
     })?;
@@ -70,10 +72,10 @@ pub fn save_node_key_bytes_to_path(
     })?;
     ensure_private_node_key_dir(parent)?;
     if path.exists() {
-        ensure_private_node_key_file(path)?;
+        open_private_node_key_file(path)?;
     }
     write_bytes_atomically(path, hex::encode(key_bytes).as_bytes())?;
-    ensure_private_node_key_file(path)?;
+    open_private_node_key_file(path)?;
     Ok(())
 }
 
@@ -140,33 +142,55 @@ fn create_private_node_key_dir(path: &Path) -> std::io::Result<()> {
     std::fs::create_dir(path)
 }
 
-#[cfg(unix)]
-fn ensure_private_node_key_file(path: &Path) -> Result<(), CryptoError> {
-    use std::os::unix::fs::PermissionsExt;
+fn not_a_regular_file(path: &Path) -> CryptoError {
+    CryptoError::InvalidKeyMaterial {
+        reason: format!("node key path {} is not a regular file", path.display()),
+    }
+}
 
-    let metadata = std::fs::symlink_metadata(path)?;
+/// Open the node key, check that it is a regular file, and make it private.
+///
+/// The type check, the permission repair and the caller's read all go
+/// through the returned descriptor. `O_NOFOLLOW` refuses a symlink at the
+/// final component and `O_NONBLOCK` keeps a FIFO from stalling the open, so
+/// swapping the path after the checks cannot redirect the chmod or the read
+/// to another file.
+#[cfg(unix)]
+fn open_private_node_key_file(path: &Path) -> Result<std::fs::File, CryptoError> {
+    use std::os::unix::fs::{OpenOptionsExt, PermissionsExt};
+
+    let file = std::fs::OpenOptions::new()
+        .read(true)
+        .custom_flags(libc::O_NOFOLLOW | libc::O_NONBLOCK | libc::O_CLOEXEC)
+        .open(path)
+        .map_err(|error| {
+            if error.raw_os_error() == Some(libc::ELOOP) {
+                not_a_regular_file(path)
+            } else {
+                CryptoError::Io(error)
+            }
+        })?;
+    #[cfg(test)]
+    tests::run_after_open_hook();
+    let metadata = file.metadata()?;
     if !metadata.file_type().is_file() {
-        return Err(CryptoError::InvalidKeyMaterial {
-            reason: format!("node key path {} is not a regular file", path.display()),
-        });
+        return Err(not_a_regular_file(path));
     }
     let mut perms = metadata.permissions();
     if perms.mode() & 0o077 != 0 {
         perms.set_mode(0o600);
-        std::fs::set_permissions(path, perms)?;
+        file.set_permissions(perms)?;
     }
-    Ok(())
+    Ok(file)
 }
 
 #[cfg(not(unix))]
-fn ensure_private_node_key_file(path: &Path) -> Result<(), CryptoError> {
+fn open_private_node_key_file(path: &Path) -> Result<std::fs::File, CryptoError> {
     let metadata = std::fs::symlink_metadata(path)?;
     if !metadata.file_type().is_file() {
-        return Err(CryptoError::InvalidKeyMaterial {
-            reason: format!("node key path {} is not a regular file", path.display()),
-        });
+        return Err(not_a_regular_file(path));
     }
-    Ok(())
+    Ok(std::fs::File::open(path)?)
 }
 
 fn write_bytes_atomically(path: &Path, bytes: &[u8]) -> Result<(), CryptoError> {
@@ -232,6 +256,25 @@ fn write_bytes_atomically(path: &Path, bytes: &[u8]) -> Result<(), CryptoError> 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    type AfterOpenHook = Box<dyn FnOnce()>;
+
+    thread_local! {
+        static AFTER_OPEN_HOOK: std::cell::RefCell<Option<AfterOpenHook>> =
+            const { std::cell::RefCell::new(None) };
+    }
+
+    /// Run `hook` once, on this thread, right after the node key is opened.
+    #[cfg(unix)]
+    fn set_after_open_hook(hook: impl FnOnce() + 'static) {
+        AFTER_OPEN_HOOK.with(|slot| *slot.borrow_mut() = Some(Box::new(hook)));
+    }
+
+    pub(super) fn run_after_open_hook() {
+        if let Some(hook) = AFTER_OPEN_HOOK.with(|slot| slot.borrow_mut().take()) {
+            hook();
+        }
+    }
 
     fn temp_node_key_path() -> PathBuf {
         let dir = std::env::temp_dir().join(format!("mesh-node-key-{}", rand::random::<u64>()));
@@ -326,6 +369,99 @@ mod tests {
 
         assert!(key_path.is_file());
         assert_eq!(load_node_key_bytes_from_path(&key_path).unwrap(), key);
+    }
+
+    #[cfg(unix)]
+    fn mode_of(path: &Path) -> u32 {
+        use std::os::unix::fs::PermissionsExt;
+
+        std::fs::metadata(path).unwrap().permissions().mode() & 0o777
+    }
+
+    #[cfg(unix)]
+    fn shared_decoy(dir: &Path) -> PathBuf {
+        use std::os::unix::fs::PermissionsExt;
+
+        let decoy = dir.join("decoy");
+        std::fs::write(&decoy, hex::encode([1u8; NODE_KEY_BYTES])).unwrap();
+        std::fs::set_permissions(&decoy, std::fs::Permissions::from_mode(0o644)).unwrap();
+        decoy
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn symlinked_node_key_is_rejected_and_target_untouched() {
+        let path = temp_node_key_path();
+        let decoy = shared_decoy(path.parent().unwrap());
+        std::os::unix::fs::symlink(&decoy, &path).unwrap();
+
+        let error = load_node_key_bytes_from_path(&path).unwrap_err();
+
+        assert!(matches!(error, CryptoError::InvalidKeyMaterial { .. }));
+        assert_eq!(mode_of(&decoy), 0o644);
+        std::fs::remove_dir_all(path.parent().unwrap()).ok();
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn path_swapped_after_open_does_not_redirect_chmod_or_read() {
+        // #16: a local user who can write the key's directory swaps the key
+        // for a symlink right after it is opened. The permission repair and
+        // the read must still act on the opened key, not the link target.
+        use std::os::unix::fs::PermissionsExt;
+
+        let path = temp_node_key_path();
+        let dir = path.parent().unwrap().to_path_buf();
+        let key = [7u8; NODE_KEY_BYTES];
+        std::fs::write(&path, hex::encode(key)).unwrap();
+        std::fs::set_permissions(&path, std::fs::Permissions::from_mode(0o644)).unwrap();
+        let decoy = shared_decoy(&dir);
+        let moved = dir.join("moved");
+        set_after_open_hook({
+            let (path, decoy, moved) = (path.clone(), decoy.clone(), moved.clone());
+            move || {
+                std::fs::rename(&path, &moved).unwrap();
+                std::os::unix::fs::symlink(&decoy, &path).unwrap();
+            }
+        });
+
+        let loaded = load_node_key_bytes_from_path(&path).unwrap();
+
+        assert_eq!(loaded, key);
+        assert_eq!(mode_of(&decoy), 0o644);
+        assert_eq!(mode_of(&moved), 0o600);
+        std::fs::remove_dir_all(dir).ok();
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn fifo_node_key_is_rejected_without_blocking() {
+        let path = temp_node_key_path();
+        let status = std::process::Command::new("mkfifo")
+            .arg(&path)
+            .status()
+            .unwrap();
+        assert!(status.success());
+
+        let error = load_node_key_bytes_from_path(&path).unwrap_err();
+
+        assert!(matches!(error, CryptoError::InvalidKeyMaterial { .. }));
+        std::fs::remove_dir_all(path.parent().unwrap()).ok();
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn loose_node_key_permissions_are_repaired() {
+        use std::os::unix::fs::PermissionsExt;
+
+        let path = temp_node_key_path();
+        let key = [5u8; NODE_KEY_BYTES];
+        std::fs::write(&path, hex::encode(key)).unwrap();
+        std::fs::set_permissions(&path, std::fs::Permissions::from_mode(0o644)).unwrap();
+
+        assert_eq!(load_node_key_bytes_from_path(&path).unwrap(), key);
+        assert_eq!(mode_of(&path), 0o600);
+        std::fs::remove_dir_all(path.parent().unwrap()).ok();
     }
 
     #[test]

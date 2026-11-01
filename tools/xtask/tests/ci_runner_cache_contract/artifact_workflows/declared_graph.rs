@@ -352,6 +352,8 @@ fn graph_actual_pr_and_main_event_census_keeps_exact_five_lane_entries() {
         "pr_auto_assign.yml".to_owned(),
         "pr_cleanup.yml".to_owned(),
         "pr_ci_canary.yml".to_owned(),
+        // miminashi/mesh-llm fork: runs on PRs in place of the upstream-only lanes.
+        "fork-ci.yml".to_owned(),
     ]);
     let expected_main = lanes
         .map(|l| format!("main_{l}.yml"))

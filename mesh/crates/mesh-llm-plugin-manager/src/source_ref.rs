@@ -180,7 +180,7 @@ fn parse_catalog_ref(input: &str) -> Result<PluginInstallRef, PluginInstallRefPa
     if !is_valid_name(name) {
         return Err(PluginInstallRefParseError::new(
             input,
-            "catalog name must contain only ASCII letters, digits, '.', '_', or '-'",
+            "catalog name must contain only ASCII letters, digits, '.', '_', or '-', and cannot be '.' or '..'",
         ));
     }
     Ok(PluginInstallRef::Catalog {
@@ -266,8 +266,13 @@ fn is_valid_github_owner(value: &str) -> bool {
             .all(|byte| byte.is_ascii_alphanumeric() || byte == b'-')
 }
 
+/// A plugin or repository name. It is also a directory name in the plugin
+/// store, so `.` and `..`, which name the store root and its parent, are not
+/// names.
 pub(crate) fn is_valid_name(value: &str) -> bool {
     !value.is_empty()
+        && value != "."
+        && value != ".."
         && value
             .bytes()
             .all(|byte| byte.is_ascii_alphanumeric() || matches!(byte, b'.' | b'_' | b'-'))
@@ -330,6 +335,25 @@ mod tests {
         let source =
             GitHubPluginSource::from_url("https://github.com/mesh-llm/cool-plugin.git").unwrap();
         assert_eq!(source.repo_slug(), "mesh-llm/cool-plugin");
+    }
+
+    #[test]
+    fn dot_names_are_not_plugin_names() {
+        for name in [".", ".."] {
+            assert!(!is_valid_name(name), "{name}");
+            assert!(parse_install_ref(name).is_err(), "{name}");
+            assert!(
+                parse_install_ref(&format!("{name}@v1.0.0")).is_err(),
+                "{name}"
+            );
+            assert!(
+                parse_install_ref(&format!("mesh-llm/{name}")).is_err(),
+                "{name}"
+            );
+        }
+        for name in ["...", ".hidden", "cool.plugin", "a..b", "Cool_Plugin-2"] {
+            assert!(is_valid_name(name), "{name}");
+        }
     }
 
     #[test]

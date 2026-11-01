@@ -1,0 +1,4 @@
+test source_ref::tests::dot_names_are_not_plugin_names ... ok
+test store::tests::dot_names_never_reach_the_store_root_or_its_parent ... ok
+test result: ok. 79 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s

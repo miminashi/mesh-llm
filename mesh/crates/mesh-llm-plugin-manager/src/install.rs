@@ -125,7 +125,7 @@ pub fn install_plugin_archive(
 ) -> Result<InstallOutcome> {
     if !is_valid_name(name) {
         bail!(
-            "local plugin name must use lowercase ASCII letters, numbers, and single '-' separators"
+            "local plugin name must contain only ASCII letters, digits, '.', '_', or '-', and cannot be '.' or '..'"
         );
     }
     if version.trim().is_empty() {

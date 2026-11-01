@@ -222,7 +222,10 @@ pub(super) fn with_plugin_store(metadata: &[InstalledPluginMetadata], test: impl
     let temp = tempfile::TempDir::new().expect("plugin store temp dir");
     let store = PluginStore::new(temp.path());
     for entry in metadata {
-        store.save(entry).expect("save plugin metadata");
+        // The store accepts only its own install path for each plugin.
+        let mut entry = entry.clone();
+        entry.install_path = store.install_path(&entry.name);
+        store.save(&entry).expect("save plugin metadata");
     }
 
     let previous = std::env::var_os("MESH_LLM_PLUGIN_DIR");

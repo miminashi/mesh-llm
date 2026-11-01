@@ -810,6 +810,45 @@ mod tests {
         );
     }
 
+    /// `.` and `..` would name the store root and its parent (by default
+    /// `~/.mesh-llm`, which holds the node key): no store operation may take
+    /// them as a plugin name.
+    #[test]
+    fn dot_names_never_reach_the_store_root_or_its_parent() {
+        let temp = TempDir::new().unwrap();
+        let parent = temp.path().join("dot-mesh-llm");
+        let root = parent.join("plugins");
+        std::fs::create_dir_all(&root).unwrap();
+        std::fs::write(parent.join("key"), b"node key").unwrap();
+        std::fs::write(parent.join(METADATA_FILE), b"{}").unwrap();
+        std::fs::write(root.join(METADATA_FILE), b"{}").unwrap();
+        let store = PluginStore::new(&root);
+        store.save(&metadata("blackboard")).unwrap();
+
+        for name in [".", ".."] {
+            assert!(store.delete(name).is_err(), "delete {name}");
+            assert!(store.try_load(name).is_err(), "try_load {name}");
+            assert!(store.load(name).is_err(), "load {name}");
+            assert!(store.save(&metadata(name)).is_err(), "save {name}");
+            assert!(
+                store.set_default_turned_off(name, true).is_err(),
+                "set_default_turned_off {name}"
+            );
+            assert!(
+                store.set_default_turned_off(name, false).is_err(),
+                "set_default_turned_off {name}"
+            );
+            assert!(!store.default_turned_off(name), "default_turned_off {name}");
+        }
+
+        assert_eq!(std::fs::read(parent.join("key")).unwrap(), b"node key");
+        assert_eq!(std::fs::read(parent.join(METADATA_FILE)).unwrap(), b"{}");
+        assert_eq!(std::fs::read(root.join(METADATA_FILE)).unwrap(), b"{}");
+        assert!(!parent.join(DEFAULT_OFF_FILE).exists());
+        assert!(!root.join(DEFAULT_OFF_FILE).exists());
+        assert_eq!(store.load("blackboard").unwrap().name, "blackboard");
+    }
+
     #[test]
     fn list_ignores_non_metadata_directories() {
         let temp = TempDir::new().unwrap();

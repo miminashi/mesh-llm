@@ -1,0 +1,3 @@
+test source_ref::tests::dot_names_are_not_plugin_names ... FAILED
+test store::tests::dot_names_never_reach_the_store_root_or_its_parent ... FAILED
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 77 filtered out; finished in 0.00s

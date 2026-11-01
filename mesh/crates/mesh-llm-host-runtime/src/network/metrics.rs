@@ -1141,9 +1141,9 @@ impl TargetKey {
     /// URL credentials and pass through verbatim.
     fn redacted_label(&self) -> String {
         if matches!(self.kind, TargetKind::Endpoint)
-            && crate::logging::policy::is_http_url(&self.label)
+            && let Some(redacted) = crate::logging::policy::redact_http_url(&self.label)
         {
-            crate::logging::policy::redact_url_query(&self.label)
+            redacted
         } else {
             self.label.clone()
         }
@@ -1358,6 +1358,44 @@ mod tests {
             "endpoint api_key leaked for uppercase scheme: {}",
             target.target
         );
+    }
+
+    #[test]
+    fn leading_whitespace_endpoint_label_is_redacted_in_snapshot() {
+        // The url parser strips leading whitespace, so such an address is
+        // probed and dialed as a normal HTTP URL; the metrics label must be
+        // redacted as one, for both successful and failed attempts.
+        for outcome in [AttemptOutcome::Success, AttemptOutcome::Unavailable] {
+            let metrics = RoutingMetrics::with_config(Duration::from_secs(3600), 8, 8);
+            metrics.record_attempt(
+                Some("gamma"),
+                AttemptTarget::Endpoint(
+                    " https://alice:s3cret@endpoint.example/v1?api_key=abc123".into(),
+                ),
+                Duration::from_millis(4),
+                Duration::from_millis(20),
+                outcome,
+                Some(5),
+            );
+
+            let snapshot = &metrics.model_snapshots()["gamma"];
+            let target = &snapshot.targets[0];
+            assert!(
+                !target.target.contains("alice:s3cret"),
+                "endpoint userinfo leaked for leading whitespace ({outcome:?}): {}",
+                target.target
+            );
+            assert!(
+                !target.target.contains("abc123"),
+                "endpoint api_key leaked for leading whitespace ({outcome:?}): {}",
+                target.target
+            );
+            assert!(
+                target.target.contains("endpoint.example"),
+                "endpoint host lost from metrics ({outcome:?}): {}",
+                target.target
+            );
+        }
     }
 
     #[test]

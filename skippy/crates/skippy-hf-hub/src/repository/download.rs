@@ -33,6 +33,21 @@ use crate::{constants, retry};
 
 pub(crate) type HFByteStream = Box<dyn Stream<Item = HFResult<bytes::Bytes>> + Send + Unpin>;
 
+/// Most that [`HFRepository::download_file_to_bytes`] reserves before any body
+/// bytes arrive. The size headers are only a hint from the server; past this
+/// the buffer grows with the bytes actually received.
+const MAX_BYTES_PREALLOCATION: usize = 8 * 1024 * 1024;
+
+/// Initial buffer capacity for an in-memory download: the expected length,
+/// clamped to `max_bytes` and to [`MAX_BYTES_PREALLOCATION`].
+fn bytes_preallocation(expected_len: Option<u64>, max_bytes: Option<u64>) -> usize {
+    let hint = expected_len.unwrap_or(0);
+    let hint = max_bytes.map_or(hint, |limit| hint.min(limit));
+    usize::try_from(hint)
+        .unwrap_or(usize::MAX)
+        .min(MAX_BYTES_PREALLOCATION)
+}
+
 /// Internal options struct used by the file download helpers.
 #[derive(Clone)]
 struct DownloadFileParams {
@@ -208,14 +223,34 @@ impl<T: RepoType> HFRepository<T> {
     async fn download_file_to_bytes_impl(
         &self,
         params: DownloadFileStreamParams,
+        max_bytes: Option<u64>,
     ) -> HFResult<bytes::Bytes> {
+        let path = params.filename.clone();
+        let too_large = |limit| HFError::ResponseTooLarge {
+            path: path.clone(),
+            limit,
+        };
+        // For a range request the size headers may describe the whole file
+        // (`X-Linked-Size`), so the requested range length is the better hint.
+        let range_len = params.range.as_ref().map(|range| range.end - range.start);
         let (content_length, stream) = self.download_file_stream_impl(params).await?;
+        let expected_len = range_len.or(content_length);
+        if let (Some(limit), Some(len)) = (max_bytes, expected_len)
+            && len > limit
+        {
+            return Err(too_large(limit));
+        }
         futures::pin_mut!(stream);
 
-        let capacity = content_length.unwrap_or(0) as usize;
-        let mut buf = bytes::BytesMut::with_capacity(capacity);
+        let mut buf = bytes::BytesMut::with_capacity(bytes_preallocation(expected_len, max_bytes));
         while let Some(chunk) = stream.next().await {
-            buf.extend_from_slice(&chunk?);
+            let chunk = chunk?;
+            if let Some(limit) = max_bytes
+                && (buf.len() as u64).saturating_add(chunk.len() as u64) > limit
+            {
+                return Err(too_large(limit));
+            }
+            buf.extend_from_slice(&chunk);
         }
         Ok(buf.freeze())
     }
@@ -1499,6 +1534,216 @@ mod fallback_tests {
     }
 }
 
+#[cfg(test)]
+mod bytes_limit_tests {
+    use std::sync::Arc;
+
+    use tokio::io::{AsyncReadExt, AsyncWriteExt};
+
+    use super::{MAX_BYTES_PREALLOCATION, bytes_preallocation};
+    use crate::{HFClientBuilder, HFError};
+
+    /// Far more than any machine can allocate; `with_capacity` of this many
+    /// bytes aborts or panics instead of returning an error.
+    const HUGE_SIZE: u64 = 1 << 62;
+
+    #[derive(Clone)]
+    struct Reply {
+        /// `X-Linked-Size` header value, if any.
+        linked_size: Option<u64>,
+        body: Vec<u8>,
+        /// Send the body with chunked transfer encoding instead of `Content-Length`.
+        chunked: bool,
+    }
+
+    #[test]
+    fn preallocation_is_capped_regardless_of_advertised_size() {
+        assert_eq!(bytes_preallocation(None, None), 0);
+        assert_eq!(bytes_preallocation(Some(10), None), 10);
+        assert_eq!(
+            bytes_preallocation(Some(HUGE_SIZE), None),
+            MAX_BYTES_PREALLOCATION
+        );
+        assert_eq!(
+            bytes_preallocation(Some(u64::MAX), None),
+            MAX_BYTES_PREALLOCATION
+        );
+        assert_eq!(bytes_preallocation(Some(HUGE_SIZE), Some(100)), 100);
+        assert_eq!(bytes_preallocation(Some(10), Some(100)), 10);
+    }
+
+    #[tokio::test]
+    async fn huge_advertised_size_does_not_preallocate() {
+        let body = b"{\"small\":true}".to_vec();
+        let endpoint = start_server(Reply {
+            linked_size: Some(HUGE_SIZE),
+            body: body.clone(),
+            chunked: false,
+        })
+        .await;
+
+        let bytes = repo(endpoint)
+            .download_file_to_bytes()
+            .filename("entry.json")
+            .send()
+            .await
+            .unwrap();
+
+        assert_eq!(bytes.as_ref(), body.as_slice());
+    }
+
+    #[tokio::test]
+    async fn advertised_size_over_max_bytes_is_rejected_before_reading() {
+        let endpoint = start_server(Reply {
+            linked_size: Some(HUGE_SIZE),
+            body: b"tiny".to_vec(),
+            chunked: false,
+        })
+        .await;
+
+        let err = repo(endpoint)
+            .download_file_to_bytes()
+            .filename("entry.json")
+            .max_bytes(1024)
+            .send()
+            .await
+            .unwrap_err();
+
+        assert!(
+            matches!(&err, HFError::ResponseTooLarge { path, limit: 1024 } if path == "entry.json"),
+            "{err:?}"
+        );
+    }
+
+    #[tokio::test]
+    async fn body_over_max_bytes_without_size_header_is_rejected() {
+        let endpoint = start_server(Reply {
+            linked_size: None,
+            body: vec![b'x'; 4096],
+            chunked: true,
+        })
+        .await;
+
+        let err = repo(endpoint)
+            .download_file_to_bytes()
+            .filename("entry.json")
+            .max_bytes(1000)
+            .send()
+            .await
+            .unwrap_err();
+
+        assert!(
+            matches!(err, HFError::ResponseTooLarge { limit: 1000, .. }),
+            "{err:?}"
+        );
+    }
+
+    #[tokio::test]
+    async fn body_within_max_bytes_is_returned() {
+        let body = vec![b'x'; 1000];
+        let endpoint = start_server(Reply {
+            linked_size: None,
+            body: body.clone(),
+            chunked: true,
+        })
+        .await;
+
+        let bytes = repo(endpoint)
+            .download_file_to_bytes()
+            .filename("entry.json")
+            .max_bytes(1000)
+            .send()
+            .await
+            .unwrap();
+
+        assert_eq!(bytes.as_ref(), body.as_slice());
+    }
+
+    #[tokio::test]
+    async fn range_within_max_bytes_ignores_whole_file_size() {
+        // `X-Linked-Size` reports the whole file even for a range request; the
+        // limit applies to the requested range, not to that header.
+        let body = b"0123".to_vec();
+        let endpoint = start_server(Reply {
+            linked_size: Some(HUGE_SIZE),
+            body: body.clone(),
+            chunked: false,
+        })
+        .await;
+
+        let bytes = repo(endpoint)
+            .download_file_to_bytes()
+            .filename("model.bin")
+            .range(0..4)
+            .max_bytes(16)
+            .send()
+            .await
+            .unwrap();
+
+        assert_eq!(bytes.as_ref(), body.as_slice());
+    }
+
+    fn repo(endpoint: String) -> crate::repository::HFRepository<crate::repository::RepoTypeModel> {
+        HFClientBuilder::new()
+            .endpoint(endpoint)
+            .build()
+            .unwrap()
+            .model("owner", "repo")
+    }
+
+    async fn start_server(reply: Reply) -> String {
+        let reply = Arc::new(reply);
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let addr = listener.local_addr().unwrap();
+        tokio::spawn(async move {
+            loop {
+                let Ok((mut socket, _)) = listener.accept().await else {
+                    return;
+                };
+                let reply = Arc::clone(&reply);
+                tokio::spawn(async move {
+                    let mut request = vec![0; 4096];
+                    let Ok(read) = socket.read(&mut request).await else {
+                        return;
+                    };
+                    let is_head = request[..read].starts_with(b"HEAD ");
+                    let response = response_bytes(&reply, is_head);
+                    let _ = socket.write_all(&response).await;
+                });
+            }
+        });
+        format!("http://{addr}")
+    }
+
+    fn response_bytes(reply: &Reply, is_head: bool) -> Vec<u8> {
+        let mut head = String::from("HTTP/1.1 200 OK\r\nConnection: close\r\n");
+        if let Some(size) = reply.linked_size {
+            head.push_str(&format!("X-Linked-Size: {size}\r\n"));
+        }
+        if reply.chunked {
+            head.push_str("Transfer-Encoding: chunked\r\n");
+        } else {
+            head.push_str(&format!("Content-Length: {}\r\n", reply.body.len()));
+        }
+        head.push_str("\r\n");
+        let mut out = head.into_bytes();
+        if is_head {
+            return out;
+        }
+        if reply.chunked {
+            for chunk in reply.body.chunks(256) {
+                out.extend_from_slice(format!("{:x}\r\n", chunk.len()).as_bytes());
+                out.extend_from_slice(chunk);
+                out.extend_from_slice(b"\r\n");
+            }
+            out.extend_from_slice(b"0\r\n\r\n");
+        } else {
+            out.extend_from_slice(&reply.body);
+        }
+        out
+    }
+}
+
 #[bon]
 impl<T: RepoType> HFRepository<T> {
     /// Download a single file from a repository.
@@ -1618,8 +1863,15 @@ impl<T: RepoType> HFRepository<T> {
     ///   `start` is **inclusive**, `end` is **exclusive** — so `0..1024` fetches the first 1024 bytes (offsets
     ///   `0..=1023`). Internally, this is converted to the HTTP `Range: bytes=<start>-<end-1>` header. `start` must be
     ///   strictly less than `end`; an empty or inverted range returns [`HFError::InvalidParameter`].
+    /// - `max_bytes`: largest body to accept. When the advertised size (or the requested range) is already over
+    ///   it, the call fails before reading the body; otherwise it fails as soon as the received bytes go over it.
+    ///   Either way it returns [`HFError::ResponseTooLarge`]. Without it the body size is unbounded, so set it
+    ///   whenever the expected file is small.
     /// - `progress`: optional progress handler. Emits `Start`/`Progress`/`Complete` as the underlying stream is
     ///   drained, identically to [`download_file_stream`](Self::download_file_stream).
+    ///
+    /// The size headers are treated as a hint only: at most 8 MiB is reserved up front, and the buffer grows with
+    /// the bytes actually received.
     #[builder(finish_fn = send, derive(Debug, Clone))]
     pub async fn download_file_to_bytes(
         &self,
@@ -1634,17 +1886,23 @@ impl<T: RepoType> HFRepository<T> {
         /// `0..=1023`). Internally, this is converted to the HTTP `Range: bytes=<start>-<end-1>` header. `start` must
         /// be strictly less than `end`; an empty or inverted range returns [`HFError::InvalidParameter`].
         range: Option<std::ops::Range<u64>>,
+        /// Largest body to accept; a larger response returns [`HFError::ResponseTooLarge`].
+        /// Unbounded when unset.
+        max_bytes: Option<u64>,
         /// Progress handler. Emits `Start`/`Progress`/`Complete` as the underlying stream is
         /// drained, identically to [`HFRepository::download_file_stream`].
         #[builder(into)]
         progress: Option<Progress>,
     ) -> HFResult<bytes::Bytes> {
-        Box::pin(self.download_file_to_bytes_impl(DownloadFileStreamParams {
-            filename,
-            revision,
-            range,
-            progress,
-        }))
+        Box::pin(self.download_file_to_bytes_impl(
+            DownloadFileStreamParams {
+                filename,
+                revision,
+                range,
+                progress,
+            },
+            max_bytes,
+        ))
         .await
     }
 
@@ -1977,6 +2235,7 @@ impl<T: RepoType> crate::blocking::HFRepositorySync<T> {
         #[builder(into)] filename: String,
         #[builder(into)] revision: Option<String>,
         range: Option<std::ops::Range<u64>>,
+        max_bytes: Option<u64>,
         #[builder(into)] progress: Option<Progress>,
     ) -> HFResult<bytes::Bytes> {
         self.runtime.block_on(
@@ -1985,6 +2244,7 @@ impl<T: RepoType> crate::blocking::HFRepositorySync<T> {
                 .filename(filename)
                 .maybe_revision(revision)
                 .maybe_range(range)
+                .maybe_max_bytes(max_bytes)
                 .maybe_progress(progress)
                 .send(),
         )

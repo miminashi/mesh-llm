@@ -253,6 +253,18 @@ pub enum HFError {
         url: Option<String>,
     },
 
+    /// A response body exceeded the caller's `max_bytes` limit.
+    ///
+    /// Raised before the body is read when the advertised size is already
+    /// over the limit, or as soon as the received bytes go over it.
+    #[error("Response for {path} exceeds the {limit}-byte limit")]
+    ResponseTooLarge {
+        /// Repository-relative path of the file being downloaded.
+        path: String,
+        /// The `max_bytes` limit the caller set.
+        limit: u64,
+    },
+
     /// Catch-all error for cases that do not fit another variant.
     #[error("{0}")]
     Other(String),

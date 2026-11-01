@@ -18,6 +18,8 @@ const DEFAULT_QUANT_PREFERENCE: &[&str] = &["UD-Q4_K_XL", "UD-Q4_K_M", "Q4_K_XL"
 const DEFAULT_SPLIT_CANDIDATE_VRAM_BYTES: u64 = 8 * 1024 * 1024 * 1024;
 const RUNTIME_MODEL_FIT_HEADROOM_NUMERATOR: u64 = 11;
 const RUNTIME_MODEL_FIT_HEADROOM_DENOMINATOR: u64 = 10;
+/// Catalog entries are small JSON documents; refuse anything far larger.
+const MAX_CATALOG_ENTRY_BYTES: u64 = 16 * 1024 * 1024;
 
 #[derive(Debug, Clone)]
 struct Args {
@@ -954,6 +956,7 @@ async fn catalog_layer_package_repo(
         .download_file_to_bytes()
         .filename(entry_path.clone())
         .revision("main".to_string())
+        .max_bytes(MAX_CATALOG_ENTRY_BYTES)
         .send()
         .await
     {

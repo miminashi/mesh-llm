@@ -71,8 +71,12 @@ async fn oversized_snapshots_complete_real_quic_exchanges_in_both_directions() {
     // the round count without assuming a particular encoded record size.
     let mut progress = Vec::new();
     for _ in 0..ORIGIN_COUNT {
+        // Each exchange moves a full 8 MiB frame each way in an unoptimized
+        // build. That takes about 2 s on a GitHub-hosted runner but about
+        // 10 s on a slower VM, so the bound only guards against a hung
+        // exchange rather than measuring speed.
         tokio::time::timeout(
-            std::time::Duration::from_secs(10),
+            std::time::Duration::from_secs(60),
             sender.initiate_gossip_inner(connection.clone(), receiver.id(), false),
         )
         .await

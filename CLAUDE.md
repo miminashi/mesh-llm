@@ -17,7 +17,9 @@
 
 - 既存のブランチで作業を続けるときも、`git worktree add <パス> <branch>` でそのブランチの worktree を作る（すでにあれば、それを使う）
 - 編集・コミット・push は、その worktree の中で行う
-- PR がマージされたら、`git worktree remove <パス>` で片付ける。未コミットの変更が残っている worktree は消さない
+- **worktree で作業するセッションは `main` を更新しない**。メインチェックアウトでの `git pull` / `git merge` / `git commit` や、`main` への push（upstream の取り込みを含む）は、main 更新用のセッションに任せる。最新の main が必要なときは、`git fetch origin` して `origin/main` を使う（worktree の作成元にする、PR ブランチに `git merge origin/main` する、など）
+- PR がマージされたら、`git worktree remove <パス>` で片付け、ローカルブランチは `git branch -d` で消す。未コミットの変更が残っている worktree は消さない
+- **リモートブランチは、PR マージ後もそのまま残す**（`git push origin --delete` や `gh pr merge --delete-branch` は使わない）
 - PR を作る作業のレポートは、その worktree の `report/` に書き、修正と同じ PR に含める（「レポート執筆ルール」の「保存先」）
 
 ## ワークステーションでの cargo 実行（メモリ対策）

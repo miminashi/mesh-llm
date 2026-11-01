@@ -22,8 +22,9 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     environment: claude-live-model
+    # ANTHROPIC_API_KEY is bound only on the steps that read it, so the npm
+    # install, the build accelerator action and checkout never see it.
     env:
-      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
       CARGO_INCREMENTAL: '0'
       CARGO_PROFILE_TEST_DEBUG: '0'
       MESH_LIVE_CLAUDE_MODEL: ${{ inputs.model }}
@@ -39,6 +40,8 @@ jobs:
           ref: ${{ inputs.ref }}
           persist-credentials: false
       - name: Require live Anthropic credential
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: test -n "$ANTHROPIC_API_KEY"
       - name: Install pinned Claude Code client
         run: |
@@ -47,6 +50,8 @@ jobs:
       - name: Install repository build accelerator
         uses: mozilla-actions/sccache-action@fc920bf0ec8de6ee65d409111f7ec508035751ba # v0.0.11
       - name: Run live Claude model round trip through Mesh
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           cargo test --locked -p mesh-llm-host-runtime --no-default-features \
             --features claude-live-model-integration \

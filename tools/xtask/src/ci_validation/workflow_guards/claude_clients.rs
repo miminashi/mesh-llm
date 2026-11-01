@@ -109,9 +109,9 @@ fn manual(workflow: &Node) -> DynResult<()> {
     h::binding(job, "environment", "claude-live-model")?;
     not_optional(job)?;
     let env = h::member(job, "env")?;
-    h::binding(env, "ANTHROPIC_API_KEY", "${{ secrets.ANTHROPIC_API_KEY }}")?;
     h::binding(env, "CARGO_PROFILE_TEST_DEBUG", "0")?;
     let steps = h::steps(job)?;
+    credential_scope(env, steps)?;
     let (install_index, install) = pinned_client(steps)?;
     if install.get("if").is_some() {
         return Err("manual Claude gate requires its pinned client install".into());
@@ -138,6 +138,39 @@ fn manual(workflow: &Node) -> DynResult<()> {
         return Err("authorized manual Claude test must not be silently skipped".into());
     }
     execution(gate, "claude-live-model-integration", LIVE_TEST, false)
+}
+
+const LIVE_CREDENTIAL: &str = "ANTHROPIC_API_KEY";
+const LIVE_CREDENTIAL_STEPS: [&str; 2] = [
+    "Require live Anthropic credential",
+    "Run live Claude model round trip through Mesh",
+];
+
+// The live credential is bound only on the steps that read it. A job-level
+// binding would also hand it to the npm install, the build accelerator action
+// and checkout, none of which need it.
+fn credential_scope(job_env: &Node, steps: &[Node]) -> DynResult<()> {
+    if job_env.get(LIVE_CREDENTIAL).is_some() {
+        return Err("live Claude credential must not be bound on the whole job".into());
+    }
+    for name in LIVE_CREDENTIAL_STEPS {
+        let (_, step) = h::step(steps, "name", name)?;
+        h::binding(
+            h::member(step, "env")?,
+            LIVE_CREDENTIAL,
+            "${{ secrets.ANTHROPIC_API_KEY }}",
+        )?;
+    }
+    let leaked = steps.iter().any(|step| {
+        !field(step, "name").is_some_and(|name| LIVE_CREDENTIAL_STEPS.contains(&name))
+            && step
+                .get("env")
+                .is_some_and(|env| env.get(LIVE_CREDENTIAL).is_some())
+    });
+    if leaked {
+        return Err("live Claude credential must reach only its check and live test steps".into());
+    }
+    Ok(())
 }
 
 // Literal unconditional skips cannot qualify a required manual gate. Other

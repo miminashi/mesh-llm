@@ -38,7 +38,7 @@ pub(super) fn check(workflows: &BTreeMap<String, Node>) -> DynResult<()> {
             if CARRIERS.contains(&(workflow.as_str(), job.as_str())) {
                 continue;
             }
-            let restores = h::steps(node).is_ok_and(|steps| steps.iter().any(|step| restore(step)));
+            let restores = h::steps(node).is_ok_and(|steps| steps.iter().any(restore));
             if restores {
                 scope(node, false).map_err(|error| format!("{workflow} {job}: {error}"))?;
             }

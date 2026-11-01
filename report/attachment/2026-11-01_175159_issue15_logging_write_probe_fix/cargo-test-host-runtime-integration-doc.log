@@ -1,0 +1,17 @@
+     Running tests/audit_test.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/audit_test-4f5f369ee4b56d00)
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/ingress_budget.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/ingress_budget-acf550574d2509d1)
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 9.01s
+     Running tests/ingress_reservoir_no_alloc.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/ingress_reservoir_no_alloc-52871181ee86548c)
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+     Running tests/membership_test_home_isolation.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/membership_test_home_isolation-3f2a723786af3a3f)
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/raw_json_dependency.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/raw_json_dependency-51920478c3064d4d)
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+     Running tests/runtime_event_architecture.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/runtime_event_architecture-92426fb006d95f0f)
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.61s
+EXIT_INTEG=0
+   Doc-tests mesh_llm_host_runtime
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+EXIT_DOC=0
+

@@ -14,7 +14,10 @@ use crate::{
     source_ref::{
         GitHubPluginSource, PluginInstallRef, PluginVersion, is_valid_name, parse_install_ref,
     },
-    store::{InstalledPluginMetadata, PluginStore, default_store_root},
+    store::{
+        INSTALL_DIR_NAME, InstalledPluginMetadata, PluginStore, default_store_root,
+        ensure_installable_plugin_name,
+    },
     target::{ArchiveExt, PluginTarget},
 };
 
@@ -91,7 +94,7 @@ impl PluginInstallOptions {
         let catalog_url = std::env::var("MESH_LLM_PLUGIN_CATALOG_URL")
             .unwrap_or_else(|_| DEFAULT_CATALOG_URL.to_string());
         Ok(Self {
-            install_root: store_root.join("installed"),
+            install_root: store_root.join(INSTALL_DIR_NAME),
             store_root,
             catalog_url,
             target: PluginTarget::current()?,
@@ -128,6 +131,7 @@ pub fn install_plugin_archive(
             "local plugin name must contain only ASCII letters, digits, '.', '_', or '-', and cannot be '.' or '..'"
         );
     }
+    ensure_installable_plugin_name(name)?;
     if version.trim().is_empty() {
         bail!("local plugin version cannot be empty");
     }
@@ -175,13 +179,15 @@ pub fn install_plugin_archive(
 
 /// Every install path extracts through here, so the executable it checks is
 /// named for `options.target`, as `InstalledPluginMetadata::executable_path`
-/// names the one the host launches.
+/// names the one the host launches, and no plugin is written under a reserved
+/// name.
 pub(crate) fn extract_for_install(
     archive_path: &std::path::Path,
     archive_ext: ArchiveExt,
     name: &str,
     options: &PluginInstallOptions,
 ) -> Result<ExtractedPluginArchive> {
+    ensure_installable_plugin_name(name)?;
     extract_plugin_archive(
         archive_path,
         archive_ext,
@@ -296,6 +302,9 @@ async fn install_resolved_plugin(
     progress: &mut impl PluginProgressReporter,
     current: Option<InstalledPluginMetadata>,
 ) -> Result<InstallOutcome> {
+    // A GitHub install names the plugin after the repository; refuse a
+    // reserved name before anything is downloaded.
+    ensure_installable_plugin_name(&resolved.plugin_name)?;
     let release_client = GitHubReleaseClient::new()?;
     progress.report(PluginProgressEvent::ResolvingGitHub {
         repo: resolved.source.repo_slug(),
@@ -999,6 +1008,57 @@ mod tests {
             );
             assert!(outcome.metadata.executable_path().is_file(), "{os}/{arch}");
         }
+    }
+
+    /// A plugin named `installed` would keep its metadata in the directory
+    /// holding every plugin's files (#55), so no install path accepts it.
+    #[test]
+    fn a_local_archive_cannot_be_installed_under_a_reserved_name() {
+        for name in ["installed", "Installed"] {
+            let temp = TempDir::new().unwrap();
+            let options = options_for(temp.path(), "linux", "x86_64");
+            let archive_path = temp.path().join("demo.tar.gz");
+            write_archive_with(&archive_path, "demo");
+
+            let error = install_plugin_archive(name, "0.1.0", &archive_path, &options, &mut |_| {})
+                .unwrap_err()
+                .to_string();
+
+            assert!(error.contains("reserved"), "{name}: {error}");
+            assert!(!options.install_root.exists(), "{name}");
+            assert!(!options.store_root.exists(), "{name}");
+            let error = extract_for_install(&archive_path, ArchiveExt::TarGz, name, &options)
+                .unwrap_err()
+                .to_string();
+            assert!(error.contains("reserved"), "{name}: {error}");
+            assert!(!options.install_root.exists(), "{name}");
+        }
+    }
+
+    #[test]
+    fn a_github_repository_named_installed_is_refused_before_download() {
+        let temp = TempDir::new().unwrap();
+        let options = options_for(temp.path(), "linux", "x86_64");
+        let mut events = Vec::new();
+
+        // The repository name becomes the plugin name. The check runs before
+        // the release lookup, so this needs no network.
+        let error = tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build()
+            .unwrap()
+            .block_on(install_plugin(
+                "example/installed",
+                &options,
+                &mut |event| events.push(event),
+            ))
+            .unwrap_err()
+            .to_string();
+
+        assert!(error.contains("reserved"), "{error}");
+        assert!(events.is_empty(), "{events:?}");
+        assert!(!options.install_root.exists());
+        assert!(!options.store_root.exists());
     }
 
     use std::{

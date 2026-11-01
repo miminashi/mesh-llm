@@ -113,10 +113,6 @@ fn manual_live_gate_requires_approval_environment_and_owned_secret_binding() {
     for (path, value) in [
         (vec!["jobs", "live_claude", "environment"], "unprotected"),
         (
-            vec!["jobs", "live_claude", "env", "ANTHROPIC_API_KEY"],
-            "${{ inputs.key }}",
-        ),
-        (
             vec!["jobs", "live_claude", "env", "CARGO_PROFILE_TEST_DEBUG"],
             "1",
         ),
@@ -136,6 +132,70 @@ fn manual_live_gate_requires_approval_environment_and_owned_secret_binding() {
     );
     entry(events, "pull_request", "");
     assert!(check(&workflows).is_err());
+}
+const LIVE_KEY: &str = "${{ secrets.ANTHROPIC_API_KEY }}";
+fn without_key(step: &mut Node) {
+    let Node::Map(env) = h::mutable(step, "env") else {
+        panic!("env mapping");
+    };
+    env.retain(|(name, _)| name != "ANTHROPIC_API_KEY");
+}
+#[test]
+fn live_credential_is_bound_only_on_its_check_and_live_test_steps() {
+    for name in [
+        "Require live Anthropic credential",
+        "Run live Claude model round trip through Mesh",
+    ] {
+        let mut workflows = actual();
+        let owner = step(
+            workflows.get_mut("claude-live-model-gate.yml").unwrap(),
+            "live_claude",
+            name,
+        );
+        h::replace(
+            owner,
+            &["env", "ANTHROPIC_API_KEY"],
+            Node::Scalar("${{ inputs.key }}".into()),
+        );
+        assert!(
+            check(&workflows).is_err(),
+            "accepted a substituted key on {name}"
+        );
+        let mut workflows = actual();
+        without_key(step(
+            workflows.get_mut("claude-live-model-gate.yml").unwrap(),
+            "live_claude",
+            name,
+        ));
+        assert!(
+            check(&workflows).is_err(),
+            "accepted a missing key on {name}"
+        );
+    }
+    // Rebinding the key on the whole job hands it to every step again.
+    let mut workflows = actual();
+    let manual = workflows.get_mut("claude-live-model-gate.yml").unwrap();
+    let job = h::mutable(h::mutable(manual, "jobs"), "live_claude");
+    entry(h::mutable(job, "env"), "ANTHROPIC_API_KEY", LIVE_KEY);
+    assert!(check(&workflows).is_err(), "accepted a job-level key");
+    // Steps that run third-party code must not see it.
+    for name in [
+        "Install pinned Claude Code client",
+        "Install repository build accelerator",
+    ] {
+        let mut workflows = actual();
+        let other = step(
+            workflows.get_mut("claude-live-model-gate.yml").unwrap(),
+            "live_claude",
+            name,
+        );
+        let Node::Map(fields) = other else {
+            panic!("step mapping");
+        };
+        fields.push(("env".into(), Node::Map(Vec::new())));
+        entry(h::mutable(other, "env"), "ANTHROPIC_API_KEY", LIVE_KEY);
+        assert!(check(&workflows).is_err(), "accepted the key on {name}");
+    }
 }
 #[test]
 fn manual_compiler_execution_requires_accelerator_and_direct_nonignored_round_trip() {

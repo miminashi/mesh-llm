@@ -117,14 +117,16 @@ jobs:
     if: ${{ contains(fromJson(inputs.runtime_matrix).*.id, 'linux-cpu') && contains(fromJson(inputs.smoke_matrix).*.id, 'core') }}
     runs-on: ubuntu-24.04
     timeout-minutes: ${{ inputs.timeout_minutes }}
-    env:
-      HF_TOKEN: ${{ secrets.HF_TOKEN }}
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:
           ref: ${{ inputs.source_sha }}
           persist-credentials: false
+      # HF_TOKEN reaches only the Laya smoke (its model restore), not the
+      # checkout, source preparation, admission or cleanup steps.
       - uses: ./.github/actions/run-laya-product-smoke
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
         with:
           artifact_name: ci-product-linux-amd64-cpu
           artifact_path: ci-artifacts/laya-linux-cpu
@@ -139,8 +141,6 @@ jobs:
     if: ${{ contains(fromJson(inputs.runtime_matrix).*.id, 'linux-cuda') && contains(fromJson(inputs.smoke_matrix).*.id, 'core-cuda') }}
     runs-on: [self-hosted, Linux, X64, amd64, gpu-nvidia, mesh-llm-amd64]
     timeout-minutes: ${{ inputs.timeout_minutes > 100 && inputs.timeout_minutes || 100 }}
-    env:
-      HF_TOKEN: ${{ secrets.HF_TOKEN }}
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:
@@ -175,7 +175,11 @@ jobs:
           test "$(GIT_MASTER=1 git rev-parse HEAD)" = "$MESH_NATIVE_CLEANUP_SOURCE"
           test "$(sha256sum "$MESH_LLM_AUTOMATION_BIN" | awk '{print $1}')" = "$MESH_NATIVE_CLEANUP_SHA"
           printf 'MESH_NATIVE_MANAGED_WORK_STARTED=true\n' >> "$GITHUB_ENV"
+      # HF_TOKEN reaches only the Laya smoke (its model restore), not the
+      # checkout, source preparation, admission or cleanup steps.
       - uses: ./.github/actions/run-laya-product-smoke
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
         timeout-minutes: 70
         with:
           artifact_name: ci-product-linux-amd64-cuda
@@ -284,7 +288,6 @@ jobs:
     runs-on: [self-hosted, Linux, X64, amd64, gpu-nvidia, mesh-llm-amd64]
     timeout-minutes: ${{ inputs.timeout_minutes > 100 && inputs.timeout_minutes || 100 }}
     env:
-      HF_TOKEN: ${{ secrets.HF_TOKEN }}
       MESH_LLM_VULKAN_AVAILABLE: '1'
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
@@ -320,7 +323,11 @@ jobs:
           test "$(GIT_MASTER=1 git rev-parse HEAD)" = "$MESH_NATIVE_CLEANUP_SOURCE"
           test "$(sha256sum "$MESH_LLM_AUTOMATION_BIN" | awk '{print $1}')" = "$MESH_NATIVE_CLEANUP_SHA"
           printf 'MESH_NATIVE_MANAGED_WORK_STARTED=true\n' >> "$GITHUB_ENV"
+      # HF_TOKEN reaches only the Laya smoke (its model restore), not the
+      # checkout, source preparation, admission or cleanup steps.
       - uses: ./.github/actions/run-laya-product-smoke
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
         timeout-minutes: 70
         with:
           artifact_name: ci-product-linux-amd64-vulkan
@@ -353,8 +360,6 @@ jobs:
     if: ${{ contains(fromJson(inputs.runtime_matrix).*.id, 'linux-rocm') && contains(fromJson(inputs.smoke_matrix).*.id, 'core') && needs.gpu_runner_gate.outputs.rocm_enabled == 'true' }}
     runs-on: [self-hosted, Linux, X64, amd64, gpu-amd, mesh-llm-amd64]
     timeout-minutes: ${{ inputs.timeout_minutes > 100 && inputs.timeout_minutes || 100 }}
-    env:
-      HF_TOKEN: ${{ secrets.HF_TOKEN }}
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:
@@ -389,7 +394,11 @@ jobs:
           test "$(GIT_MASTER=1 git rev-parse HEAD)" = "$MESH_NATIVE_CLEANUP_SOURCE"
           test "$(sha256sum "$MESH_LLM_AUTOMATION_BIN" | awk '{print $1}')" = "$MESH_NATIVE_CLEANUP_SHA"
           printf 'MESH_NATIVE_MANAGED_WORK_STARTED=true\n' >> "$GITHUB_ENV"
+      # HF_TOKEN reaches only the Laya smoke (its model restore), not the
+      # checkout, source preparation, admission or cleanup steps.
       - uses: ./.github/actions/run-laya-product-smoke
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
         timeout-minutes: 70
         with:
           artifact_name: ci-product-linux-amd64-rocm

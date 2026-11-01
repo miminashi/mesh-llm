@@ -699,10 +699,20 @@ impl<T: RepoType> HFRepository<T> {
                 cache::PartialDownloadState::Restart => 0,
             };
 
+        // The blob, its partial file and the snapshot pointer are all named
+        // after the ETag and commit that HEAD reported. Send the GET to that
+        // commit, not to `revision`: a branch can move between HEAD and GET,
+        // and the bytes must come from the same file as the names.
+        let commit_url = self.hf_client.download_url(
+            self.repo_type.url_prefix(),
+            &repo_path,
+            &commit_hash,
+            &params.filename,
+        )?;
         let dl_headers = self.hf_client.auth_headers();
         let (response, write_offset) = self
             .http_download_response(
-                &url,
+                &commit_url,
                 &repo_path,
                 &params.filename,
                 dl_headers,
@@ -2187,6 +2197,151 @@ mod tests {
             "HTTP/1.1 {status}\r\n\
              ETag: \"{TEST_ETAG}\"\r\n\
              X-Repo-Commit: {TEST_COMMIT}\r\n\
+             Content-Length: {content_length}\r\n\
+             {content_range}\
+             Connection: close\r\n\
+             \r\n"
+        )
+        .into_bytes()
+        .into_iter()
+        .chain(body.iter().copied())
+        .collect()
+    }
+
+    const OLD_BODY: &[u8] = b"abcdefghij";
+    const NEW_BODY: &[u8] = b"ABCDUVWXYZ";
+    const NEW_COMMIT: &str = "fedcbafedcbafedcbafedcbafedcbafedcbafedc";
+    const NEW_ETAG: &str = "etag-http-new";
+
+    #[tokio::test]
+    async fn cache_resume_after_branch_moves_keeps_the_head_commit_bytes() {
+        let get_lines = Arc::new(Mutex::new(Vec::new()));
+        let endpoint = start_moving_branch_server(Arc::clone(&get_lines)).await;
+
+        let dir = tempfile::tempdir().unwrap();
+        write_incomplete_blob(dir.path(), b"abcd");
+
+        let path = download_main(&endpoint, dir.path()).await;
+
+        assert_eq!(std::fs::read(&path).unwrap(), OLD_BODY);
+        assert_eq!(
+            path,
+            cache::snapshot_path(dir.path(), "models--owner--repo", TEST_COMMIT, "model.bin")
+        );
+        let get_lines = get_lines.lock().unwrap();
+        assert!(!get_lines.is_empty());
+        assert!(
+            get_lines
+                .iter()
+                .all(|line| line.contains(&format!("/resolve/{TEST_COMMIT}/")))
+        );
+    }
+
+    #[tokio::test]
+    async fn cache_download_after_branch_moves_keeps_the_head_commit_bytes() {
+        let get_lines = Arc::new(Mutex::new(Vec::new()));
+        let endpoint = start_moving_branch_server(Arc::clone(&get_lines)).await;
+
+        let dir = tempfile::tempdir().unwrap();
+
+        let path = download_main(&endpoint, dir.path()).await;
+
+        assert_eq!(std::fs::read(&path).unwrap(), OLD_BODY);
+        let blob = cache::blob_path(dir.path(), "models--owner--repo", TEST_ETAG);
+        assert_eq!(std::fs::read(blob).unwrap(), OLD_BODY);
+        let get_lines = get_lines.lock().unwrap();
+        assert!(!get_lines.is_empty());
+        assert!(
+            get_lines
+                .iter()
+                .all(|line| line.contains(&format!("/resolve/{TEST_COMMIT}/")))
+        );
+    }
+
+    async fn download_main(endpoint: &str, cache_dir: &Path) -> std::path::PathBuf {
+        let client = HFClientBuilder::new()
+            .endpoint(endpoint)
+            .cache_dir(cache_dir)
+            .build()
+            .unwrap();
+        client
+            .model("owner", "repo")
+            .download_file()
+            .filename("model.bin")
+            .revision("main")
+            .send()
+            .await
+            .unwrap()
+    }
+
+    /// HEAD on `main` still reports the old commit, but `main` moves before
+    /// the GET: a GET on `main` serves a new file of the same size, while a GET
+    /// on the old commit keeps serving the old one.
+    async fn start_moving_branch_server(get_lines: Arc<Mutex<Vec<String>>>) -> String {
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let addr = listener.local_addr().unwrap();
+        tokio::spawn(async move {
+            loop {
+                let Ok((mut socket, _)) = listener.accept().await else {
+                    return;
+                };
+                let get_lines = Arc::clone(&get_lines);
+                tokio::spawn(async move {
+                    let mut request = vec![0; 4096];
+                    let Ok(read) = socket.read(&mut request).await else {
+                        return;
+                    };
+                    let request = String::from_utf8_lossy(&request[..read]);
+                    let first_line = request.lines().next().unwrap_or_default().to_string();
+                    let range = request.lines().find_map(|line| {
+                        line.strip_prefix("range: ")
+                            .or_else(|| line.strip_prefix("Range: "))
+                    });
+                    let response = if first_line.starts_with("HEAD ") {
+                        moving_branch_response(TEST_ETAG, TEST_COMMIT, "200 OK", 10, None, &[])
+                    } else {
+                        get_lines.lock().unwrap().push(first_line.clone());
+                        let (etag, commit, body) =
+                            if first_line.contains(&format!("/resolve/{TEST_COMMIT}/")) {
+                                (TEST_ETAG, TEST_COMMIT, OLD_BODY)
+                            } else {
+                                (NEW_ETAG, NEW_COMMIT, NEW_BODY)
+                            };
+                        if range == Some("bytes=4-") {
+                            moving_branch_response(
+                                etag,
+                                commit,
+                                "206 Partial Content",
+                                6,
+                                Some("bytes 4-9/10"),
+                                &body[4..],
+                            )
+                        } else {
+                            moving_branch_response(etag, commit, "200 OK", 10, None, body)
+                        }
+                    };
+                    let _ = socket.write_all(&response).await;
+                });
+            }
+        });
+        format!("http://{addr}")
+    }
+
+    fn moving_branch_response(
+        etag: &str,
+        commit: &str,
+        status: &str,
+        content_length: usize,
+        content_range: Option<&str>,
+        body: &[u8],
+    ) -> Vec<u8> {
+        let content_range = content_range
+            .map(|value| format!("Content-Range: {value}\r\n"))
+            .unwrap_or_default();
+        format!(
+            "HTTP/1.1 {status}\r\n\
+             ETag: \"{etag}\"\r\n\
+             X-Repo-Commit: {commit}\r\n\
              Content-Length: {content_length}\r\n\
              {content_range}\
              Connection: close\r\n\

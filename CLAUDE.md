@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-リポジトリ全体の開発ルールは [AGENTS.md](AGENTS.md) に従う。本ファイルでは、ブランチの扱い、ワークステーションでの cargo 実行時のメモリ対策、aws-v100 でのビルド・起動手順、Claude Code による作業レポートの執筆ルールを定める。
+リポジトリ全体の開発ルールは [AGENTS.md](AGENTS.md) に従う。本ファイルでは、ブランチの扱い、ステータスラインの表示、ワークステーションでの cargo 実行時のメモリ対策、aws-v100 でのビルド・起動手順、Claude Code による作業レポートの執筆ルールを定める。
 
 ## ブランチと worktree
 
@@ -21,6 +21,22 @@
 - PR がマージされたら、`git worktree remove <パス>` で片付け、ローカルブランチは `git branch -d` で消す。未コミットの変更が残っている worktree は消さない
 - **リモートブランチは、PR マージ後もそのまま残す**（`git push origin --delete` や `gh pr merge --delete-branch` は使わない）
 - PR を作る作業のレポートは、その worktree の `report/` に書き、修正と同じ PR に含める（「レポート執筆ルール」の「保存先」）
+
+## ステータスラインに issue / PR 番号を出す
+
+ステータスライン（`~/.claude/statusline-command.sh`）は、cwd のブランチ名から issue 番号と PR 番号を自動で出す。ただ、セッションの cwd はメインチェックアウト（`main`）のままで、作業は worktree で行うことが多いので、自動では番号が出ない。そこで、セッションごとのファイルに番号を書いて表示させる。
+
+- **issue や PR の対応を始めたら、ユーザーに言われなくても、そのセッションのファイルに番号を書く**。PR を作った、対象の issue が変わった、などで番号が変わったときも書き直す:
+
+  ```bash
+  mkdir -p ~/.claude/statusline-session
+  echo "issue #24 | PR #48" > ~/.claude/statusline-session/<session_id>
+  ```
+
+- `<session_id>` は、システムプロンプトにある scratchpad ディレクトリのパス（`/tmp/claude-1000/<プロジェクト>/<session_id>/scratchpad`）から取る。推測しない
+- 書式は `issue #N | PR #N`。PR がまだ無ければ `issue #N` だけにする。issue が複数あるときは `issue #19, #24 | PR #46` のように並べる
+- ファイルの 1 行目がそのまま表示され、その後ろにモデル名が付く。ファイルがあるあいだは、ブランチ名からの自動表示は出ない
+- PR がマージされて対応が終わったら、ファイルを消す（ブランチ名からの自動表示に戻る）。issue / PR を扱わないセッション（調査だけ、など）では、ファイルを作らない
 
 ## ワークステーションでの cargo 実行（メモリ対策）
 

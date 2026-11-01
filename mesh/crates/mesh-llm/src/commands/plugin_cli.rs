@@ -121,8 +121,10 @@ fn resolve_configured_cli_plugin(
 ) -> Result<Option<plugin::ExternalPluginSpec>> {
     let config = plugin::load_config(cli.config.as_deref())?;
     if let Some(entry) = config.plugins.iter().find(|entry| entry.name == command) {
+        // A config entry decides the name: a disabled one must not fall back
+        // to an installed or bundled plugin of the same name.
         if !entry.enabled.unwrap_or(true) {
-            return plugin::bundled_cli_plugin_spec(command);
+            bail!("Plugin command '{command}' is disabled in the mesh-llm config");
         }
         let options = plugin_runtime_options_from_cli(cli);
         let resolved = plugin::load_resolved_plugins(&options)?;
@@ -372,6 +374,42 @@ mod tests {
                 .expect_err("missing executable should be reported");
 
             assert!(err.to_string().contains("installed but not runnable"));
+        });
+    }
+
+    fn cli_with_config(path: &std::path::Path) -> Cli {
+        Cli::parse_from(vec![
+            OsString::from("mesh-llm"),
+            OsString::from("--config"),
+            path.as_os_str().to_os_string(),
+        ])
+    }
+
+    #[test]
+    #[serial]
+    fn config_disabled_plugin_does_not_fall_back_to_installed_store() {
+        run_on_application_stack(|| {
+            let temp = TempDir::new().unwrap();
+            let _plugin_dir = EnvGuard::set("MESH_LLM_PLUGIN_DIR", temp.path());
+            let install_path = temp.path().join("installed").join("demo");
+            std::fs::create_dir_all(&install_path).unwrap();
+            let executable = install_path.join(format!("demo{}", std::env::consts::EXE_SUFFIX));
+            std::fs::write(&executable, "").unwrap();
+            PluginStore::new(temp.path())
+                .save(&installed_metadata("demo", install_path))
+                .unwrap();
+            let config = temp.path().join("config.toml");
+            std::fs::write(&config, "[[plugin]]\nname = \"demo\"\nenabled = false\n").unwrap();
+            let cli = cli_with_config(&config);
+
+            let err = resolve_required_cli_plugin(&cli, "demo")
+                .expect_err("a plugin disabled in config must not run from the CLI");
+
+            assert!(err.to_string().contains("disabled in the mesh-llm config"));
+            assert_eq!(
+                external_cli_command_family(&cli, &[OsString::from("demo")]),
+                CliCommandFamily::Plugin
+            );
         });
     }
 }

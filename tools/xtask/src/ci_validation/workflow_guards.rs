@@ -22,6 +22,7 @@ mod cpu_runtime_cache;
 mod crates_recovery;
 mod handoffs;
 mod laya;
+mod laya_token;
 mod nightly_stability;
 mod permissions;
 mod pr_canary;

@@ -51,6 +51,12 @@ inputs:
     description: Whether to save model cache misses.
     required: false
     default: 'false'
+  hf_token:
+    description: >-
+      Hugging Face token for the model download. It is handed only to
+      restore-test-model, which exposes it to its download step alone.
+    required: false
+    default: ''
 
 outputs:
   model_url:
@@ -185,3 +191,4 @@ runs:
         model_cache_scope: ${{ inputs.model_cache_scope }}
         cache_key_prefix: ${{ inputs.cache_key_prefix }}
         save_model_cache: ${{ inputs.save_model_cache }}
+        hf_token: ${{ inputs.hf_token }}

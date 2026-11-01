@@ -41,6 +41,13 @@ inputs:
     description: Whether a cache miss should be saved back.
     required: false
     default: 'false'
+  hf_token:
+    description: >-
+      Hugging Face token for the model download. Only the download step
+      receives it. When empty, the download falls back to HF_TOKEN or
+      HUGGING_FACE_HUB_TOKEN from the caller's environment.
+    required: false
+    default: ''
 
 outputs:
   model_url:
@@ -114,13 +121,14 @@ runs:
       env:
         MODEL_FILE: ${{ steps.resolve-model.outputs.file }}
         MODEL_URL: ${{ steps.resolve-model.outputs.url }}
+        MODEL_HF_TOKEN: ${{ inputs.hf_token }}
       run: |
         set -euo pipefail
         mkdir -p ~/.models
         retry_attempts="${MODEL_DOWNLOAD_RETRY_ATTEMPTS:-12}"
         retry_delay="${MODEL_DOWNLOAD_RETRY_DELAY_SECS:-20}"
         retry_max_time="${MODEL_DOWNLOAD_RETRY_MAX_TIME_SECS:-600}"
-        token="${HF_TOKEN:-${HUGGING_FACE_HUB_TOKEN:-}}"
+        token="${MODEL_HF_TOKEN:-${HF_TOKEN:-${HUGGING_FACE_HUB_TOKEN:-}}}"
         curl_args=(
           --fail --location --show-error
           --retry "$retry_attempts"

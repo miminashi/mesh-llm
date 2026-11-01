@@ -8,6 +8,7 @@ pub(super) fn check(root: &Path, workflows: &BTreeMap<String, Node>) -> DynResul
         root.join(".github/actions/run-laya-product-smoke/action.yml"),
     )?)?;
     action_handoffs(&action)?;
+    super::laya_token::check(root)?;
     platforms(workflows)
 }
 
@@ -271,27 +272,6 @@ fn laya_step(job: &Node) -> DynResult<&Node> {
     )?
     .1)
 }
-// The Hugging Face token only serves the model restore inside the Laya smoke
-// action. A job-level binding would also hand it to checkout, the source-bound
-// `just automation-bootstrap` build (dependency build scripts included),
-// admission and cleanup, so only the action step may carry it.
-fn model_token_scope(job: &Node, steps: &[Node], invoke: usize) -> DynResult<()> {
-    let binds = |node: &Node| {
-        node.get("env")
-            .is_some_and(|env| env.get("HF_TOKEN").is_some())
-    };
-    if binds(job) {
-        return Err("Laya smoke must not bind HF_TOKEN on the whole job".into());
-    }
-    if steps
-        .iter()
-        .enumerate()
-        .any(|(index, step)| index != invoke && binds(step))
-    {
-        return Err("Laya smoke HF_TOKEN must reach only the Laya smoke action step".into());
-    }
-    Ok(())
-}
 fn row(job: &Node, backend: &str, device: &str, plan: &str, smoke: &str) -> DynResult<()> {
     let qualification = match device {
         "Vulkan0" => " && needs.gpu_runner_gate.outputs.vulkan_enabled == 'true'",
@@ -327,7 +307,7 @@ fn row(job: &Node, backend: &str, device: &str, plan: &str, smoke: &str) -> DynR
     let checkout = h::checkout(steps, "${{ inputs.source_sha }}", None)?;
     let (invoke, action) = h::step(steps, "uses", "./.github/actions/run-laya-product-smoke")?;
     h::before(checkout, invoke)?;
-    model_token_scope(job, steps, invoke)?;
+    super::laya_token::caller_scope(job, steps, invoke, !plan.starts_with("windows"))?;
     let inputs = h::member(action, "with")?;
     h::binding(inputs, "expected_backend", backend)?;
     h::binding(inputs, "device", device)?;
@@ -543,7 +523,49 @@ mod tests {
                 bind_model_token(&mut steps[index]);
                 assert!(platforms(&nodes).is_err(), "{job}: token on step {index}");
             }
+            // The action step's own env would reach every step inside the
+            // composite action chain; the token must stay the hf_token input.
+            let mut nodes = workflows();
+            bind_model_token(laya_step_mut(&mut nodes, workflow, job));
+            assert!(platforms(&nodes).is_err(), "{job}: token in action env");
+            let mut nodes = workflows();
+            let Node::Map(inputs) = h::mutable(laya_step_mut(&mut nodes, workflow, job), "with")
+            else {
+                unreachable!()
+            };
+            inputs.retain(|(name, _)| name != "hf_token");
+            assert!(platforms(&nodes).is_err(), "{job}: dropped hf_token input");
         }
+        // Windows has no token secret, so its row passes none.
+        let mut nodes = workflows();
+        let Node::Map(inputs) = h::mutable(
+            laya_step_mut(&mut nodes, "ci-windows-product-smoke-slice.yml", "laya_cpu"),
+            "with",
+        ) else {
+            unreachable!()
+        };
+        inputs.push((
+            "hf_token".into(),
+            Node::Scalar("${{ secrets.HF_TOKEN }}".into()),
+        ));
+        assert!(platforms(&nodes).is_err(), "windows: unexpected hf_token");
+    }
+    fn laya_step_mut<'a>(
+        nodes: &'a mut BTreeMap<String, Node>,
+        workflow: &str,
+        job: &str,
+    ) -> &'a mut Node {
+        let job_node = h::mutable(h::mutable(nodes.get_mut(workflow).unwrap(), "jobs"), job);
+        let Node::Seq(steps) = h::mutable(job_node, "steps") else {
+            unreachable!()
+        };
+        steps
+            .iter_mut()
+            .find(|step| {
+                super::super::field(step, "uses")
+                    == Some("./.github/actions/run-laya-product-smoke")
+            })
+            .unwrap()
     }
     #[test]
     fn gpu_phase_floor_preserves_larger_inputs_and_cannot_leak_to_cpu() {

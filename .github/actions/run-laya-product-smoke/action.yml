@@ -36,6 +36,12 @@ inputs:
     description: Whether this runner has a verified Vulkan inference device.
     required: false
     default: 'false'
+  hf_token:
+    description: >-
+      Hugging Face token for the Laya model download. It travels as an input
+      down to the download step in restore-test-model; no other step sees it.
+    required: false
+    default: ''
 
 runs:
   using: composite
@@ -82,6 +88,7 @@ runs:
         model_cache_scope: laya-multilingual-f16
         cache_key_prefix: laya-${{ runner.os }}-${{ runner.arch }}
         save_model_cache: ${{ inputs.save_model_cache }}
+        hf_token: ${{ inputs.hf_token }}
 
     - name: Run Laya startup and golden reads
       if: ${{ inputs.device != 'Vulkan0' || inputs.enable_vulkan_inference == 'true' }}

@@ -122,12 +122,11 @@ jobs:
         with:
           ref: ${{ inputs.source_sha }}
           persist-credentials: false
-      # HF_TOKEN reaches only the Laya smoke (its model restore), not the
-      # checkout, source preparation, admission or cleanup steps.
+      # HF_TOKEN goes in as an input and reaches only the model download step
+      # inside the action, not checkout, preparation, admission or cleanup.
       - uses: ./.github/actions/run-laya-product-smoke
-        env:
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
         with:
+          hf_token: ${{ secrets.HF_TOKEN }}
           artifact_name: ci-product-linux-amd64-cpu
           artifact_path: ci-artifacts/laya-linux-cpu
           staged_binary_path: target/release/mesh-llm
@@ -175,13 +174,12 @@ jobs:
           test "$(GIT_MASTER=1 git rev-parse HEAD)" = "$MESH_NATIVE_CLEANUP_SOURCE"
           test "$(sha256sum "$MESH_LLM_AUTOMATION_BIN" | awk '{print $1}')" = "$MESH_NATIVE_CLEANUP_SHA"
           printf 'MESH_NATIVE_MANAGED_WORK_STARTED=true\n' >> "$GITHUB_ENV"
-      # HF_TOKEN reaches only the Laya smoke (its model restore), not the
-      # checkout, source preparation, admission or cleanup steps.
+      # HF_TOKEN goes in as an input and reaches only the model download step
+      # inside the action, not checkout, preparation, admission or cleanup.
       - uses: ./.github/actions/run-laya-product-smoke
-        env:
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
         timeout-minutes: 70
         with:
+          hf_token: ${{ secrets.HF_TOKEN }}
           artifact_name: ci-product-linux-amd64-cuda
           artifact_path: ci-artifacts/laya-linux-cuda
           staged_binary_path: target/release/mesh-llm
@@ -323,13 +321,12 @@ jobs:
           test "$(GIT_MASTER=1 git rev-parse HEAD)" = "$MESH_NATIVE_CLEANUP_SOURCE"
           test "$(sha256sum "$MESH_LLM_AUTOMATION_BIN" | awk '{print $1}')" = "$MESH_NATIVE_CLEANUP_SHA"
           printf 'MESH_NATIVE_MANAGED_WORK_STARTED=true\n' >> "$GITHUB_ENV"
-      # HF_TOKEN reaches only the Laya smoke (its model restore), not the
-      # checkout, source preparation, admission or cleanup steps.
+      # HF_TOKEN goes in as an input and reaches only the model download step
+      # inside the action, not checkout, preparation, admission or cleanup.
       - uses: ./.github/actions/run-laya-product-smoke
-        env:
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
         timeout-minutes: 70
         with:
+          hf_token: ${{ secrets.HF_TOKEN }}
           artifact_name: ci-product-linux-amd64-vulkan
           artifact_path: ci-artifacts/laya-linux-vulkan
           staged_binary_path: target/release/mesh-llm
@@ -394,13 +391,12 @@ jobs:
           test "$(GIT_MASTER=1 git rev-parse HEAD)" = "$MESH_NATIVE_CLEANUP_SOURCE"
           test "$(sha256sum "$MESH_LLM_AUTOMATION_BIN" | awk '{print $1}')" = "$MESH_NATIVE_CLEANUP_SHA"
           printf 'MESH_NATIVE_MANAGED_WORK_STARTED=true\n' >> "$GITHUB_ENV"
-      # HF_TOKEN reaches only the Laya smoke (its model restore), not the
-      # checkout, source preparation, admission or cleanup steps.
+      # HF_TOKEN goes in as an input and reaches only the model download step
+      # inside the action, not checkout, preparation, admission or cleanup.
       - uses: ./.github/actions/run-laya-product-smoke
-        env:
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
         timeout-minutes: 70
         with:
+          hf_token: ${{ secrets.HF_TOKEN }}
           artifact_name: ci-product-linux-amd64-rocm
           artifact_path: ci-artifacts/laya-linux-rocm
           staged_binary_path: target/release/mesh-llm

@@ -221,7 +221,7 @@ mod tests {
     fn options_for(root: &Path, os: &str, arch: &str) -> PluginInstallOptions {
         PluginInstallOptions {
             store_root: root.join("store"),
-            install_root: root.join("installed"),
+            install_root: root.join("store").join("installed"),
             catalog_url: "unused".to_string(),
             target: PluginTarget::from_os_arch(os, arch).unwrap(),
             bundled_plugins_dir: Some(root.join("bundle")),

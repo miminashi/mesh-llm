@@ -105,7 +105,7 @@ mod tests {
         use mesh_llm_plugin::MeshVisibility;
 
         let root = tempfile::tempdir().unwrap();
-        let original = installed_spec(&root.path().join("package"));
+        let original = installed_spec(&root.path().join("installed").join("observer"));
         let metadata = original.installed_metadata.as_ref().unwrap();
         std::fs::create_dir_all(&metadata.install_path).unwrap();
         mesh_llm_plugin_manager::PluginStore::new(root.path())

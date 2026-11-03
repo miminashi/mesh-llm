@@ -91,7 +91,7 @@ impl PluginInstallOptions {
         let catalog_url = std::env::var("MESH_LLM_PLUGIN_CATALOG_URL")
             .unwrap_or_else(|_| DEFAULT_CATALOG_URL.to_string());
         Ok(Self {
-            install_root: store_root.join("installed"),
+            install_root: store_root.join(crate::store::INSTALL_DIR_NAME),
             store_root,
             catalog_url,
             target: PluginTarget::current()?,
@@ -182,6 +182,17 @@ pub(crate) fn extract_for_install(
     name: &str,
     options: &PluginInstallOptions,
 ) -> Result<ExtractedPluginArchive> {
+    // The store accepts only `<store_root>/installed/<name>` as a plugin's
+    // `install_path` (#54); refuse another install root before writing files
+    // there that the store would then refuse to load.
+    let expected_root = PluginStore::new(&options.store_root).install_root();
+    if options.install_root != expected_root {
+        bail!(
+            "plugin install root {} must be {}",
+            options.install_root.display(),
+            expected_root.display()
+        );
+    }
     extract_plugin_archive(
         archive_path,
         archive_ext,
@@ -718,8 +729,8 @@ mod tests {
     #[test]
     fn install_plugin_schema_roundtrip() {
         let temp = TempDir::new().unwrap();
-        let install_root = temp.path().join("installed");
         let store_root = temp.path().join("store");
+        let install_root = store_root.join("installed");
         let archive_path = temp.path().join("demo.tar.gz");
         let executable_name = format!("demo{}", std::env::consts::EXE_SUFFIX);
         let packaged_manifest = packaged_manifest_fixture();
@@ -851,7 +862,7 @@ mod tests {
         .unwrap();
         let options = PluginInstallOptions {
             store_root: temp.path().join("store"),
-            install_root: temp.path().join("installed"),
+            install_root: temp.path().join("store").join("installed"),
             catalog_url: "unused".to_string(),
             target: PluginTarget::current().unwrap(),
             bundled_plugins_dir: None,
@@ -953,11 +964,30 @@ mod tests {
         assert!(malformed.to_string().contains("invalid sha256"));
     }
 
+    /// The store loads a plugin only from `<store_root>/installed/<name>`
+    /// (#54), so an install root elsewhere is refused before it is written.
+    #[test]
+    fn an_install_root_outside_the_store_is_refused_before_extraction() {
+        let temp = TempDir::new().unwrap();
+        let mut options = options_for(temp.path(), "linux", "x86_64");
+        options.install_root = temp.path().join("installed");
+        let archive_path = temp.path().join("demo.tar.gz");
+        write_archive_with(&archive_path, "demo");
+
+        let error = install_plugin_archive("demo", "0.1.0", &archive_path, &options, &mut |_| {})
+            .unwrap_err()
+            .to_string();
+
+        assert!(error.contains("must be"), "{error}");
+        assert!(!options.install_root.exists());
+        assert!(!options.store_root.exists());
+    }
+
     /// Options for installing for `os`/`arch`, which need not be the host.
     fn options_for(root: &Path, os: &str, arch: &str) -> PluginInstallOptions {
         PluginInstallOptions {
             store_root: root.join("store"),
-            install_root: root.join("installed"),
+            install_root: root.join("store").join("installed"),
             catalog_url: "unused".to_string(),
             target: PluginTarget::from_os_arch(os, arch).unwrap(),
             bundled_plugins_dir: Some(root.join("bundle")),
@@ -1056,7 +1086,7 @@ mod tests {
     ) -> Result<(String, Option<String>), String> {
         let options = PluginInstallOptions {
             store_root: root.join("store"),
-            install_root: root.join("installed"),
+            install_root: root.join("store").join("installed"),
             catalog_url: serve_catalog(catalog_body),
             target: PluginTarget::from_os_arch("macos", "aarch64").unwrap(),
             bundled_plugins_dir: None,

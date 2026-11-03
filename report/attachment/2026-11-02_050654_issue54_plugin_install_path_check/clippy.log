@@ -1,0 +1,490 @@
+    Blocking waiting for file lock on build directory
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.26
+    Checking cfg-if v1.0.5
+    Checking memchr v2.8.3
+    Checking pin-project-lite v0.2.17
+    Checking typenum v1.20.1
+    Checking smallvec v1.16.1
+    Checking itoa v1.0.18
+    Checking futures-core v0.3.34
+    Checking bytes v1.12.1
+   Compiling libc v0.2.189
+    Checking rand_core v0.10.1
+    Checking parking_lot_core v0.9.12
+   Compiling find-msvc-tools v0.1.12
+   Compiling shlex v2.0.1
+    Checking getrandom v0.4.3
+    Checking parking_lot v0.12.5
+   Compiling zmij v1.0.23
+    Checking futures-channel v0.3.34
+    Checking getrandom v0.2.17
+    Checking equivalent v1.0.2
+    Checking bitflags v2.13.2
+   Compiling thiserror v2.0.21
+    Checking hashbrown v0.17.1
+    Checking cpufeatures v0.3.1
+    Checking http v1.5.0
+    Checking hybrid-array v0.4.15
+   Compiling syn v2.0.119
+   Compiling syn v3.0.6
+    Checking serde_json v1.0.151
+    Checking stable_deref_trait v1.2.1
+   Compiling httparse v1.10.1
+    Checking atomic-waker v1.1.2
+    Checking crypto-common v0.2.2
+    Checking block-buffer v0.12.1
+    Checking indexmap v2.14.2
+   Compiling autocfg v1.5.1
+   Compiling jobserver v0.1.35
+    Checking writeable v0.6.4
+   Compiling cc v1.4.6
+    Checking litemap v0.8.3
+    Checking utf8_iter v1.0.4
+    Checking const-oid v0.10.2
+   Compiling icu_properties_data v2.3.0
+   Compiling icu_normalizer_data v2.3.0
+    Checking http-body v1.1.0
+    Checking untrusted v0.9.0
+    Checking base64 v0.22.1
+    Checking try-lock v0.2.5
+    Checking want v0.3.1
+    Checking digest v0.11.3
+   Compiling num-traits v0.2.19
+    Checking httpdate v1.0.3
+    Checking http-body-util v0.1.5
+    Checking block-padding v0.4.2
+    Checking sync_wrapper v1.0.2
+   Compiling cmake v0.1.58
+    Checking fastrand v2.5.0
+    Checking inout v0.2.2
+    Checking sha2 v0.11.0
+    Checking cipher v0.5.2
+    Checking rand_core v0.6.4
+    Checking rustix v1.1.5
+    Checking chacha20 v0.10.2
+    Checking num-conv v0.2.2
+    Checking deranged v0.5.8
+    Checking rand v0.10.2
+    Checking time-core v0.1.9
+    Checking powerfmt v0.2.0
+   Compiling ring v0.17.14
+   Compiling aws-lc-sys v0.45.0
+    Checking uuid v1.26.0
+    Checking hex v0.4.3
+    Checking getrandom v0.3.4
+    Checking aho-corasick v1.1.5
+    Checking regex-syntax v0.8.11
+    Checking time v0.3.55
+   Compiling synstructure v0.13.2
+   Compiling darling_core v0.24.1
+    Checking regex-automata v0.4.18
+    Checking rand_core v0.9.5
+   Compiling zeroize_derive v1.5.0
+   Compiling tracing-attributes v0.1.31
+   Compiling serde_derive v1.0.229
+   Compiling tokio-macros v2.7.2
+    Checking zeroize v1.9.0
+   Compiling futures-macro v0.3.34
+    Checking tokio v1.53.1
+    Checking futures-util v0.3.34
+    Checking tracing v0.1.44
+   Compiling thiserror-impl v2.0.21
+   Compiling displaydoc v0.2.7
+   Compiling zerofrom-derive v0.1.7
+   Compiling yoke-derive v0.8.2
+   Compiling zerovec-derive v0.11.6
+    Checking serde v1.0.229
+    Checking rustls-pki-types v1.15.1
+   Compiling multiversion-macros v0.9.0
+   Compiling async-trait v0.1.92
+    Checking zerofrom v0.1.8
+    Checking serde_urlencoded v0.7.1
+    Checking yoke v0.8.3
+    Checking generic-array v0.14.7
+    Checking zerovec v0.11.8
+    Checking zerotrie v0.2.5
+    Checking rustls-native-certs v0.8.4
+    Checking futures-executor v0.3.34
+    Checking crypto-common v0.1.7
+   Compiling zerocopy-derive v0.8.57
+    Checking tinystr v0.8.4
+    Checking potential_utf v0.1.6
+    Checking chrono v0.4.45
+   Compiling pin-project-internal v1.1.13
+    Checking icu_collections v2.3.0
+    Checking multiversion v0.9.0
+    Checking icu_locale_core v2.3.0
+    Checking encoding_rs v0.8.41
+   Compiling prost-derive v0.14.4
+    Checking tokio-util v0.7.19
+    Checking icu_provider v2.3.1
+    Checking icu_properties v2.3.0
+    Checking icu_normalizer v2.3.0
+    Checking h2 v0.4.19
+    Checking tower v0.5.3
+    Checking pin-project v1.1.13
+    Checking futures v0.3.34
+   Compiling darling_macro v0.24.1
+    Checking zerocopy v0.8.57
+   Compiling derive_more-impl v2.1.1
+   Compiling darling v0.24.1
+    Checking tokio-stream v0.1.19
+    Checking idna_adapter v1.2.2
+    Checking idna v1.1.0
+    Checking block-buffer v0.10.4
+   Compiling blake3 v1.8.7
+    Checking url v2.5.8
+    Checking digest v0.10.7
+   Compiling prost v0.14.4
+    Checking tower-http v0.6.11
+   Compiling prost-types v0.14.4
+   Compiling prettyplease v0.2.37
+    Checking sha1 v0.10.7
+    Checking futures-lite v2.6.1
+    Checking skippy-model-ref v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/skippy/crates/skippy-model-ref)
+    Checking hyper v1.11.1
+   Compiling clap_derive v4.6.7
+   Compiling tempfile v3.27.0
+    Checking lru v0.18.4
+    Checking tracing-serde v0.2.0
+    Checking derive_more v2.1.1
+   Compiling prost-build v0.14.4
+    Checking matchers v0.2.0
+   Compiling strum_macros v0.28.0
+    Checking thread_local v1.1.10
+    Checking tracing-subscriber v0.3.23
+    Checking ppv-lite86 v0.2.21
+    Checking hyper-util v0.1.20
+    Checking hashbrown v0.16.1
+    Checking rand_chacha v0.9.0
+    Checking rand v0.9.5
+    Checking clap v4.6.7
+    Checking skippy-model-artifact v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/skippy/crates/skippy-model-artifact)
+    Checking num-integer v0.1.47
+   Compiling semver v1.0.28
+   Compiling skippy-protocol v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/skippy/crates/skippy-protocol)
+    Checking nom v7.1.3
+    Checking tungstenite v0.29.0
+   Compiling rustc_version v0.4.1
+    Checking strum v0.28.0
+    Checking skippy-tokenizer v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/skippy/crates/skippy-tokenizer)
+    Checking tokio-tungstenite v0.29.0
+    Checking multer v3.1.0
+    Checking crc32fast v1.5.2
+    Checking num-bigint v0.4.8
+    Checking inout v0.1.4
+    Checking axum-core v0.5.6
+   Compiling serde_repr v0.1.21
+    Checking sysinfo v0.38.4
+    Checking serde_path_to_error v0.1.20
+    Checking cipher v0.4.4
+warning: linker stderr: Note: mold is unavailable or failed the active target/toolchain link probe.
+         Falling back to lld or the platform linker for this build.
+  |
+  = note: `#[warn(linker_messages)]` on by default
+  = note: the `linker_messages` lint ignores `-D warnings`
+
+warning: `skippy-protocol` (build script) generated 1 warning
+    Checking universal-hash v0.5.1
+   Compiling secp256k1-sys v0.10.1
+    Checking skippy-native-runtime v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/skippy/crates/skippy-native-runtime)
+   Compiling n0-error-macros v1.0.1
+   Compiling spez v0.1.2
+    Checking axum v0.8.9
+    Checking compact_str v0.9.1
+    Checking der v0.8.1
+    Checking n0-error v1.0.1
+    Checking webpki-roots v1.0.9
+    Checking bstr v1.13.1
+   Compiling enumflags2_derive v0.7.12
+   Compiling curve25519-dalek-derive v0.1.1
+    Checking futures-buffered v0.2.13
+    Checking spki v0.8.0
+   Compiling zvariant_utils v4.2.0
+    Checking rusticata-macros v4.1.0
+   Compiling curve25519-dalek v5.0.0
+    Checking aead v0.5.2
+   Compiling asn1-rs-derive v0.6.0
+   Compiling git-version-macro v0.3.9
+   Compiling asn1-rs-impl v0.2.0
+    Checking event-listener v5.4.2
+    Checking os_str_bytes v6.6.1
+    Checking serdect v0.4.3
+    Checking asn1-rs v0.7.2
+    Checking tracing-appender v0.2.5
+    Checking event-listener-strategy v0.5.4
+    Checking shellexpand v3.1.2
+   Compiling zvariant_derive v5.15.0
+    Checking git-version v0.3.9
+    Checking n0-future v0.3.2
+    Checking pkcs8 v0.11.0
+    Checking kasuari v0.4.12
+    Checking regex v1.13.1
+    Checking signature v3.0.0
+    Checking ed25519 v3.0.0
+    Checking ratatui-core v0.1.2
+   Compiling instability v0.3.13
+    Checking polyval v0.6.2
+    Checking skippy-events v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/skippy/crates/skippy-events)
+    Checking approx v0.5.1
+   Compiling async-io v2.6.0
+   Compiling skippy-ffi v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/skippy/crates/skippy-ffi)
+   Compiling data-encoding-macro-internal v0.1.19
+    Checking statrs v0.18.0
+    Checking oid-registry v0.8.1
+    Checking ed25519-dalek v3.0.0
+    Checking der-parser v10.0.0
+    Checking ghash v0.5.1
+    Checking noq-udp v1.4.0
+    Checking nix v0.31.3
+    Checking portable-atomic v1.15.0
+   Compiling enumflags2 v0.7.12
+   Compiling zcheapstr v1.1.0
+    Checking ctr v0.9.2
+warning: `skippy-ffi` (build script) generated 1 warning (1 duplicate)
+    Checking aes v0.8.4
+    Checking mesh-llm-types v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/mesh/crates/mesh-llm-types)
+    Checking tokio-retry v0.3.2
+    Checking skippy-package-format v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/skippy/crates/skippy-package-format)
+    Checking polling v3.11.0
+    Checking line-clipping v0.3.8
+    Checking libloading v0.9.0
+    Checking adler2 v2.0.1
+    Checking netlink-packet-route v0.33.0
+   Compiling zvariant v5.15.0
+    Checking miniz_oxide v0.9.1
+    Checking aes-gcm v0.10.3
+    Checking ratatui-widgets v0.3.2
+    Checking x509-parser v0.18.1
+    Checking crossterm v0.29.0
+    Checking data-encoding-macro v0.1.21
+   Compiling prettyplease v0.3.0
+    Checking async-channel v2.5.0
+    Checking hyper-timeout v0.5.2
+    Checking safetensors v0.8.0
+   Compiling num_enum_derive v0.7.6
+    Checking netlink-sys v0.8.8
+    Checking rustls-cert-read v0.3.0
+    Checking opentelemetry v0.32.0
+   Compiling enum-assoc v1.4.1
+   Compiling ref-cast-impl v1.0.27
+   Compiling iroh-metrics-derive v1.0.1
+    Checking yasna v0.6.0
+   Compiling serde_derive_internals v0.30.0
+    Checking simple-dns v0.12.0
+    Checking netlink-sys v0.9.0
+    Checking rand_pcg v0.10.2
+    Checking tinyvec v1.13.3
+   Compiling darling_core v0.20.11
+    Checking rcgen v0.14.10
+    Checking reloadable-state v0.1.0
+    Checking flate2 v1.1.10
+   Compiling schemars_derive v1.2.2
+    Checking skippy-model v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/skippy/crates/skippy-model)
+    Checking num_enum v0.7.6
+    Checking ref-cast v1.0.27
+   Compiling zbus_names v4.3.4
+   Compiling bon-macros v3.10.1
+    Checking netlink-proto v0.12.2
+    Checking ratatui-crossterm v0.1.2
+    Checking tonic v0.14.6
+    Checking ratatui-macros v0.7.2
+    Checking iroh-base v1.4.1
+    Checking async-signal v0.2.14
+    Checking skippy-cache v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/skippy/crates/skippy-cache)
+    Checking secp256k1 v0.29.1
+    Checking netlink-packet-route v0.31.0
+    Checking n0-watcher v1.0.0
+    Checking async-lock v3.4.2
+    Checking toml_edit v0.25.13+spec-1.1.0
+    Checking attohttpc v0.30.1
+    Checking cobs v0.3.0
+    Checking xattr v1.6.1
+   Compiling postcard-derive v0.2.2
+    Checking piper v0.2.5
+    Checking pem v3.0.6
+    Checking skippy-guardrails v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/skippy/crates/skippy-guardrails)
+    Checking filetime v0.2.29
+    Checking netdev v0.46.2
+    Checking schemars v1.2.2
+    Checking postcard v1.1.3
+    Checking dashmap v6.2.1
+    Checking bitcoin v0.32.102
+    Checking tar v0.4.46
+    Checking blocking v1.7.0
+    Checking mesh-llm-config v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/mesh/crates/mesh-llm-config)
+    Checking igd-next v0.17.1
+    Checking tonic-prost v0.14.6
+    Checking async-process v2.5.0
+   Compiling darling_macro v0.20.11
+    Checking ratatui v0.30.2
+    Checking skippy-runtime v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/skippy/crates/skippy-runtime)
+    Checking bon v3.10.1
+   Compiling zbus_macros v5.19.0
+    Checking ahash v0.8.12
+    Checking opentelemetry_sdk v0.32.1
+    Checking rustls-cert-file-reader v0.4.2
+    Checking process-wrap v10.0.0
+    Checking netwatch v0.19.3
+    Checking async-executor v1.14.0
+    Checking async-broadcast v0.7.2
+   Compiling rmcp-macros v3.4.1
+    Checking skippy-hardware-profile v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/skippy/crates/skippy-hardware-profile)
+    Checking globset v0.4.20
+    Checking num-rational v0.4.2
+    Checking num-iter v0.1.46
+   Compiling mesh-llm-plugin v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/mesh/crates/mesh-llm-plugin)
+    Checking sse-stream v0.2.6
+   Compiling async-recursion v1.1.1
+    Checking num-complex v0.4.6
+    Checking const-hex v1.19.1
+    Checking hmac v0.13.0
+    Checking sha1 v0.11.0
+    Checking ordered-stream v0.2.0
+    Checking aes v0.9.3
+    Checking papaya v0.2.5
+    Checking opentelemetry-proto v0.32.0
+    Checking zbus v5.19.0
+    Checking hkdf v0.13.0
+warning: `mesh-llm-plugin` (build script) generated 1 warning (1 duplicate)
+    Checking num v0.4.3
+    Checking lightning-types v0.4.0-rc1
+   Compiling darling v0.20.11
+    Checking heapless v0.8.0
+    Checking skippy-config v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/skippy/crates/skippy-config)
+    Checking skippy-model-resolver v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/skippy/crates/skippy-model-resolver)
+   Compiling curve25519-dalek v4.1.3
+    Checking sha2 v0.10.9
+    Checking backon v1.6.0
+    Checking cbc v0.2.1
+   Compiling libsqlite3-sys v0.38.2
+    Checking bitcoin_hashes v1.2.0
+    Checking skippy-inference-api v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/skippy/crates/skippy-inference-api)
+    Checking skippy-scheduler v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/skippy/crates/skippy-scheduler)
+    Checking faster-hex v0.10.0
+    Checking lightning-invoice v0.35.0-rc1
+   Compiling derive_builder_core v0.20.2
+    Checking mesh-llm-events v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/mesh/crates/mesh-llm-events)
+    Checking secp256k1 v0.30.0
+    Checking poly1305 v0.8.0
+    Checking salsa20 v0.10.2
+    Checking phc v0.6.1
+   Compiling thiserror-impl v1.0.69
+    Checking universal-hash v0.6.1
+    Checking skippy-metrics v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/skippy/crates/skippy-metrics)
+    Checking nostr v0.45.5
+    Checking poly1305 v0.9.1
+   Compiling derive_builder_macro v0.20.2
+    Checking zopfli v0.8.3
+    Checking password-hash v0.6.1
+    Checking crypto_secretbox v0.1.1
+    Checking mesh-llm-wallet v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/mesh/crates/mesh-llm-wallet)
+    Checking thiserror v1.0.69
+    Checking secret-service v5.2.0
+   Compiling skippy-api v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/skippy/crates/skippy-api)
+    Checking webpki-roots v0.26.11
+   Compiling monostate-impl v0.1.18
+    Checking aead v0.6.1
+    Checking blake2 v0.11.0
+   Compiling mesh-llm-build-info v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/mesh/crates/mesh-llm-build-info)
+    Checking zbus-secret-service-keyring-store v1.0.1
+    Checking spm_precompiled v0.1.4
+    Checking argon2 v0.6.0
+warning: `mesh-llm-build-info` (build script) generated 1 warning (1 duplicate)
+    Checking monostate v0.1.18
+    Checking zip v9.0.5
+    Checking keyring v4.2.0
+    Checking chacha20poly1305 v0.11.0
+    Checking crypto_box v0.9.1
+    Checking tokio-socks v0.5.3
+    Checking fancy-regex v0.17.0
+    Checking derive_builder v0.20.2
+   Compiling skippy-model-package v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/skippy/crates/skippy-model-package)
+    Checking tokio-happy-eyeballs v0.1.0
+    Checking dary_heap v0.3.9
+    Checking hashlink v0.12.2
+    Checking unicode-normalization-alignments v0.1.12
+    Checking nibble_vec v0.1.0
+    Checking mesh-llm-identity v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/mesh/crates/mesh-llm-identity)
+    Checking radix_trie v0.3.0
+    Checking tokenizers v0.23.2
+warning: `skippy-api` (build script) generated 1 warning (1 duplicate)
+warning: `skippy-model-package` (build script) generated 1 warning (1 duplicate)
+    Checking nostr-gossip v0.45.1
+    Checking nostr-database v0.45.2
+    Checking mesh-llm-skills v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/mesh/crates/mesh-llm-skills)
+    Checking async-utility v0.3.2
+   Compiling include_dir_macros v0.7.4
+   Compiling mesh-llm-ui v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/mesh/crates/mesh-llm-ui)
+   Compiling mesh-llm-analytics v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/mesh/crates/mesh-llm-analytics)
+    Checking rustyline v18.0.1
+warning: `mesh-llm-ui` (build script) generated 1 warning (1 duplicate)
+    Checking include_dir v0.7.4
+warning: `mesh-llm-analytics` (build script) generated 1 warning (1 duplicate)
+    Checking flume v0.12.0
+    Checking skippy-serving v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/skippy/crates/skippy-serving)
+    Checking skippy-gpu-bench v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/skippy/crates/skippy-gpu-bench)
+    Checking skippy-topology v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/skippy/crates/skippy-topology)
+    Checking mesh-llm-release-footer v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/mesh/crates/mesh-llm-release-footer)
+    Checking mesh-native-serving-plugin-api v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/mesh/crates/mesh-native-serving-plugin-api)
+    Checking mdns-sd v0.21.1
+    Checking mesh-llm-control-api v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/mesh/crates/mesh-llm-control-api)
+    Checking skippy-coordinator v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/skippy/crates/skippy-coordinator)
+   Compiling serial_test_derive v4.0.1
+    Checking mesh-llm-runtime-event-contracts v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/mesh/crates/mesh-llm-runtime-event-contracts)
+    Checking serial_test v4.0.1
+    Checking rusqlite v0.40.2
+    Checking mesh-native-serving-plugin-host v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/mesh/crates/mesh-native-serving-plugin-host)
+    Checking mesh-llm-log-store v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/mesh/crates/mesh-llm-log-store)
+   Compiling aws-lc-rs v1.18.1
+   Compiling rustls v0.23.46
+    Checking rustls-webpki v0.103.15
+    Checking tokio-rustls v0.26.5
+    Checking rustls-platform-verifier v0.7.0
+    Checking rustls-cert-reloadable-resolver v0.7.1
+    Checking tungstenite v0.28.0
+    Checking hyper-rustls v0.27.9
+    Checking noq-proto v1.4.0
+    Checking tokio-websockets v0.13.3
+    Checking tokio-tungstenite v0.28.0
+    Checking reqwest v0.13.5
+    Checking async-wsocket v0.17.0
+    Checking nostr-sdk v0.45.3
+    Checking xet-runtime v1.6.0
+    Checking reqwest-middleware v0.5.2
+    Checking n0-dns-resolver v0.1.0
+    Checking iroh-metrics v1.0.2
+    Checking tokio-rustls-acme v0.9.1
+    Checking rmcp v3.4.1
+    Checking skippy-runtime-install v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/skippy/crates/skippy-runtime-install)
+    Checking mesh-mixture-of-agents v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/mesh/crates/mesh-mixture-of-agents)
+    Checking portmapper v0.19.3
+    Checking iroh-dns v1.4.1
+    Checking opentelemetry-http v0.32.0
+    Checking mesh-llm-system v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/mesh/crates/mesh-llm-system)
+    Checking opentelemetry-otlp v0.32.0
+    Checking mesh-llm-plugin-manager v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/mesh/crates/mesh-llm-plugin-manager)
+    Checking noq v1.4.0
+    Checking xet-core-structures v1.6.0
+    Checking iroh-relay v1.4.1
+    Checking xet-client v1.6.0
+    Checking iroh v1.4.1
+    Checking xet-data v1.6.0
+    Checking mesh-llm-protocol v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/mesh/crates/mesh-llm-protocol)
+    Checking mesh-llm-routing v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/mesh/crates/mesh-llm-routing)
+    Checking mesh-llm-transport v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/mesh/crates/mesh-llm-transport)
+    Checking hf-xet v1.6.0
+    Checking skippy-hf-hub v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/skippy/crates/skippy-hf-hub)
+    Checking mesh-llm-payments-types v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/mesh/crates/mesh-llm-payments-types)
+    Checking mesh-llm-moa-plugin v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/mesh/crates/mesh-llm-moa-plugin)
+    Checking mesh-llm-membership v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/mesh/crates/mesh-llm-membership)
+    Checking mesh-llm-payments v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/mesh/crates/mesh-llm-payments)
+    Checking mesh-llm-client v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/mesh/crates/mesh-client)
+    Checking skippy-model-hf v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/skippy/crates/skippy-model-hf)
+    Checking mesh-llm-node v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/mesh/crates/mesh-llm-node)
+    Checking mesh-llm-skippy-adapter v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/mesh/crates/mesh-llm-skippy-adapter)
+    Checking skippy-commands v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/skippy/crates/skippy-commands)
+    Checking mesh-llm-host-runtime v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/fix-issue54-plugin-install-path/mesh/crates/mesh-llm-host-runtime)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 8m 17s

@@ -25,9 +25,10 @@ const METADATA_FILE: &str = "plugin-install.json";
 /// Marks a default plugin the operator turned off while it was not installed.
 const DEFAULT_OFF_FILE: &str = "default-off";
 /// The directory under the store root that holds every plugin's files, one
-/// `<root>/installed/<name>` each. It sits beside the metadata directories
-/// (`<root>/<name>`), so a plugin named `installed` would keep its metadata
-/// in it, and deleting that plugin would delete every plugin's files.
+/// `<root>/installed/<name>` each, beside the metadata directories
+/// (`<root>/<name>`). A plugin named `installed` would keep its metadata in
+/// it, and deleting that plugin would delete every plugin's files, so the
+/// name is reserved ([`is_reserved_plugin_name`]).
 pub const INSTALL_DIR_NAME: &str = "installed";
 pub const SUPPORTED_PLUGIN_SCHEMA_VERSION: u32 = 1;
 
@@ -328,8 +329,11 @@ pub struct PluginStore {
 }
 
 /// A store directory whose `plugin-install.json` names a different plugin
-/// than the directory it sits in. Its metadata is not used: every other part
-/// of the host trusts `name`, so it must match the checked directory name.
+/// than the directory it sits in, or places the plugin's files somewhere
+/// other than `<root>/installed/<name>`. Its metadata is not used: every
+/// other part of the host trusts `name` and `install_path` (`plugins delete`
+/// used to remove `install_path`), so both must be what the store derives
+/// from the checked directory name.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct RejectedPluginMetadata {
     /// The store directory name, which passed the plugin name check.
@@ -353,8 +357,23 @@ impl PluginStore {
         &self.root
     }
 
+    /// The directory holding every installed plugin's files.
+    pub fn install_root(&self) -> PathBuf {
+        self.root.join(INSTALL_DIR_NAME)
+    }
+
+    /// Where the files of plugin `name` are installed: the only
+    /// `install_path` the store accepts in that plugin's metadata.
+    pub fn install_path(&self, name: &str) -> PathBuf {
+        self.install_root().join(name)
+    }
+
     pub fn save(&self, metadata: &InstalledPluginMetadata) -> Result<()> {
         validate_plugin_name(&metadata.name)?;
+        // Never write a record that loading would reject.
+        if let Some(reason) = self.install_path_mismatch(&metadata.name, metadata) {
+            bail!(reason);
+        }
         let plugin_dir = self.plugin_dir(&metadata.name);
         fs::create_dir_all(&plugin_dir).with_context(|| {
             format!("create plugin metadata directory {}", plugin_dir.display())
@@ -383,14 +402,15 @@ impl PluginStore {
         let Some(metadata) = self.read_metadata(name)? else {
             return Ok(None);
         };
-        if let Some(reason) = self.name_mismatch(name, &metadata) {
+        if let Some(reason) = self.metadata_mismatch(name, &metadata) {
             bail!(reason);
         }
         Ok(Some(metadata))
     }
 
     /// Read and parse `<name>/plugin-install.json` without checking that the
-    /// `name` inside it matches. Callers must check it with `name_mismatch`.
+    /// `name` and `install_path` inside it match. Callers must check them
+    /// with `metadata_mismatch`.
     fn read_metadata(&self, name: &str) -> Result<Option<InstalledPluginMetadata>> {
         validate_plugin_name(name)?;
         let metadata_path = self.metadata_path(name);
@@ -402,6 +422,12 @@ impl PluginStore {
         Ok(Some(serde_json::from_slice(&contents).with_context(
             || format!("parse plugin metadata {}", metadata_path.display()),
         )?))
+    }
+
+    /// Why the metadata stored under `name` cannot be used, if it cannot.
+    fn metadata_mismatch(&self, name: &str, metadata: &InstalledPluginMetadata) -> Option<String> {
+        self.name_mismatch(name, metadata)
+            .or_else(|| self.install_path_mismatch(name, metadata))
     }
 
     /// `save` places metadata in the directory named by `metadata.name`, so
@@ -417,13 +443,38 @@ impl PluginStore {
         })
     }
 
+    /// Every install extracts a plugin to exactly `install_path(name)`, so a
+    /// different `install_path` was edited by hand (or written for another
+    /// store root). It must be that exact directory, not merely one under the
+    /// install root: the install root itself, or another plugin's directory,
+    /// would let `delete` or a launch reach files that are not this plugin's.
+    /// The paths are compared as written, component by component, so a `..`
+    /// or a different spelling of the same directory is refused too.
+    fn install_path_mismatch(
+        &self,
+        name: &str,
+        metadata: &InstalledPluginMetadata,
+    ) -> Option<String> {
+        let expected = self.install_path(name);
+        (metadata.install_path != expected).then(|| {
+            format!(
+                "plugin metadata {} places plugin {:?} at {}, but its files must be at {}",
+                self.metadata_path(name).display(),
+                name,
+                metadata.install_path.display(),
+                expected.display()
+            )
+        })
+    }
+
     pub fn load_optional(&self, name: &str) -> Result<Option<InstalledPluginMetadata>> {
         self.try_load(name)
     }
 
     /// The installed plugins. A directory whose metadata names a different
-    /// plugin is left out, so one edited file cannot stop the others from
-    /// loading; use [`Self::list_checked`] to report it.
+    /// plugin, or places its files elsewhere, is left out, so one edited file
+    /// cannot stop the others from loading; use [`Self::list_checked`] to
+    /// report it.
     pub fn list(&self) -> Result<Vec<InstalledPluginMetadata>> {
         Ok(self.list_checked()?.plugins)
     }
@@ -455,7 +506,7 @@ impl PluginStore {
             let Some(metadata) = self.read_metadata(&name)? else {
                 continue;
             };
-            match self.name_mismatch(&name, &metadata) {
+            match self.metadata_mismatch(&name, &metadata) {
                 None => listing.plugins.push(metadata),
                 Some(reason) => listing.rejected.push(RejectedPluginMetadata {
                     directory: name,
@@ -479,15 +530,22 @@ impl PluginStore {
         Ok(metadata)
     }
 
+    /// Remove the plugin's files and its metadata directory. The files are
+    /// found by the name, never by the metadata's `install_path`, so an
+    /// edited record cannot point `delete` at another directory (#54).
     pub fn delete(&self, name: &str) -> Result<()> {
         validate_plugin_name(name)?;
-        let metadata = self.load(name).ok();
-        if let Some(metadata) = metadata
-            && metadata.install_path.exists()
-        {
-            fs::remove_dir_all(&metadata.install_path).with_context(|| {
-                format!("delete plugin install {}", metadata.install_path.display())
-            })?;
+        let install_path = self.install_path(name);
+        // `symlink_metadata`, not `exists`: a link there is removed itself,
+        // and is not followed into what it points at.
+        if let Ok(file_type) = fs::symlink_metadata(&install_path).map(|meta| meta.file_type()) {
+            let removed = if file_type.is_dir() {
+                fs::remove_dir_all(&install_path)
+            } else {
+                // A Windows directory link is removed with `remove_dir`.
+                fs::remove_file(&install_path).or_else(|_| fs::remove_dir(&install_path))
+            };
+            removed.with_context(|| format!("delete plugin install {}", install_path.display()))?;
         }
         let plugin_dir = self.plugin_dir(name);
         if is_reserved_plugin_name(name) {
@@ -690,13 +748,20 @@ mod tests {
         }
     }
 
+    /// `metadata(name)` with the `install_path` the store derives for it.
+    fn stored(store: &PluginStore, name: &str) -> InstalledPluginMetadata {
+        let mut item = metadata(name);
+        item.install_path = store.install_path(name);
+        item
+    }
+
     #[test]
     fn saves_loads_and_lists_metadata() {
         let temp = TempDir::new().unwrap();
         let store = PluginStore::new(temp.path());
 
-        store.save(&metadata("blackboard")).unwrap();
-        store.save(&metadata("notes")).unwrap();
+        store.save(&stored(&store, "blackboard")).unwrap();
+        store.save(&stored(&store, "notes")).unwrap();
 
         let loaded = store.load("blackboard").unwrap();
         assert_eq!(loaded.name, "blackboard");
@@ -735,7 +800,7 @@ mod tests {
     fn updates_enabled_state() {
         let temp = TempDir::new().unwrap();
         let store = PluginStore::new(temp.path());
-        store.save(&metadata("blackboard")).unwrap();
+        store.save(&stored(&store, "blackboard")).unwrap();
 
         let disabled = store.set_enabled("blackboard", false).unwrap();
         assert!(!disabled.enabled);
@@ -749,7 +814,7 @@ mod tests {
 
         assert!(store.load_optional("blackboard").unwrap().is_none());
 
-        store.save(&metadata("blackboard")).unwrap();
+        store.save(&stored(&store, "blackboard")).unwrap();
         assert_eq!(
             store.load_optional("blackboard").unwrap().unwrap().name,
             "blackboard"
@@ -760,16 +825,188 @@ mod tests {
     fn deletes_metadata_directory() {
         let temp = TempDir::new().unwrap();
         let store = PluginStore::new(temp.path());
-        let install_temp = TempDir::new().unwrap();
-        let install_path = install_temp.path().join("blackboard");
+        let install_path = temp.path().join(INSTALL_DIR_NAME).join("blackboard");
         std::fs::create_dir_all(&install_path).unwrap();
-        let mut metadata = metadata("blackboard");
-        metadata.install_path = install_path.clone();
-        store.save(&metadata).unwrap();
+        std::fs::write(install_path.join("blackboard"), b"executable").unwrap();
+        store.save(&stored(&store, "blackboard")).unwrap();
+        let notes_files = store.install_path("notes");
+        std::fs::create_dir_all(&notes_files).unwrap();
+        store.save(&stored(&store, "notes")).unwrap();
 
         store.delete("blackboard").unwrap();
-        assert!(store.list().unwrap().is_empty());
+        assert_eq!(
+            store
+                .list()
+                .unwrap()
+                .into_iter()
+                .map(|item| item.name)
+                .collect::<Vec<_>>(),
+            ["notes"]
+        );
         assert!(!install_path.exists());
+        assert!(!temp.path().join("blackboard").exists());
+        assert!(notes_files.is_dir());
+    }
+
+    #[test]
+    fn delete_removes_the_files_of_a_plugin_without_metadata() {
+        let temp = TempDir::new().unwrap();
+        let store = PluginStore::new(temp.path());
+        let install_path = store.install_path("blackboard");
+        std::fs::create_dir_all(&install_path).unwrap();
+
+        store.delete("blackboard").unwrap();
+        assert!(!install_path.exists());
+        assert!(store.install_root().is_dir());
+    }
+
+    /// Hand-edit `<dir>/plugin-install.json` so its `install_path` is `path`.
+    fn relocate_in_metadata(store_root: &Path, dir: &str, path: &Path) {
+        let file = store_root.join(dir).join(METADATA_FILE);
+        let mut value: serde_json::Value =
+            serde_json::from_slice(&std::fs::read(&file).unwrap()).unwrap();
+        value["install_path"] = serde_json::to_value(path).unwrap();
+        std::fs::write(&file, serde_json::to_vec(&value).unwrap()).unwrap();
+    }
+
+    /// The paths an edited record could use to reach files that are not the
+    /// plugin's: outside the store, the store or install root itself, another
+    /// plugin's files, below its own, or its own spelled with `..` or `.`.
+    fn foreign_install_paths(store: &PluginStore, outside: &Path) -> Vec<PathBuf> {
+        let root = store.root().to_path_buf();
+        let install_root = store.install_root();
+        vec![
+            outside.to_path_buf(),
+            root.clone(),
+            install_root.clone(),
+            install_root.join("notes"),
+            install_root.join("demo").join("nested"),
+            install_root.join("other").join("..").join("demo"),
+            root.join("..")
+                .join(root.file_name().unwrap())
+                .join(INSTALL_DIR_NAME)
+                .join("demo"),
+            PathBuf::from("installed").join("demo"),
+        ]
+    }
+
+    #[test]
+    fn load_and_save_reject_an_install_path_other_than_the_plugins_own() {
+        let temp = TempDir::new().unwrap();
+        let outside = TempDir::new().unwrap();
+        let store = PluginStore::new(temp.path());
+        store.save(&stored(&store, "demo")).unwrap();
+
+        for path in foreign_install_paths(&store, outside.path()) {
+            relocate_in_metadata(temp.path(), "demo", &path);
+            let error = store.load("demo").unwrap_err().to_string();
+            assert!(error.contains("must be at"), "{}: {error}", path.display());
+            assert!(store.try_load("demo").is_err(), "{}", path.display());
+            assert!(
+                store.set_enabled("demo", false).is_err(),
+                "{}",
+                path.display()
+            );
+
+            let mut item = stored(&store, "demo");
+            item.install_path = path.clone();
+            assert!(store.save(&item).is_err(), "save {}", path.display());
+        }
+    }
+
+    #[test]
+    fn list_skips_and_reports_metadata_placing_files_elsewhere() {
+        let temp = TempDir::new().unwrap();
+        let outside = TempDir::new().unwrap();
+        let store = PluginStore::new(temp.path());
+        store.save(&stored(&store, "blackboard")).unwrap();
+        store.save(&stored(&store, "demo")).unwrap();
+        store.save(&stored(&store, "notes")).unwrap();
+        relocate_in_metadata(temp.path(), "demo", outside.path());
+        // Another plugin's files, inside the install root, are refused too.
+        relocate_in_metadata(temp.path(), "notes", &store.install_path("blackboard"));
+
+        let listing = store.list_checked().unwrap();
+        assert_eq!(
+            listing
+                .plugins
+                .iter()
+                .map(|plugin| plugin.name.as_str())
+                .collect::<Vec<_>>(),
+            ["blackboard"]
+        );
+        assert_eq!(
+            listing
+                .rejected
+                .iter()
+                .map(|rejected| rejected.directory.as_str())
+                .collect::<Vec<_>>(),
+            ["demo", "notes"]
+        );
+        assert!(
+            listing.rejected[0]
+                .reason
+                .contains(&outside.path().display().to_string()),
+            "{}",
+            listing.rejected[0].reason
+        );
+        assert_eq!(store.list().unwrap().len(), 1);
+    }
+
+    /// #54: `delete` used to remove whatever directory the record's
+    /// `install_path` named. It now removes only the plugin's own files.
+    #[test]
+    fn delete_never_removes_the_directory_an_edited_record_names() {
+        let temp = TempDir::new().unwrap();
+        let outside = TempDir::new().unwrap();
+        std::fs::write(outside.path().join("keep"), b"keep").unwrap();
+        let store = PluginStore::new(temp.path());
+
+        for path in foreign_install_paths(&store, outside.path()) {
+            for name in ["blackboard", "demo", "notes"] {
+                let files = store.install_path(name);
+                std::fs::create_dir_all(&files).unwrap();
+                std::fs::write(files.join(name), b"executable").unwrap();
+                store.save(&stored(&store, name)).unwrap();
+            }
+            relocate_in_metadata(temp.path(), "demo", &path);
+
+            store.delete("demo").unwrap();
+
+            assert_eq!(
+                std::fs::read(outside.path().join("keep")).unwrap(),
+                b"keep",
+                "{}",
+                path.display()
+            );
+            assert!(!store.install_path("demo").exists(), "{}", path.display());
+            assert!(!temp.path().join("demo").exists(), "{}", path.display());
+            for name in ["blackboard", "notes"] {
+                assert!(
+                    store.install_path(name).join(name).is_file(),
+                    "{name} after {}",
+                    path.display()
+                );
+                assert_eq!(store.load(name).unwrap().name, name);
+            }
+        }
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn delete_removes_a_link_in_place_of_the_files_not_its_target() {
+        let temp = TempDir::new().unwrap();
+        let outside = TempDir::new().unwrap();
+        std::fs::write(outside.path().join("keep"), b"keep").unwrap();
+        let store = PluginStore::new(temp.path());
+        std::fs::create_dir_all(store.install_root()).unwrap();
+        std::os::unix::fs::symlink(outside.path(), store.install_path("demo")).unwrap();
+        store.save(&stored(&store, "demo")).unwrap();
+
+        store.delete("demo").unwrap();
+
+        assert!(std::fs::symlink_metadata(store.install_path("demo")).is_err());
+        assert_eq!(std::fs::read(outside.path().join("keep")).unwrap(), b"keep");
     }
 
     /// A plugin named `installed`, installed before the name was reserved,
@@ -837,7 +1074,7 @@ mod tests {
     fn load_rejects_metadata_naming_another_plugin() {
         let temp = TempDir::new().unwrap();
         let store = PluginStore::new(temp.path());
-        store.save(&metadata("demo")).unwrap();
+        store.save(&stored(&store, "demo")).unwrap();
         rename_in_metadata(temp.path(), "demo", "../../escape");
 
         let error = store.load("demo").unwrap_err().to_string();
@@ -851,9 +1088,9 @@ mod tests {
     fn list_skips_and_reports_metadata_naming_another_plugin() {
         let temp = TempDir::new().unwrap();
         let store = PluginStore::new(temp.path());
-        store.save(&metadata("blackboard")).unwrap();
-        store.save(&metadata("demo")).unwrap();
-        store.save(&metadata("notes")).unwrap();
+        store.save(&stored(&store, "blackboard")).unwrap();
+        store.save(&stored(&store, "demo")).unwrap();
+        store.save(&stored(&store, "notes")).unwrap();
         rename_in_metadata(temp.path(), "demo", "../../escape");
         // A valid name that belongs to another plugin is rejected too.
         rename_in_metadata(temp.path(), "notes", "blackboard");
@@ -884,9 +1121,8 @@ mod tests {
         let temp = TempDir::new().unwrap();
         let store = PluginStore::new(temp.path());
         let elsewhere = TempDir::new().unwrap();
-        let mut item = metadata("demo");
-        item.install_path = elsewhere.path().to_path_buf();
-        store.save(&item).unwrap();
+        store.save(&stored(&store, "demo")).unwrap();
+        relocate_in_metadata(temp.path(), "demo", elsewhere.path());
         rename_in_metadata(temp.path(), "demo", "other");
 
         store.delete("demo").unwrap();
@@ -910,7 +1146,7 @@ mod tests {
         std::fs::write(parent.join(METADATA_FILE), b"{}").unwrap();
         std::fs::write(root.join(METADATA_FILE), b"{}").unwrap();
         let store = PluginStore::new(&root);
-        store.save(&metadata("blackboard")).unwrap();
+        store.save(&stored(&store, "blackboard")).unwrap();
 
         for name in [".", ".."] {
             assert!(store.delete(name).is_err(), "delete {name}");
@@ -941,7 +1177,7 @@ mod tests {
         let temp = TempDir::new().unwrap();
         let store = PluginStore::new(temp.path());
         std::fs::create_dir_all(temp.path().join("installed").join("blackboard")).unwrap();
-        store.save(&metadata("blackboard")).unwrap();
+        store.save(&stored(&store, "blackboard")).unwrap();
 
         let listed = store.list().unwrap();
         assert_eq!(listed.len(), 1);
@@ -984,6 +1220,8 @@ mod tests {
 }"#,
         )
         .unwrap();
+
+        relocate_in_metadata(temp.path(), "blackboard", &store.install_path("blackboard"));
 
         let loaded = store.load("blackboard").unwrap();
         let setting = loaded

@@ -1,0 +1,824 @@
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.26
+   Compiling quote v1.0.47
+   Compiling libc v0.2.189
+   Compiling cfg-if v1.0.5
+   Compiling serde_core v1.0.229
+   Compiling memchr v2.8.3
+   Compiling log v0.4.34
+   Compiling typenum v1.20.1
+   Compiling pin-project-lite v0.2.17
+   Compiling serde v1.0.229
+   Compiling itoa v1.0.18
+   Compiling smallvec v1.16.1
+   Compiling equivalent v1.0.2
+   Compiling futures-core v0.3.34
+   Compiling bytes v1.12.1
+   Compiling scopeguard v1.2.0
+   Compiling once_cell v1.21.4
+   Compiling lock_api v0.4.14
+   Compiling rand_core v0.10.1
+   Compiling parking_lot_core v0.9.12
+   Compiling getrandom v0.4.3
+   Compiling futures-io v0.3.34
+   Compiling find-msvc-tools v0.1.12
+   Compiling syn v2.0.119
+   Compiling syn v3.0.6
+   Compiling shlex v2.0.1
+   Compiling bitflags v2.13.2
+   Compiling slab v0.4.12
+   Compiling hybrid-array v0.4.15
+   Compiling futures-sink v0.3.34
+   Compiling zmij v1.0.23
+   Compiling futures-channel v0.3.34
+   Compiling futures-task v0.3.34
+   Compiling serde_json v1.0.151
+   Compiling block-buffer v0.12.1
+   Compiling jobserver v0.1.35
+   Compiling allocator-api2 v0.2.21
+   Compiling errno v0.3.14
+   Compiling signal-hook-registry v1.4.8
+   Compiling cc v1.4.6
+   Compiling mio v1.2.3
+   Compiling parking_lot v0.12.5
+   Compiling socket2 v0.6.5
+   Compiling getrandom v0.2.17
+   Compiling foldhash v0.2.0
+   Compiling tracing-core v0.1.36
+   Compiling crypto-common v0.2.2
+   Compiling thiserror v2.0.21
+   Compiling cpufeatures v0.3.1
+   Compiling hashbrown v0.17.1
+   Compiling rustversion v1.0.23
+   Compiling http v1.5.0
+   Compiling stable_deref_trait v1.2.1
+   Compiling percent-encoding v2.3.2
+   Compiling subtle v2.6.1
+   Compiling pkg-config v0.3.34
+   Compiling const-oid v0.10.2
+   Compiling fastrand v2.5.0
+   Compiling httparse v1.10.1
+   Compiling atomic-waker v1.1.2
+   Compiling anyhow v1.0.104
+   Compiling form_urlencoded v1.2.2
+   Compiling autocfg v1.5.1
+   Compiling fnv v1.0.7
+   Compiling indexmap v2.14.2
+   Compiling cmake v0.1.58
+   Compiling dunce v1.0.5
+   Compiling fs_extra v1.3.0
+   Compiling cmov v0.5.4
+   Compiling ring v0.17.14
+   Compiling ctutils v0.4.2
+   Compiling synstructure v0.13.2
+   Compiling aws-lc-sys v0.45.0
+   Compiling version_check v0.9.5
+   Compiling ryu v1.0.23
+   Compiling writeable v0.6.4
+   Compiling litemap v0.8.3
+   Compiling icu_properties_data v2.3.0
+   Compiling icu_normalizer_data v2.3.0
+   Compiling utf8_iter v1.0.4
+   Compiling http-body v1.1.0
+   Compiling untrusted v0.9.0
+   Compiling aws-lc-rs v1.18.1
+   Compiling base64 v0.22.1
+   Compiling tower-service v0.3.3
+   Compiling num-traits v0.2.19
+   Compiling rustls v0.23.46
+   Compiling ipnet v2.12.2
+   Compiling try-lock v0.2.5
+   Compiling want v0.3.1
+   Compiling digest v0.11.3
+   Compiling httpdate v1.0.3
+   Compiling block-padding v0.4.2
+   Compiling strsim v0.11.1
+   Compiling inout v0.2.2
+   Compiling http-body-util v0.1.5
+   Compiling encoding_rs v0.8.41
+   Compiling sync_wrapper v1.0.2
+   Compiling tower-layer v0.3.3
+   Compiling simdutf8 v0.1.5
+   Compiling crossbeam-utils v0.8.23
+   Compiling mime v0.3.17
+   Compiling zeroize_derive v1.5.0
+   Compiling tracing-attributes v0.1.31
+   Compiling zerofrom-derive v0.1.7
+   Compiling yoke-derive v0.8.2
+   Compiling serde_derive v1.0.229
+   Compiling futures-macro v0.3.34
+   Compiling zeroize v1.9.0
+   Compiling tokio-macros v2.7.2
+   Compiling futures-util v0.3.34
+   Compiling thiserror-impl v2.0.21
+   Compiling tokio v1.53.1
+   Compiling tracing v0.1.44
+   Compiling displaydoc v0.2.7
+   Compiling zerofrom v0.1.8
+   Compiling yoke v0.8.3
+   Compiling zerovec-derive v0.11.6
+   Compiling rustls-pki-types v1.15.1
+   Compiling zerotrie v0.2.5
+   Compiling multiversion-macros v0.9.0
+   Compiling async-trait v0.1.92
+   Compiling zerovec v0.11.8
+   Compiling tinystr v0.8.4
+   Compiling potential_utf v0.1.6
+   Compiling icu_locale_core v2.3.0
+   Compiling icu_collections v2.3.0
+   Compiling multiversion v0.9.0
+   Compiling generic-array v0.14.7
+   Compiling multiversion_no_op v1.0.0
+   Compiling heck v0.5.0
+   Compiling core_detect v1.0.0
+   Compiling cipher v0.5.2
+   Compiling icu_provider v2.3.1
+   Compiling icu_properties v2.3.0
+   Compiling icu_normalizer v2.3.0
+   Compiling serde_urlencoded v0.7.1
+   Compiling sha2 v0.11.0
+   Compiling rand_core v0.6.4
+   Compiling base64 v0.23.1
+   Compiling crypto-common v0.1.7
+   Compiling rustix v1.1.5
+   Compiling openssl-probe v0.2.1
+   Compiling idna_adapter v1.2.2
+   Compiling rustls-native-certs v0.8.4
+   Compiling idna v1.1.0
+   Compiling tokio-util v0.7.19
+   Compiling unicase v2.9.0
+   Compiling url v2.5.8
+   Compiling linux-raw-sys v0.12.1
+   Compiling arrayvec v0.7.8
+   Compiling mime_guess v2.0.5
+   Compiling h2 v0.4.19
+   Compiling tower v0.5.3
+   Compiling chacha20 v0.10.2
+   Compiling cfg_aliases v0.2.2
+   Compiling num-conv v0.2.2
+   Compiling time-core v0.1.9
+   Compiling rand v0.10.2
+   Compiling time-macros v0.2.32
+   Compiling tower-http v0.6.11
+   Compiling deranged v0.5.8
+   Compiling powerfmt v0.2.0
+   Compiling num_threads v0.1.7
+   Compiling cpufeatures v0.2.17
+   Compiling ident_case v1.0.1
+   Compiling unicode-segmentation v1.13.3
+   Compiling futures-executor v0.3.34
+   Compiling zerocopy v0.8.57
+   Compiling zerocopy-derive v0.8.57
+   Compiling winnow v1.0.4
+   Compiling uuid v1.26.0
+   Compiling iana-time-zone v0.1.65
+   Compiling time v0.3.55
+   Compiling chrono v0.4.45
+   Compiling pin-project-internal v1.1.13
+   Compiling either v1.18.0
+   Compiling hyper v1.11.1
+   Compiling hex v0.4.3
+   Compiling getrandom v0.3.4
+   Compiling pin-project v1.1.13
+   Compiling itertools v0.14.0
+   Compiling toml_parser v1.1.3+spec-1.1.0
+   Compiling data-encoding v2.11.1
+   Compiling hyper-util v0.1.20
+   Compiling futures v0.3.34
+   Compiling darling_core v0.24.1
+   Compiling aho-corasick v1.1.5
+   Compiling parking v2.2.1
+   Compiling regex-syntax v0.8.11
+   Compiling prost-derive v0.14.4
+   Compiling semver v1.0.28
+   Compiling ppv-lite86 v0.2.21
+   Compiling rand_core v0.9.5
+   Compiling convert_case v0.10.0
+   Compiling unicode-xid v0.2.6
+   Compiling option-ext v0.2.0
+   Compiling regex-automata v0.4.18
+   Compiling tokio-stream v0.1.19
+   Compiling rand_chacha v0.9.0
+   Compiling derive_more-impl v2.1.1
+   Compiling dirs-sys v0.5.0
+   Compiling dirs v6.0.0
+   Compiling darling_macro v0.24.1
+   Compiling rand v0.9.5
+   Compiling block-buffer v0.10.4
+   Compiling blake3 v1.8.7
+   Compiling darling v0.24.1
+   Compiling utf8parse v0.2.2
+   Compiling digest v0.10.7
+   Compiling lazy_static v1.5.0
+   Compiling foldhash v0.1.5
+   Compiling prettyplease v0.2.37
+   Compiling constant_time_eq v0.4.2
+   Compiling hashbrown v0.15.5
+   Compiling derive_more v2.1.1
+   Compiling prost v0.14.4
+   Compiling anstyle-parse v1.0.0
+   Compiling colorchoice v1.0.5
+   Compiling fixedbitset v0.5.7
+   Compiling anstyle v1.0.14
+   Compiling anstyle-query v1.1.5
+   Compiling is_terminal_polyfill v1.70.2
+   Compiling regex v1.13.1
+   Compiling petgraph v0.8.3
+   Compiling prost-types v0.14.4
+   Compiling tempfile v3.27.0
+   Compiling anstream v1.0.0
+   Compiling sha1 v0.10.7
+   Compiling futures-lite v2.6.1
+   Compiling clap_lex v1.1.1
+   Compiling protoc-bin-vendored-linux-aarch_64 v3.2.0
+   Compiling protoc-bin-vendored-linux-ppcle_64 v3.2.0
+   Compiling protoc-bin-vendored-linux-s390_64 v3.2.0
+   Compiling static_assertions v1.1.0
+   Compiling protoc-bin-vendored-linux-x86_32 v3.2.0
+   Compiling toml_datetime v1.1.1+spec-1.1.0
+   Compiling protoc-bin-vendored-linux-x86_64 v3.2.0
+   Compiling protoc-bin-vendored-macos-aarch_64 v3.2.0
+   Compiling multimap v0.10.1
+   Compiling protoc-bin-vendored-macos-x86_64 v3.2.0
+   Compiling protoc-bin-vendored-win32 v3.2.0
+   Compiling toml_edit v0.25.13+spec-1.1.0
+   Compiling clap_builder v4.6.7
+   Compiling protoc-bin-vendored v3.2.0
+   Compiling clap_derive v4.6.7
+   Compiling skippy-model-ref v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/skippy/crates/skippy-model-ref)
+   Compiling lru v0.18.4
+   Compiling matchers v0.2.0
+   Compiling sharded-slab v0.1.7
+   Compiling strum_macros v0.28.0
+   Compiling proc-macro-crate v3.5.0
+   Compiling prost-build v0.14.4
+   Compiling tracing-serde v0.2.0
+   Compiling tracing-log v0.2.0
+   Compiling thread_local v1.1.10
+   Compiling nu-ansi-term v0.50.3
+   Compiling hashbrown v0.16.1
+   Compiling spin v0.9.9
+   Compiling tracing-subscriber v0.3.23
+   Compiling skippy-model-artifact v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/skippy/crates/skippy-model-artifact)
+   Compiling num-integer v0.1.47
+   Compiling skippy-protocol v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/skippy/crates/skippy-protocol)
+   Compiling clap v4.6.7
+   Compiling multer v3.1.0
+   Compiling minimal-lexical v0.2.1
+   Compiling base64ct v1.8.3
+   Compiling strum v0.28.0
+   Compiling nom v7.1.3
+   Compiling tungstenite v0.29.0
+   Compiling rustc_version v0.4.1
+warning: linker stderr: Note: mold is unavailable or failed the active target/toolchain link probe.
+         Falling back to lld or the platform linker for this build.
+  |
+  = note: `#[warn(linker_messages)]` on by default
+
+warning: `skippy-protocol` (build script) generated 1 warning
+   Compiling skippy-tokenizer v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/skippy/crates/skippy-tokenizer)
+   Compiling crc32fast v1.5.2
+   Compiling tokio-tungstenite v0.29.0
+   Compiling num-bigint v0.4.8
+   Compiling inout v0.1.4
+   Compiling axum-core v0.5.6
+   Compiling serde_repr v0.1.21
+   Compiling serde_path_to_error v0.1.20
+   Compiling sysinfo v0.38.4
+   Compiling matchit v0.8.4
+   Compiling cipher v0.4.4
+   Compiling universal-hash v0.5.1
+   Compiling secp256k1-sys v0.10.1
+   Compiling opaque-debug v0.3.1
+   Compiling paste v1.0.15
+   Compiling pem-rfc7468 v1.0.0
+   Compiling skippy-native-runtime v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/skippy/crates/skippy-native-runtime)
+   Compiling axum v0.8.9
+   Compiling n0-error-macros v1.0.1
+   Compiling spez v0.1.2
+   Compiling castaway v0.2.4
+   Compiling toml_writer v1.1.2+spec-1.1.0
+   Compiling unicode-width v0.2.2
+   Compiling n0-error v1.0.1
+   Compiling compact_str v0.9.1
+   Compiling der v0.8.1
+   Compiling bstr v1.13.1
+   Compiling n0-future v0.3.2
+   Compiling webpki-roots v1.0.9
+   Compiling curve25519-dalek-derive v0.1.1
+   Compiling enumflags2_derive v0.7.12
+   Compiling serde_spanned v1.1.1
+   Compiling typewit v1.15.2
+   Compiling spin v0.10.1
+   Compiling cordyceps v0.3.5
+   Compiling diatomic-waker v0.2.3
+   Compiling const_panic v0.2.17
+   Compiling futures-buffered v0.2.13
+   Compiling toml v1.1.6+spec-1.1.0
+   Compiling spki v0.8.0
+   Compiling zvariant_utils v4.2.0
+   Compiling rusticata-macros v4.1.0
+   Compiling curve25519-dalek v5.0.0
+   Compiling event-listener v5.4.2
+   Compiling aead v0.5.2
+   Compiling concurrent-queue v2.5.0
+   Compiling crossbeam-channel v0.5.17
+   Compiling git-version-macro v0.3.9
+   Compiling asn1-rs-derive v0.6.0
+   Compiling asn1-rs-impl v0.2.0
+   Compiling os_str_bytes v6.6.1
+   Compiling instability v0.3.13
+   Compiling symlink v0.1.0
+   Compiling base16ct v1.0.0
+   Compiling link-section v0.19.3
+   Compiling linktime-proc-macro v0.2.3
+   Compiling bitcoin-io v0.1.101
+   Compiling konst_proc_macros v0.4.1
+   Compiling signal-hook v0.3.18
+   Compiling zvariant_derive v5.15.0
+   Compiling asn1-rs v0.7.2
+   Compiling serdect v0.4.3
+   Compiling tracing-appender v0.2.5
+   Compiling konst v0.4.3
+   Compiling ctor v1.0.13
+   Compiling shellexpand v3.1.2
+   Compiling git-version v0.3.9
+   Compiling event-listener-strategy v0.5.4
+   Compiling pkcs8 v0.11.0
+   Compiling unicode-truncate v2.0.1
+   Compiling kasuari v0.4.12
+   Compiling noq-udp v1.4.0
+   Compiling nix v0.31.3
+   Compiling whoami v2.1.3
+   Compiling signature v3.0.0
+   Compiling oneshot v0.1.13
+   Compiling portable-atomic v1.15.0
+   Compiling oid-registry v0.8.1
+   Compiling endi v1.1.1
+   Compiling colored v3.1.1
+   Compiling indoc v2.0.7
+   Compiling redb v3.1.3
+   Compiling twox-hash v2.1.4
+   Compiling critical-section v1.2.0
+   Compiling const-str v1.1.0
+   Compiling humantime v2.4.0
+   Compiling more-asserts v0.3.1
+   Compiling lz4_flex v0.13.1
+   Compiling ratatui-core v0.1.2
+   Compiling ed25519 v3.0.0
+   Compiling polyval v0.6.2
+   Compiling skippy-events v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/skippy/crates/skippy-events)
+   Compiling hex-conservative v0.2.3
+   Compiling approx v0.5.1
+   Compiling async-io v2.6.0
+   Compiling countio v0.3.0
+   Compiling rustc-hash v2.1.3
+   Compiling bytemuck v1.25.2
+   Compiling safe-transmute v0.11.3
+   Compiling heapify v0.2.0
+   Compiling litrs v1.0.0
+   Compiling pastey v0.2.3
+   Compiling prettyplease v0.3.0
+   Compiling skippy-ffi v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/skippy/crates/skippy-ffi)
+   Compiling ed25519-dalek v3.0.0
+   Compiling document-features v0.2.12
+   Compiling data-encoding-macro-internal v0.1.19
+   Compiling bitcoin_hashes v0.14.101
+warning: `skippy-ffi` (build script) generated 1 warning (1 duplicate)
+   Compiling statrs v0.18.0
+   Compiling ghash v0.5.1
+   Compiling signal-hook-mio v0.2.5
+   Compiling der-parser v10.0.0
+   Compiling enumflags2 v0.7.12
+   Compiling netlink-packet-core v0.8.2
+   Compiling zcheapstr v1.1.0
+   Compiling ctr v0.9.2
+   Compiling aes v0.8.4
+   Compiling mesh-llm-types v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/mesh/crates/mesh-llm-types)
+   Compiling polling v3.11.0
+   Compiling tokio-retry v0.3.2
+   Compiling skippy-package-format v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/skippy/crates/skippy-package-format)
+   Compiling arc-swap v1.9.2
+   Compiling fs2 v0.4.3
+   Compiling line-clipping v0.3.8
+   Compiling libloading v0.9.0
+   Compiling async-task v4.7.1
+   Compiling ref-cast v1.0.27
+   Compiling hex_lit v0.1.1
+   Compiling simd-adler32 v0.3.10
+   Compiling urlencoding v2.1.3
+   Compiling netlink-packet-core v0.9.0
+   Compiling n0-dns-resolver v0.1.0
+   Compiling netdev v0.46.2
+   Compiling netlink-packet-route v0.33.0
+   Compiling ratatui-widgets v0.3.2
+   Compiling aes-gcm v0.10.3
+   Compiling zvariant v5.15.0
+   Compiling x509-parser v0.18.1
+   Compiling crossterm v0.29.0
+   Compiling data-encoding-macro v0.1.21
+   Compiling async-channel v2.5.0
+   Compiling safetensors v0.8.0
+   Compiling num_enum_derive v0.7.6
+   Compiling hyper-timeout v0.5.2
+   Compiling yasna v0.6.0
+   Compiling noq v1.4.0
+   Compiling netwatch v0.19.3
+   Compiling iroh-dns v1.4.1
+   Compiling netlink-sys v0.8.8
+   Compiling pem v4.0.0
+   Compiling iroh-metrics-derive v1.0.1
+   Compiling opentelemetry v0.32.0
+   Compiling rustls-cert-read v0.3.0
+   Compiling ref-cast-impl v1.0.27
+   Compiling enum-assoc v1.4.1
+   Compiling ahash v0.8.12
+   Compiling serde_derive_internals v0.30.0
+   Compiling netlink-sys v0.9.0
+   Compiling memmap2 v0.9.11
+   Compiling simple-dns v0.12.0
+   Compiling rand_pcg v0.10.2
+   Compiling tinyvec v1.13.3
+   Compiling adler2 v2.0.1
+   Compiling mac-addr v0.3.0
+   Compiling bitcoin-internals v0.6.0
+   Compiling lru-slab v0.1.3
+   Compiling crossbeam-epoch v0.9.20
+   Compiling reloadable-core v0.1.0
+   Compiling gearhash v0.1.4
+   Compiling identity-hash v0.1.0
+   Compiling xml-rs v0.8.29
+   Compiling bitcoin v0.32.102
+   Compiling sorted-index-buffer v0.2.1
+   Compiling reloadable-state v0.1.0
+   Compiling xmltree v0.10.3
+   Compiling miniz_oxide v0.9.1
+   Compiling schemars_derive v1.2.2
+   Compiling skippy-model v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/skippy/crates/skippy-model)
+   Compiling rcgen v0.14.10
+   Compiling netlink-proto v0.12.2
+   Compiling num_enum v0.7.6
+   Compiling tonic v0.14.6
+   Compiling zbus_names v4.3.4
+   Compiling bon-macros v3.10.1
+   Compiling ratatui-crossterm v0.1.2
+   Compiling iroh-base v1.4.1
+   Compiling ratatui-macros v0.7.2
+   Compiling async-signal v0.2.14
+   Compiling skippy-cache v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/skippy/crates/skippy-cache)
+   Compiling netlink-packet-route v0.31.0
+   Compiling base58ck v0.1.101
+   Compiling secp256k1 v0.29.1
+   Compiling n0-watcher v1.0.0
+   Compiling async-lock v3.4.2
+   Compiling darling_core v0.20.11
+   Compiling iroh-relay v1.4.1
+   Compiling attohttpc v0.30.1
+   Compiling crossbeam-queue v0.3.14
+   Compiling cobs v0.3.0
+   Compiling postcard-derive v0.2.2
+   Compiling pem v3.0.6
+   Compiling piper v0.2.5
+   Compiling skippy-guardrails v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/skippy/crates/skippy-guardrails)
+   Compiling dyn-clone v1.0.20
+   Compiling zlib-rs v0.6.8
+   Compiling hashbrown v0.14.5
+   Compiling heapless v0.8.0
+   Compiling sha1_smol v1.0.1
+   Compiling crossbeam-deque v0.8.8
+   Compiling bitcoin-units v0.1.101
+   Compiling bech32 v0.11.1
+   Compiling rmcp v3.4.1
+   Compiling byteorder v1.5.0
+   Compiling hash32 v0.3.1
+   Compiling darling_macro v0.20.11
+   Compiling dashmap v6.2.1
+   Compiling schemars v1.2.2
+   Compiling postcard v1.1.3
+   Compiling blocking v1.7.0
+   Compiling skippy-runtime v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/skippy/crates/skippy-runtime)
+   Compiling igd-next v0.17.1
+   Compiling flate2 v1.1.10
+   Compiling mesh-llm-config v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/mesh/crates/mesh-llm-config)
+   Compiling bon v3.10.1
+   Compiling async-process v2.5.0
+   Compiling tonic-prost v0.14.6
+   Compiling ratatui v0.30.2
+   Compiling zbus_macros v5.19.0
+   Compiling opentelemetry_sdk v0.32.1
+   Compiling rustls-cert-file-reader v0.4.2
+   Compiling async-executor v1.14.0
+   Compiling process-wrap v10.0.0
+   Compiling async-broadcast v0.7.2
+   Compiling rmcp-macros v3.4.1
+   Compiling globset v0.4.20
+   Compiling skippy-hardware-profile v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/skippy/crates/skippy-hardware-profile)
+   Compiling num-rational v0.4.2
+   Compiling num-iter v0.1.46
+   Compiling mesh-llm-plugin v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/mesh/crates/mesh-llm-plugin)
+   Compiling xattr v1.6.1
+   Compiling const-hex v1.19.1
+   Compiling iroh v1.4.1
+   Compiling sse-stream v0.2.6
+   Compiling async-recursion v1.1.1
+   Compiling num-complex v0.4.6
+warning: `mesh-llm-plugin` (build script) generated 1 warning (1 duplicate)
+   Compiling hmac v0.13.0
+   Compiling sha1 v0.11.0
+   Compiling serde_bytes v0.11.19
+   Compiling filetime v0.2.29
+   Compiling ordered-stream v0.2.0
+   Compiling seize v0.5.1
+   Compiling pathdiff v0.2.3
+   Compiling cpubits v0.1.1
+   Compiling rayon-core v1.13.0
+   Compiling papaya v0.2.5
+   Compiling aes v0.9.3
+   Compiling zbus v5.19.0
+   Compiling tar v0.4.46
+   Compiling num v0.4.3
+   Compiling hkdf v0.13.0
+   Compiling opentelemetry-proto v0.32.0
+   Compiling lightning-types v0.4.0-rc1
+   Compiling bitcoin-consensus-encoding v1.2.0
+   Compiling darling v0.20.11
+   Compiling skippy-config v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/skippy/crates/skippy-config)
+   Compiling curve25519-dalek v4.1.3
+   Compiling skippy-model-resolver v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/skippy/crates/skippy-model-resolver)
+   Compiling sha2 v0.10.9
+   Compiling hex-conservative v1.3.0
+   Compiling backon v1.6.0
+   Compiling cbc v0.2.1
+   Compiling thiserror v1.0.69
+   Compiling vcpkg v0.2.15
+   Compiling regex-lite v0.1.9
+   Compiling bitcoin_hashes v1.2.0
+   Compiling libsqlite3-sys v0.38.2
+   Compiling skippy-inference-api v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/skippy/crates/skippy-inference-api)
+   Compiling faster-hex v0.10.0
+   Compiling lightning-invoice v0.35.0-rc1
+   Compiling derive_builder_core v0.20.2
+   Compiling skippy-scheduler v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/skippy/crates/skippy-scheduler)
+   Compiling mesh-llm-events v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/mesh/crates/mesh-llm-events)
+   Compiling secp256k1 v0.30.0
+   Compiling poly1305 v0.8.0
+   Compiling salsa20 v0.10.2
+   Compiling phc v0.6.1
+   Compiling thiserror-impl v1.0.69
+   Compiling universal-hash v0.6.1
+   Compiling keyring-core v1.0.0
+   Compiling universal-time v0.3.1
+   Compiling esaxx-rs v0.1.10
+   Compiling utf-8 v0.7.6
+   Compiling bech32 v0.12.0
+   Compiling skippy-metrics v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/skippy/crates/skippy-metrics)
+   Compiling opaquerr v0.2.0
+   Compiling secret-service v5.2.0
+   Compiling bit-vec v0.8.0
+   Compiling bit-set v0.8.0
+   Compiling poly1305 v0.9.1
+   Compiling nostr v0.45.5
+   Compiling password-hash v0.6.1
+   Compiling crypto_secretbox v0.1.1
+   Compiling derive_builder_macro v0.20.2
+   Compiling rayon v1.12.0
+   Compiling mesh-llm-wallet v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/mesh/crates/mesh-llm-wallet)
+   Compiling zbus-secret-service-keyring-store v1.0.1
+   Compiling skippy-serving v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/skippy/crates/skippy-serving)
+   Compiling skippy-api v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/skippy/crates/skippy-api)
+   Compiling webpki-roots v0.26.11
+   Compiling monostate-impl v0.1.18
+   Compiling aead v0.6.1
+warning: `skippy-api` (build script) generated 1 warning (1 duplicate)
+   Compiling blake2 v0.11.0
+   Compiling bumpalo v3.20.3
+   Compiling mesh-llm-build-info v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/mesh/crates/mesh-llm-build-info)
+   Compiling base64 v0.13.1
+   Compiling macro_rules_attribute-proc_macro v0.2.3
+   Compiling spm_precompiled v0.1.4
+warning: `mesh-llm-build-info` (build script) generated 1 warning (1 duplicate)
+   Compiling macro_rules_attribute v0.2.3
+   Compiling zopfli v0.8.3
+   Compiling argon2 v0.6.0
+   Compiling chacha20poly1305 v0.11.0
+   Compiling monostate v0.1.18
+   Compiling crypto_box v0.9.1
+   Compiling rayon-cond v0.4.0
+   Compiling keyring v4.2.0
+   Compiling derive_builder v0.20.2
+   Compiling tokio-socks v0.5.3
+   Compiling fancy-regex v0.17.0
+   Compiling skippy-model-package v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/skippy/crates/skippy-model-package)
+   Compiling tokio-happy-eyeballs v0.1.0
+   Compiling dary_heap v0.3.9
+   Compiling hashlink v0.12.2
+   Compiling unicode-normalization-alignments v0.1.12
+warning: `skippy-model-package` (build script) generated 1 warning (1 duplicate)
+   Compiling nibble_vec v0.1.0
+   Compiling fallible-streaming-iterator v0.1.9
+   Compiling unicode_categories v0.1.1
+   Compiling fallible-iterator v0.3.0
+   Compiling daachorse v3.0.3
+   Compiling same-file v1.0.6
+   Compiling typed-path v0.12.3
+   Compiling endian-type v0.2.0
+   Compiling tokenizers v0.23.2
+   Compiling radix_trie v0.3.0
+   Compiling mesh-llm-identity v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/mesh/crates/mesh-llm-identity)
+   Compiling nostr-database v0.45.2
+   Compiling zip v9.0.5
+   Compiling nostr-gossip v0.45.1
+   Compiling async-utility v0.3.2
+   Compiling include_dir_macros v0.7.4
+   Compiling mesh-llm-analytics v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/mesh/crates/mesh-llm-analytics)
+warning: `mesh-llm-analytics` (build script) generated 1 warning (1 duplicate)
+   Compiling home v0.5.12
+   Compiling negentropy v0.5.1
+   Compiling mesh-llm-ui v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/mesh/crates/mesh-llm-ui)
+warning: `mesh-llm-ui` (build script) generated 1 warning (1 duplicate)
+   Compiling include_dir v0.7.4
+   Compiling rustyline v18.0.1
+   Compiling tabwriter v1.4.1
+   Compiling flume v0.12.0
+   Compiling mesh-llm-skills v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/mesh/crates/mesh-llm-skills)
+   Compiling mesh-llm-release-footer v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/mesh/crates/mesh-llm-release-footer)
+   Compiling skippy-topology v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/skippy/crates/skippy-topology)
+   Compiling skippy-gpu-bench v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/skippy/crates/skippy-gpu-bench)
+   Compiling rusqlite v0.40.2
+   Compiling serial_test_derive v4.0.1
+   Compiling socket-pktinfo v0.4.1
+   Compiling if-addrs v0.15.0
+   Compiling rtoolbox v0.0.6
+   Compiling mesh-native-serving-plugin-api v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/mesh/crates/mesh-native-serving-plugin-api)
+   Compiling rpassword v7.5.4
+   Compiling serial_test v4.0.1
+   Compiling mdns-sd v0.21.1
+   Compiling mesh-llm-log-store v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/mesh/crates/mesh-llm-log-store)
+   Compiling mesh-native-serving-plugin-host v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/mesh/crates/mesh-native-serving-plugin-host)
+   Compiling mesh-llm-control-api v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/mesh/crates/mesh-llm-control-api)
+   Compiling skippy-coordinator v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/skippy/crates/skippy-coordinator)
+   Compiling mesh-llm-runtime-event-contracts v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/mesh/crates/mesh-llm-runtime-event-contracts)
+   Compiling rustls-webpki v0.103.15
+   Compiling tokio-rustls v0.26.5
+   Compiling rustls-platform-verifier v0.7.0
+   Compiling rustls-cert-reloadable-resolver v0.7.1
+   Compiling tungstenite v0.28.0
+   Compiling noq-proto v1.4.0
+   Compiling hyper-rustls v0.27.9
+   Compiling tokio-websockets v0.13.3
+   Compiling reqwest v0.13.5
+   Compiling tokio-tungstenite v0.28.0
+   Compiling async-wsocket v0.17.0
+   Compiling nostr-sdk v0.45.3
+   Compiling xet-runtime v1.6.0
+   Compiling reqwest-middleware v0.5.2
+   Compiling iroh-metrics v1.0.2
+   Compiling tokio-rustls-acme v0.9.1
+   Compiling portmapper v0.19.3
+   Compiling xet-core-structures v1.6.0
+   Compiling skippy-runtime-install v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/skippy/crates/skippy-runtime-install)
+   Compiling opentelemetry-http v0.32.0
+   Compiling xet-client v1.6.0
+   Compiling mesh-mixture-of-agents v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/mesh/crates/mesh-mixture-of-agents)
+   Compiling mesh-llm-system v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/mesh/crates/mesh-llm-system)
+   Compiling opentelemetry-otlp v0.32.0
+   Compiling mesh-llm-plugin-manager v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/mesh/crates/mesh-llm-plugin-manager)
+   Compiling xet-data v1.6.0
+   Compiling hf-xet v1.6.0
+   Compiling skippy-hf-hub v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/skippy/crates/skippy-hf-hub)
+   Compiling mesh-llm-payments-types v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/mesh/crates/mesh-llm-payments-types)
+   Compiling mesh-llm-moa-plugin v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/mesh/crates/mesh-llm-moa-plugin)
+   Compiling mesh-llm-payments v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/mesh/crates/mesh-llm-payments)
+   Compiling mesh-llm-protocol v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/mesh/crates/mesh-llm-protocol)
+   Compiling mesh-llm-routing v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/mesh/crates/mesh-llm-routing)
+   Compiling mesh-llm-transport v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/mesh/crates/mesh-llm-transport)
+   Compiling skippy-model-hf v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/skippy/crates/skippy-model-hf)
+   Compiling mesh-llm-membership v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/mesh/crates/mesh-llm-membership)
+   Compiling mesh-llm-node v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/mesh/crates/mesh-llm-node)
+   Compiling mesh-llm-client v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/mesh/crates/mesh-client)
+   Compiling mesh-llm-skippy-adapter v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/mesh/crates/mesh-llm-skippy-adapter)
+   Compiling skippy-commands v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/skippy/crates/skippy-commands)
+   Compiling mesh-llm-host-runtime v0.78.0 (/home/ubuntu/projects/mesh-llm-worktrees/measure-issue44/mesh/crates/mesh-llm-host-runtime)
+warning: `mesh-llm-host-runtime` (lib test) generated 1 warning (1 duplicate)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 13m 47s
+     Running unittests src/lib.rs (/home/ubuntu/projects/mesh-llm/target/debug/deps/mesh_llm_host_runtime-bb008c050422c59c)
+
+running 1 test
+[T44] setup(sign+receive+collect) 3.954s
+[T44] init.collect_outbound 0.120s
+[T44] encode 0.190s bytes=8073956
+[T44] encode+write 2.019s
+[T44] init.write_done 5.204s
+[T44] resp.read_frame 2.034s bytes=8073956
+[T44] resp.decode 2.444s signed_records=14
+[T44] resp.validate_direct 2.445s
+[T44] resp.resolve_inbound(verify) 2.976s
+[T44] resp.validate_capture 2.976s
+[T44] encode 0.000s bytes=930
+[T44] encode+write 0.000s
+[T44] resp.reply_written 2.980s
+[T44] resp.done 2.994s
+[T44] init.reply_read 6.385s
+[T44] init.reply_resolved 6.419s
+[T44] ROUND 1 total 6.541s received=13
+[T44] init.collect_outbound 0.038s
+[T44] encode 0.206s bytes=8073956
+[T44] encode+write 1.725s
+[T44] init.write_done 4.564s
+[T44] resp.read_frame 1.634s bytes=8073956
+[T44] resp.decode 2.621s signed_records=14
+[T44] resp.validate_direct 2.621s
+[T44] resp.resolve_inbound(verify) 3.136s
+[T44] resp.validate_capture 3.572s
+[T44] encode 0.095s bytes=8074869
+[T44] encode+write 1.918s
+[T44] resp.reply_written 5.904s
+[T44] resp.done 5.916s
+[T44] init.reply_read 9.395s
+[T44] init.reply_resolved 10.138s
+[T44] ROUND 2 total 10.291s received=26
+[T44] init.collect_outbound 0.038s
+[T44] encode 0.186s bytes=8074278
+[T44] encode+write 1.682s
+[T44] init.write_done 4.702s
+[T44] resp.read_frame 1.708s bytes=8074278
+[T44] resp.decode 2.228s signed_records=14
+[T44] resp.validate_direct 2.228s
+[T44] resp.resolve_inbound(verify) 2.753s
+[T44] resp.validate_capture 2.754s
+[T44] encode 0.120s bytes=8073956
+[T44] encode+write 1.483s
+[T44] resp.reply_written 5.051s
+[T44] resp.done 5.064s
+[T44] init.reply_read 8.510s
+[T44] init.reply_resolved 9.242s
+[T44] ROUND 3 total 9.396s received=39
+[T44] init.collect_outbound 0.039s
+[T44] encode 0.191s bytes=8073956
+[T44] encode+write 1.751s
+[T44] init.write_done 4.543s
+[T44] resp.read_frame 1.744s bytes=8073956
+[T44] resp.decode 2.153s signed_records=14
+[T44] resp.validate_direct 2.154s
+[T44] resp.resolve_inbound(verify) 2.676s
+[T44] resp.validate_capture 2.677s
+[T44] encode 0.136s bytes=8074869
+[T44] encode+write 1.604s
+[T44] resp.reply_written 5.700s
+[T44] resp.done 5.712s
+[T44] init.reply_read 8.893s
+[T44] init.reply_resolved 9.624s
+[T44] ROUND 4 total 9.769s received=52
+[T44] init.collect_outbound 0.037s
+[T44] encode 0.194s bytes=8073956
+[T44] encode+write 2.001s
+[T44] init.write_done 4.878s
+[T44] resp.read_frame 1.784s bytes=8073956
+[T44] resp.decode 2.196s signed_records=14
+[T44] resp.validate_direct 2.196s
+[T44] resp.resolve_inbound(verify) 2.674s
+[T44] resp.validate_capture 2.674s
+[T44] encode 0.156s bytes=8074322
+[T44] encode+write 1.611s
+[T44] resp.reply_written 5.924s
+[T44] resp.done 5.938s
+[T44] init.reply_read 9.405s
+[T44] init.reply_resolved 10.129s
+[T44] ROUND 5 total 10.279s received=65
+[T44] init.collect_outbound 0.038s
+[T44] encode 0.196s bytes=8073956
+[T44] encode+write 1.874s
+[T44] init.write_done 4.835s
+[T44] resp.read_frame 1.707s bytes=8073956
+[T44] resp.decode 2.086s signed_records=14
+[T44] resp.validate_direct 2.086s
+[T44] resp.resolve_inbound(verify) 2.597s
+[T44] resp.validate_capture 2.598s
+[T44] encode 0.151s bytes=8073956
+test mesh::gossip::tests::signed_records::bounded_exchange::oversized_snapshots_complete_real_quic_exchanges_in_both_directions has been running for over 60 seconds
+[T44] encode+write 1.646s
+[T44] resp.reply_written 6.348s
+[T44] resp.done 6.357s
+[T44] init.reply_read 9.833s
+[T44] init.reply_resolved 10.545s
+[T44] ROUND 6 total 10.694s received=78
+[T44] init.collect_outbound 0.036s
+[T44] encode 0.183s bytes=8074867
+[T44] encode+write 1.745s
+[T44] init.write_done 4.525s
+[T44] resp.read_frame 1.708s bytes=8074867
+[T44] resp.decode 2.107s signed_records=15
+[T44] resp.validate_direct 2.107s
+[T44] resp.resolve_inbound(verify) 2.620s
+[T44] resp.validate_capture 2.621s
+[T44] encode 0.165s bytes=8073956
+[T44] encode+write 1.688s
+[T44] resp.reply_written 6.757s
+[T44] resp.done 6.770s
+[T44] init.reply_read 9.911s
+[T44] init.reply_resolved 10.564s
+[T44] ROUND 7 total 10.714s received=90
+test mesh::gossip::tests::signed_records::bounded_exchange::oversized_snapshots_complete_real_quic_exchanges_in_both_directions ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4408 filtered out; finished in 73.07s
+

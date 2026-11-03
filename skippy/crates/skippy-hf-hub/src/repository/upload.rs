@@ -226,7 +226,7 @@ impl<T: RepoType> HFRepository<T> {
             .await?;
 
         params.progress.emit(UploadEvent::Complete);
-        Ok(response.json().await?)
+        crate::body::json_limited(response).await
     }
 
     async fn inline_base64_entry(
@@ -519,7 +519,7 @@ impl<T: RepoType> HFRepository<T> {
             .check_response(response, Some(repo_id), crate::error::NotFoundContext::Repo)
             .await?;
 
-        let preupload: PreuploadResponse = response.json().await?;
+        let preupload: PreuploadResponse = crate::body::json_limited(response).await?;
 
         Ok(preupload
             .files
@@ -652,7 +652,7 @@ impl<T: RepoType> HFRepository<T> {
             .check_response(response, Some(repo_id), crate::error::NotFoundContext::Repo)
             .await?;
 
-        let batch: LfsBatchResponse = response.json().await?;
+        let batch: LfsBatchResponse = crate::body::json_limited(response).await?;
         Ok(batch.transfer)
     }
 }

@@ -981,7 +981,7 @@ impl HFClient {
         let response = self
             .check_response(response, None, crate::error::NotFoundContext::Generic)
             .await?;
-        Ok(response.json().await?)
+        crate::body::json_limited(response).await
     }
 
     /// Delete a repository. Endpoint: `DELETE /api/repos/delete`.
@@ -1180,7 +1180,7 @@ impl<T: RepoType> HFRepository<T> {
             .hf_client
             .check_response(response, Some(&repo_path), not_found_ctx)
             .await?;
-        Ok(response.json().await?)
+        crate::body::json_limited(response).await
     }
 }
 

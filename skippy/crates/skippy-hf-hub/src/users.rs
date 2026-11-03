@@ -149,7 +149,7 @@ impl HFClient {
         let response = self
             .check_response(response, None, crate::error::NotFoundContext::Generic)
             .await?;
-        Ok(response.json().await?)
+        crate::body::json_limited(response).await
     }
 
     /// Fetch the public profile of a user by Hub handle.
@@ -174,7 +174,7 @@ impl HFClient {
         let response = self
             .check_response(response, None, crate::error::NotFoundContext::Generic)
             .await?;
-        Ok(response.json().await?)
+        crate::body::json_limited(response).await
     }
 
     /// Fetch the public profile of an organization by Hub handle.
@@ -203,7 +203,7 @@ impl HFClient {
         let response = self
             .check_response(response, None, crate::error::NotFoundContext::Generic)
             .await?;
-        Ok(response.json().await?)
+        crate::body::json_limited(response).await
     }
 
     /// Stream the followers of a user.

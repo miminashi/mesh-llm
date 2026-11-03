@@ -131,7 +131,7 @@ impl HFBucket {
             .hf_client
             .check_response(response, Some(&bucket_id), NotFoundContext::Bucket)
             .await?;
-        Ok(response.json().await?)
+        crate::body::json_limited(response).await
     }
 
     /// List files and directories in this bucket.
@@ -216,7 +216,7 @@ impl HFBucket {
                 .hf_client
                 .check_response(response, Some(&bucket_id), NotFoundContext::Bucket)
                 .await?;
-            let entries: Vec<BucketTreeEntry> = response.json().await?;
+            let entries: Vec<BucketTreeEntry> = crate::body::json_limited(response).await?;
             all_entries.extend(entries);
         }
 
@@ -1071,7 +1071,7 @@ impl HFClient {
         let response = self
             .check_response(response, Some(&bucket_id), NotFoundContext::Generic)
             .await?;
-        Ok(response.json().await?)
+        crate::body::json_limited(response).await
     }
 
     /// Delete a bucket from the Hub. Endpoint: `DELETE /api/buckets/{bucket_id}`.

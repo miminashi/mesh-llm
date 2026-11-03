@@ -67,12 +67,11 @@ jobs:
         with:
           ref: ${{ inputs.source_sha }}
           persist-credentials: false
-      # HF_TOKEN reaches only the Laya smoke (its model restore), not the
-      # checkout, source preparation, admission or cleanup steps.
+      # HF_TOKEN goes in as an input and reaches only the model download step
+      # inside the action, not checkout, preparation, admission or cleanup.
       - uses: ./.github/actions/run-laya-product-smoke
-        env:
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
         with:
+          hf_token: ${{ secrets.HF_TOKEN }}
           artifact_name: ci-product-macos-${{ inputs.architecture }}-metal
           artifact_path: ci-artifacts/laya-macos-metal
           staged_binary_path: target/release/mesh-llm

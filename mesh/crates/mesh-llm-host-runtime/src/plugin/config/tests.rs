@@ -422,7 +422,10 @@ where
     let temp = TempDir::new().unwrap();
     let store = PluginStore::new(temp.path());
     for entry in metadata {
-        store.save(entry).unwrap();
+        // The store accepts only its own install path for each plugin.
+        let mut entry = entry.clone();
+        entry.install_path = store.install_path(&entry.name);
+        store.save(&entry).unwrap();
     }
 
     test(temp.path());

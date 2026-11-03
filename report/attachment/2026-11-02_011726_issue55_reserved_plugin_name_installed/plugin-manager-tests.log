@@ -1,0 +1,104 @@
+    Blocking waiting for file lock on build directory
+warning: linker stderr: Note: mold is unavailable or failed the active target/toolchain link probe.
+         Falling back to lld or the platform linker for this build.
+  |
+  = note: `#[warn(linker_messages)]` on by default
+
+warning: `mesh-llm-plugin-manager` (lib test) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 20s
+
+running 86 tests
+test asset::tests::falls_back_to_stable_alias ... ok
+test asset::tests::prefers_exact_versioned_asset ... ok
+test asset::tests::accepts_version_without_v_when_requested_version_has_v ... ok
+test bundled::tests::the_archive_name_is_the_plugin_releases_own ... ok
+test bundled::tests::candidates_follow_the_native_runtime_layouts ... ok
+test catalog::tests::a_pinned_entry_yields_its_release_for_a_pinned_target ... ok
+test catalog::tests::a_default_install_is_refused_without_a_checksum_or_a_version ... ok
+test catalog::tests::an_entry_without_pins_still_parses ... ok
+test catalog::tests::rejects_duplicate_names ... ok
+test catalog::tests::parses_and_searches_catalog_jsonl ... ok
+test catalog_pin::tests::a_pinned_entry_binds_its_version_and_its_target_digest ... ok
+test catalog::tests::rejects_malformed_pins ... ok
+test catalog_pin::tests::a_mutable_latest_cannot_stand_in_for_the_pin ... ok
+test catalog_pin::tests::a_release_digest_that_disagrees_with_the_pin_is_refused ... ok
+test catalog_pin::tests::a_requested_version_off_the_pin_is_refused ... ok
+test defaults::tests::a_default_has_a_pin_only_for_the_targets_it_lists ... ok
+test catalog_pin::tests::an_entry_that_pins_no_version_is_refused ... ok
+test catalog_pin::tests::an_entry_without_a_digest_for_the_target_is_refused ... ok
+test defaults::tests::install_time_opt_out_reads_like_a_flag ... ok
+test defaults::tests::no_payment_or_wallet_plugin_is_a_default ... ok
+test defaults::tests::no_shipped_default_may_serve_a_model ... ok
+test defaults::tests::an_installed_default_with_a_stale_turned_off_record_is_handled_normally ... ok
+test archive::tests::invalid_archive_does_not_remove_existing_install ... ok
+test defaults::tests::pin_bump_updates_only_enabled_default_managed_installs ... ok
+test defaults::tests::missing_plugin_uses_reviewed_pin ... ok
+test defaults::tests::the_shipped_list_names_valid_unique_plugins ... ok
+test install::tests::a_github_repository_named_installed_is_refused_before_download ... ok
+test archive::tests::missing_web_ui_bundle_entry_records_invalid_ui ... ok
+test defaults::tests::the_shipped_pins_are_filled_in ... ok
+test defaults::tests::unsupported_platform_has_no_install ... ok
+test install::tests::a_pinned_install_verifies_the_catalog_digest_not_githubs ... ok
+test install::tests::modified_plugin_asset_is_rejected_before_extraction ... ok
+test defaults::tests::a_missing_bundled_copy_is_reported_and_nothing_is_downloaded ... ok
+test install::tests::plugin_assets_without_valid_github_digests_are_rejected ... ok
+test archive::tests::missing_web_ui_contribution_entry_script_records_invalid_ui ... ok
+test archive::tests::remote_web_ui_bundle_path_records_invalid_ui ... ok
+test source_ref::tests::parses_catalog_ref ... ok
+test source_ref::tests::parses_github_url_ref ... ok
+test source_ref::tests::dot_names_are_not_plugin_names ... ok
+test source_ref::tests::parses_catalog_ref_with_version ... ok
+test archive::tests::symlink_escape_web_ui_bundle_path_records_invalid_ui ... ok
+test archive::tests::unknown_web_ui_contribution_slot_records_invalid_ui ... ok
+test source_ref::tests::rejects_non_github_url ... ok
+test source_ref::tests::parses_github_source_from_url ... ok
+test archive::tests::old_packaged_manifest_without_web_ui_remains_accepted ... ok
+test source_ref::tests::parses_owner_repo_ref ... ok
+test store::exchange_access::tests::summary_reports_prompt_content_and_identity_requests ... ok
+test store::exchange_access::tests::manifest_metadata_retains_access_requests_and_accepts_old_packages ... ok
+test store::tests::an_empty_plugin_dir_falls_back_to_home ... ok
+test archive::tests::traversal_web_ui_bundle_path_records_invalid_ui ... ok
+test archive::tests::missing_web_ui_entry_script_records_invalid_ui_without_rejecting_plugin ... ok
+test skills::tests::discovers_enabled_plugin_skills ... ok
+test archive::tests::unsupported_plugin_schema_version ... ok
+test target::tests::executable_suffix_follows_the_target_not_the_host ... ok
+test store::tests::installed_is_reserved_in_any_case ... ok
+test store::tests::deleting_a_plugin_named_installed_keeps_the_other_plugins_files ... ok
+test target::tests::maps_supported_targets ... ok
+test target::tests::rejects_unsupported_targets ... ok
+test defaults::tests::a_default_is_installed_from_the_bundled_copy_with_no_network ... ok
+test store::tests::load_legacy_metadata_without_control_behavior ... ok
+test archive::tests::package_with_web_ui_contribution_records_valid_asset_root ... ok
+test archive::tests::symlink_escape_web_ui_entry_script_records_invalid_ui ... ok
+test archive::tests::package_with_web_ui_bundle_records_valid_asset_root ... ok
+test install::tests::a_local_archive_cannot_be_installed_under_a_reserved_name ... ok
+test store::tests::deletes_metadata_directory ... ok
+test store::tests::dot_names_never_reach_the_store_root_or_its_parent ... ok
+test defaults::tests::a_default_disabled_after_a_delete_stays_off ... ok
+test store::tests::list_ignores_non_metadata_directories ... ok
+test store::tests::executable_path_follows_the_stored_target_on_any_host ... ok
+test bundled::tests::a_bundled_default_for_another_target_installs_and_its_executable_is_where_the_host_looks ... ok
+test store::tests::load_optional_distinguishes_missing_metadata ... ok
+test store::tests::saves_loads_and_lists_metadata ... ok
+test install::tests::a_local_archive_for_another_target_installs_and_its_executable_is_where_the_host_looks ... ok
+test install::tests::installs_local_archive_through_package_validation_boundary ... ok
+test archive::tests::extraction_checks_for_the_executable_suffix_it_is_given ... ok
+test bundled::tests::a_bundled_archive_copy_keeps_the_bytes_that_were_hashed ... ok
+test install::tests::install_plugin_schema_roundtrip ... ok
+test store::tests::delete_of_mismatched_metadata_keeps_its_install_path ... ok
+test defaults::tests::turning_defaults_off_disables_a_managed_copy_and_records_a_missing_one ... ok
+test store::tests::updates_enabled_state ... ok
+test store::tests::list_skips_and_reports_metadata_naming_another_plugin ... ok
+test defaults::tests::a_bundled_copy_that_is_not_the_pinned_one_is_refused ... ok
+test store::tests::load_rejects_metadata_naming_another_plugin ... ok
+test defaults::tests::a_new_releases_bundled_copy_replaces_the_previous_default ... ok
+test install::tests::a_named_install_of_an_unpinned_entry_resolves_nothing ... ok
+test install::tests::a_named_install_binds_the_catalog_pinned_version_instead_of_latest ... ok
+
+test result: ok. 86 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

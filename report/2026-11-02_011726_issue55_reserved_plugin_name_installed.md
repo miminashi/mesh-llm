@@ -72,7 +72,7 @@ GitHub からインストールする場合は、リポジトリ名がそのま�
 ## 残課題
 
 - 案 B（台帳を `<store root>/metadata/<名前>/` などに移し、本体置き場と名前の空間を分ける）は未実施。将来ほかの予約名が要るようになったら検討する
-- #54（台帳の `install_path` を信じて `remove_dir_all` する問題）は別 issue で未修正。#54 で `install_path` が「ちょうど `<store root>/installed/<名前>`」であることを確かめる際は、`INSTALL_DIR_NAME` を使える
+- #54（台帳の `install_path` を信じて `remove_dir_all` する問題）は、この PR の作成後に PR #62 で修正され、main に入った。main を取り込んだ際に `install.rs` と `store.rs` が競合したので、両方の変更を残して解消した。`extract_for_install` では、予約名のチェックを先に行い、その後に #62 の install root のチェックを行う。`INSTALL_DIR_NAME` の定義は 1 つにまとめた。#62 の `delete` は、台帳の `install_path` を使わず `<store root>/installed/<名前>` を消す。そのあとに、この PR の予約名の分岐が続く。取り込み後も `cargo test -p mesh-llm-plugin-manager`（92 件）と clippy は通る
 
 ## 参照レポート
 

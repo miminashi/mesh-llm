@@ -148,7 +148,7 @@ mod tests {
     #[test]
     fn discovers_enabled_plugin_skills() {
         let temp = TempDir::new().unwrap();
-        let install_path = temp.path().join("installed").join("demo");
+        let install_path = temp.path().join("store").join("installed").join("demo");
         write_skill(&install_path, "demo-skill");
 
         let store = PluginStore::new(temp.path().join("store"));

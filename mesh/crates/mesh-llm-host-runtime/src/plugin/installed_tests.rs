@@ -22,7 +22,7 @@ fn installed_capsules(store_root: &Path, enabled: bool) -> InstalledPluginMetada
         installed_version: "v0.1.4".to_string(),
         target_triple: std::env::consts::ARCH.to_string(),
         downloaded_asset_name: "capsules.tar.gz".to_string(),
-        install_path: store_root.join("installs").join("capsules"),
+        install_path: store_root.join("installed").join("capsules"),
         enabled,
         default_managed: true,
         manifest: Some(InstalledPluginManifestMetadata {
@@ -301,7 +301,7 @@ fn metadata_naming_another_plugin_is_reported_not_started() {
     let impostor_dir = store.path().join("impostor");
     std::fs::create_dir_all(&impostor_dir).expect("impostor dir");
     let mut impostor = capsules.clone();
-    impostor.install_path = store.path().join("installs").join("impostor");
+    impostor.install_path = store.path().join("installed").join("impostor");
     std::fs::create_dir_all(&impostor.install_path).expect("impostor install");
     std::fs::write(impostor.executable_path(), b"").expect("impostor executable");
     std::fs::write(

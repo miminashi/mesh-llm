@@ -63,9 +63,9 @@ jobs:
     defaults:
       run:
         shell: bash
+    # HF_TOKEN is not bound on the job: it goes in as the hf_token input of
+    # the model restore steps and reaches only restore-test-model's download.
     env:
-      HF_TOKEN: ${{ secrets.HF_TOKEN }}
-      HUGGING_FACE_HUB_TOKEN: ${{ secrets.HF_TOKEN }}
       # Qualify the runtime packaged by this workflow. A published manifest for
       # the same version must not mask a broken bundle beside the host binary.
       MESH_LLM_NATIVE_RUNTIME_MANIFEST_URL: http://127.0.0.1:9/native-runtimes.json
@@ -141,18 +141,13 @@ jobs:
         # this only when the CPU digest is promoted past #20 -- and confirm
         # it from a green run, not from the image repo's HEAD.
         #
-        # Exact-pinned rather than floating: this step runs with the job
-        # environment (HF_TOKEN included) and npm lifecycle scripts inherit
-        # it, so an unreviewed upstream release must not be able to execute
-        # here. The version tracks the image's own ARG OPENAI_NPM_VERSION
+        # Exact-pinned rather than floating: npm lifecycle scripts run with
+        # the job environment, so an unreviewed upstream release must not be
+        # able to execute here. The HF token is no longer part of that
+        # environment (it reaches only the model download). The version
+        # tracks the image's own ARG OPENAI_NPM_VERSION
         # (mesh-llm-runner-images Dockerfile:25) so that re-gating this step
         # once the digest is promoted is a no-op rather than a swap.
-        env:
-          # npm lifecycle scripts inherit the job environment, and neither
-          # token is needed to install a client library. Deny both to this
-          # step rather than relying on the version pin alone.
-          HF_TOKEN: ""
-          HUGGING_FACE_HUB_TOKEN: ""
         run: npm install --global openai@7.5.0
 
       - name: Record CUDA device provenance
@@ -174,6 +169,7 @@ jobs:
           model_cache_scope: inference-smoke-model
           cache_key_prefix: ${{ inputs.cache_key_prefix }}
           save_model_cache: ${{ github.ref == 'refs/heads/main' && github.event.inputs.original_event_name != 'pull_request' && github.event.inputs.original_event_name != 'pull_request_target' }}
+          hf_token: ${{ secrets.HF_TOKEN }}
 
       - name: Restore recurrent smoke model
         id: recurrent_model
@@ -185,6 +181,7 @@ jobs:
           model_cache_scope: inference-smoke-recurrent-model
           cache_key_prefix: ${{ inputs.cache_key_prefix }}
           save_model_cache: ${{ github.ref == 'refs/heads/main' && github.event.inputs.original_event_name != 'pull_request' && github.event.inputs.original_event_name != 'pull_request_target' }}
+          hf_token: ${{ secrets.HF_TOKEN }}
 
       - name: Verify packaged CUDA runtime without inherited toolkit paths
         if: inputs.runner == 'gpu-nvidia'
@@ -299,9 +296,8 @@ jobs:
     # Model credentials stay on an isolated GitHub-hosted runner.
     runs-on: macos-15
     timeout-minutes: ${{ inputs.timeout_minutes }}
+    # HF_TOKEN reaches only the model download; see the Linux job.
     env:
-      HF_TOKEN: ${{ secrets.HF_TOKEN }}
-      HUGGING_FACE_HUB_TOKEN: ${{ secrets.HF_TOKEN }}
       MESH_LLM_NATIVE_RUNTIME_MANIFEST_URL: http://127.0.0.1:9/native-runtimes.json
       MESH_CI_DEVICE: MTL0
       MESH_COMPAT_DEVICE: MTL0
@@ -344,12 +340,6 @@ jobs:
         # Pinned to the same version as the Linux job above -- see the
         # rationale there.
         if: job.container.id == ''
-        env:
-          # npm lifecycle scripts inherit the job environment, and neither
-          # token is needed to install a client library. Deny both to this
-          # step rather than relying on the version pin alone.
-          HF_TOKEN: ""
-          HUGGING_FACE_HUB_TOKEN: ""
         run: npm install --global openai@7.5.0
 
       - uses: ./.github/actions/restore-smoke-inputs
@@ -365,6 +355,7 @@ jobs:
           model_cache_scope: inference-smoke-model
           cache_key_prefix: ${{ inputs.cache_key_prefix }}
           save_model_cache: ${{ github.ref == 'refs/heads/main' && github.event.inputs.original_event_name != 'pull_request' && github.event.inputs.original_event_name != 'pull_request_target' }}
+          hf_token: ${{ secrets.HF_TOKEN }}
 
       - name: Restore recurrent smoke model
         id: recurrent_model
@@ -376,6 +367,7 @@ jobs:
           model_cache_scope: inference-smoke-recurrent-model
           cache_key_prefix: ${{ inputs.cache_key_prefix }}
           save_model_cache: ${{ github.ref == 'refs/heads/main' && github.event.inputs.original_event_name != 'pull_request' && github.event.inputs.original_event_name != 'pull_request_target' }}
+          hf_token: ${{ secrets.HF_TOKEN }}
 
       - name: Dense standalone inference smoke
         run: |

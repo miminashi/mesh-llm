@@ -124,9 +124,8 @@ jobs:
     defaults:
       run:
         shell: bash
-    env:
-      HF_TOKEN: ${{ secrets.HF_TOKEN }}
-      HUGGING_FACE_HUB_TOKEN: ${{ secrets.HF_TOKEN }}
+    # HF_TOKEN is not bound on the job: it goes in as the hf_token input of
+    # the model restore steps and reaches only restore-test-model's download.
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:
@@ -296,6 +295,7 @@ jobs:
           model_cache_scope: ${{ inputs.model_cache_scope }}
           cache_key_prefix: ${{ inputs.cache_key_prefix }}
           save_model_cache: ${{ github.ref == 'refs/heads/main' && github.event.inputs.original_event_name != 'pull_request' && github.event.inputs.original_event_name != 'pull_request_target' }}
+          hf_token: ${{ secrets.HF_TOKEN }}
 
       - name: Rust SDK smoke test
         if: ${{ inputs.sdk_kind == 'rust' }}

@@ -703,9 +703,10 @@ fn actual_scheduled_alert_reconciles_first_failure_repeated_failure_and_recovery
         .unwrap()
         .get("alert-consecutive-failures")
         .unwrap();
+    // miminashi/mesh-llm fork: the alert job is guarded to the upstream repository.
     assert_eq!(
         field(alert, "if"),
-        "${{ !cancelled() && github.event_name == 'schedule' }}"
+        "${{ github.repository == 'Mesh-LLM/mesh-llm' && !cancelled() && github.event_name == 'schedule' }}"
     );
     assert_eq!(
         needs(alert),

@@ -286,6 +286,11 @@ fn sibling_monitor_is_protected_and_pr_entrypoints_have_no_actions_authority() {
         condition.split_whitespace().collect::<Vec<_>>(),
         [
             "${{",
+            // miminashi/mesh-llm fork: the monitor job is guarded to the upstream repository.
+            "github.repository",
+            "==",
+            "'Mesh-LLM/mesh-llm'",
+            "&&",
             "github.event.workflow_run.event",
             "==",
             "'pull_request'",

@@ -1,7 +1,7 @@
 # fork-ci.yml を PR workflow 数え上げテストの例外に追加
 
-- **実施日時**: 2026年11月2日 03:13 〜 04:20 JST (issue #60 の修正: ci_runner_cache_contract の数え上げテストに fork-ci.yml の例外を追加し、xtask 契約テスト全体を確認)
-- **報告日時**: 2026年11月2日 04:20 JST
+- **実施日時**: 2026年11月2日 03:13 〜 04:20 JST (issue #60 の修正: ci_runner_cache_contract の数え上げテストに fork-ci.yml の例外を追加し、xtask 契約テスト全体を確認)、2026年11月3日 12:00 〜 12:40 JST (同じ原因で落ちていた 2 件の契約テストを fork に合わせて修正)
+- **報告日時**: 2026年11月3日 12:40 JST
 - **作成者**: Claude Opus 5.5
 
 ## 概要
@@ -16,7 +16,9 @@ upstream と、別の fork である jimoto-no-llm/mesh-llm を調べました�
 
 ついでに、`automation-contracts` feature を付けて xtask のテストを全部流しました。100 件を超える失敗が出ましたが、ほとんどはこのワークステーションの環境が原因です。必要なツールや環境変数が無い、負荷のせいでタイムアウトした、などで、今回の修正とは関係ありません。
 
-ただし、その中に、#60 と同じく fork が workflow を書き換えたせいで落ちるテストが 2 件ありました。どちらも、upstream 専用のジョブに fork が付けた `github.repository == 'Mesh-LLM/mesh-llm'` の条件が、テストの期待する `if:` の文字列と食い違うものです。この PR の範囲は広げず、issue #60 に記録して、扱いを別に決めることにしました。
+ただし、その中に、#60 と同じく fork が workflow を書き換えたせいで落ちるテストが 2 件ありました。どちらも、upstream 専用のジョブに fork が付けた `github.repository == 'Mesh-LLM/mesh-llm'` の条件が、テストの期待する `if:` の文字列と食い違うものです。いったん issue #60 に記録したあと、ユーザーの判断で、この 2 件も同じ PR でテストの期待値を fork の条件に合わせました。
+
+その作業の前に最新の main を取り込んだところ、canary の契約テストが新たに 4 件落ちるようになりました。調べると、upstream で canary の workflow を書き換えた変更が、契約テストを更新しないままマージされたためでした。fork の変更とは関係なく、upstream ではすでに修正の PR が出ているので、この PR では手を付けず、upstream の修正を取り込むのを待ちます。
 
 ## 添付ファイル
 
@@ -81,6 +83,28 @@ cargo test -j 8 -p xtask --features automation-contracts --no-fail-fast
 - **ツールや環境変数が無い**: `MIGRATION_TEST_GIT` 未設定（`compute_changes_justfiles` の 11 件）、PATH に fixture 用のツールが無い（`lld_shell_contract`、`macos_deployment_target`、`source_layout_action` など）、Swift / Kotlin の SDK が無い（`swift_privacy_adapter` の 17 件、`native_sdk_restore` など）
 - **負荷によるタイムアウト**: `ProcessReport { outcome: Deadline, ... }` で落ちたもの。`ci_runner_cache_contract` の 5 件もこれで、単独で実行したときは全件通った
 
+### 追加修正: 同じ原因の契約テスト 2 件（2026-11-03）
+
+fork のジョブ条件 `github.repository == 'Mesh-LLM/mesh-llm' && ...` を期待値にした:
+
+- `tools/xtask/tests/migration_lifecycle/pr_sibling_cancellation.rs`: `if:` を空白で区切ったトークン列の先頭に `github.repository` / `==` / `'Mesh-LLM/mesh-llm'` / `&&` を足した
+- `tools/xtask/tests/migration_lifecycle/canary_workflow_contract.rs`: `alert-consecutive-failures` の `if:` の期待文字列に同じ条件を足した
+
+`cargo test -j 8 -p xtask --features automation-contracts --test migration_lifecycle -- pr_sibling_cancellation canary_workflow_contract` の結果、対象の 2 件を含む 18 件が通った。失敗した 4 件は下の upstream 起因のもの。
+
+### upstream 起因の canary 契約テストの失敗（4 件）
+
+最新の origin/main（upstream 取り込み済み）をマージしたあとに出た。upstream #2811（Make the llama upgrade canary platform independent）が `llama-canary-family-pass.yml`、`llama-upstream-canary.yml`、`setup-canary-runner` などを書き換えたが、`canary_workflow_contract.rs` を更新していない:
+
+| テスト | 失敗内容 |
+|---|---|
+| `actual_setup_action_preserves_local_git_identity_and_llvm_fallback_refusal_without_installing` | `Verify runner toolchain` ステップが見つからない |
+| `parsed_family_worker_preserves_bounded_fanout_and_prebuilt_restore_before_certification` | 期待したキーが無い（`field` の unwrap） |
+| `frozen_prebuilt_workers_load_cache_after_controller_and_before_consumption` | `runner-profile` が `preinstalled-macos` ではなく `${{ needs.resolve.outputs.runner_profile }}` |
+| `protected_controller_and_worker_credentials_refuse_permission_or_token_mutations` | `publication credential key in worker/controller node` |
+
+upstream の main は、この組み合わせで赤くなっている。修正 PR Mesh-LLM/mesh-llm#2814（fix: repair main after the bindgen, canary and split DFlash merges、open）が `canary_workflow_contract.rs` を直している。
+
 ## 副次発見
 
 fork が upstream 専用のジョブに `github.repository == 'Mesh-LLM/mesh-llm'` の条件を足した（コミット f5c517015）ことで、`if:` の文字列を厳密に比べる次の契約テストも落ちている:
@@ -90,4 +114,5 @@ fork が upstream 専用のジョブに `github.repository == 'Mesh-LLM/mesh-llm
 
 ## 残課題
 
-- 上の 2 件を、#60 と同じようにテストを fork に合わせるか、既知の失敗として扱うかを決める（issue #60 に記録済み）
+- 上の 2 件は、2026-11-03 にこの PR で修正済み
+- upstream #2814 がマージされたら取り込み、canary 契約テストの 4 件が通ることを確かめる。#2814 が alert ジョブの `if:` の期待値も変えていれば、fork の条件と合わせ直す

@@ -26,7 +26,9 @@ const METADATA_FILE: &str = "plugin-install.json";
 const DEFAULT_OFF_FILE: &str = "default-off";
 /// The directory under the store root that holds every plugin's files, one
 /// `<root>/installed/<name>` each, beside the metadata directories
-/// (`<root>/<name>`).
+/// (`<root>/<name>`). A plugin named `installed` would keep its metadata in
+/// it, and deleting that plugin would delete every plugin's files, so the
+/// name is reserved ([`is_reserved_plugin_name`]).
 pub const INSTALL_DIR_NAME: &str = "installed";
 pub const SUPPORTED_PLUGIN_SCHEMA_VERSION: u32 = 1;
 
@@ -546,7 +548,18 @@ impl PluginStore {
             removed.with_context(|| format!("delete plugin install {}", install_path.display()))?;
         }
         let plugin_dir = self.plugin_dir(name);
-        if plugin_dir.exists() {
+        if is_reserved_plugin_name(name) {
+            // Installed before the name was reserved: its metadata directory
+            // is the one holding every plugin's files, so remove only the
+            // files the store wrote there.
+            for file in [METADATA_FILE, DEFAULT_OFF_FILE] {
+                let path = plugin_dir.join(file);
+                if path.exists() {
+                    fs::remove_file(&path)
+                        .with_context(|| format!("delete plugin metadata {}", path.display()))?;
+                }
+            }
+        } else if plugin_dir.exists() {
             fs::remove_dir_all(&plugin_dir)
                 .with_context(|| format!("delete plugin metadata {}", plugin_dir.display()))?;
         }
@@ -605,6 +618,25 @@ fn store_root_from(
     }
     let home = home.context("Cannot determine home directory")?;
     Ok(home.join(".mesh-llm").join("plugins"))
+}
+
+/// Whether `name` cannot name a plugin to install: its metadata directory
+/// would be [`INSTALL_DIR_NAME`]. Case is ignored, because a case-insensitive
+/// file system (the macOS and Windows defaults) resolves `Installed` there too.
+pub fn is_reserved_plugin_name(name: &str) -> bool {
+    name.eq_ignore_ascii_case(INSTALL_DIR_NAME)
+}
+
+/// Refuse a name no plugin may be installed under. Every install path checks
+/// this after it has settled the plugin's name, before it writes anything.
+pub(crate) fn ensure_installable_plugin_name(name: &str) -> Result<()> {
+    if is_reserved_plugin_name(name) {
+        bail!(
+            "plugin name '{name}' is reserved: the plugin store keeps every plugin's files \
+             in its '{INSTALL_DIR_NAME}' directory"
+        );
+    }
+    Ok(())
 }
 
 fn validate_plugin_name(name: &str) -> Result<()> {
@@ -975,6 +1007,58 @@ mod tests {
 
         assert!(std::fs::symlink_metadata(store.install_path("demo")).is_err());
         assert_eq!(std::fs::read(outside.path().join("keep")).unwrap(), b"keep");
+    }
+
+    /// A plugin named `installed`, installed before the name was reserved,
+    /// keeps its metadata in the directory holding every plugin's files.
+    /// Deleting it removes its own files and leaves the other plugins'.
+    #[test]
+    fn deleting_a_plugin_named_installed_keeps_the_other_plugins_files() {
+        let temp = TempDir::new().unwrap();
+        let store = PluginStore::new(temp.path());
+        let install_root = temp.path().join(INSTALL_DIR_NAME);
+        let demo_files = install_root.join("demo");
+        std::fs::create_dir_all(&demo_files).unwrap();
+        std::fs::write(demo_files.join("demo"), b"executable").unwrap();
+        let mut demo = metadata("demo");
+        demo.install_path = demo_files.clone();
+        store.save(&demo).unwrap();
+        let installed_files = install_root.join("installed");
+        std::fs::create_dir_all(&installed_files).unwrap();
+        let mut installed = metadata("installed");
+        installed.install_path = installed_files.clone();
+        store.save(&installed).unwrap();
+        store.set_default_turned_off("installed", true).unwrap();
+        assert_eq!(store.plugin_dir("installed"), install_root);
+
+        store.delete("installed").unwrap();
+
+        assert!(demo_files.join("demo").is_file());
+        assert!(!installed_files.exists());
+        assert!(!install_root.join(METADATA_FILE).exists());
+        assert!(!install_root.join(DEFAULT_OFF_FILE).exists());
+        let names: Vec<_> = store
+            .list()
+            .unwrap()
+            .into_iter()
+            .map(|item| item.name)
+            .collect();
+        assert_eq!(names, ["demo"]);
+    }
+
+    #[test]
+    fn installed_is_reserved_in_any_case() {
+        for name in ["installed", "Installed", "INSTALLED"] {
+            assert!(is_reserved_plugin_name(name), "{name}");
+            let error = ensure_installable_plugin_name(name)
+                .unwrap_err()
+                .to_string();
+            assert!(error.contains("reserved"), "{error}");
+        }
+        for name in ["demo", "installed-plugin", "install", "installed2"] {
+            assert!(!is_reserved_plugin_name(name), "{name}");
+            ensure_installable_plugin_name(name).unwrap();
+        }
     }
 
     /// Hand-edit `<dir>/plugin-install.json` so its `name` differs from `dir`.

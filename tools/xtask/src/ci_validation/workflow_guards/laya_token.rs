@@ -42,7 +42,26 @@ fn action_chain(laya: &Node, smoke_inputs: &Node, test_model: &Node) -> DynResul
     let steps = h::steps(h::member(test_model, "runs")?)?;
     let (download, step) = h::step(steps, "name", "Download integration model")?;
     h::binding(h::member(step, "env")?, "MODEL_HF_TOKEN", FORWARD)?;
+    reads_only_the_input(step)?;
     only_step(steps, download, "restore-test-model")
+}
+
+// The download reads the token from MODEL_HF_TOKEN alone. A fallback to the
+// caller's HF_TOKEN / HUGGING_FACE_HUB_TOKEN would let a job-wide binding keep
+// working unnoticed, and the token would again reach every step of that job.
+fn reads_only_the_input(step: &Node) -> DynResult<()> {
+    let run = super::field(step, "run").ok_or("missing download command")?;
+    let env = h::member(step, "env")?;
+    let other = env
+        .entries()
+        .iter()
+        .any(|(name, node)| name != "MODEL_HF_TOKEN" && (leaks(name) || mentions(node)));
+    if other || leaks(&run.replace("MODEL_HF_TOKEN", "")) {
+        return Err(
+            "restore-test-model: the download must read the token only from its input".into(),
+        );
+    }
+    Ok(())
 }
 
 // The action declares an optional, empty-by-default `hf_token` input, hands it
@@ -85,12 +104,12 @@ fn only_step(steps: &[Node], allowed: usize, action: &str) -> DynResult<()> {
     Ok(())
 }
 
-fn leaks(text: &str) -> bool {
+pub(super) fn leaks(text: &str) -> bool {
     let text = text.to_ascii_uppercase();
     text.contains("HF_TOKEN") || text.contains("HUGGING_FACE_HUB_TOKEN")
 }
 
-fn mentions(node: &Node) -> bool {
+pub(super) fn mentions(node: &Node) -> bool {
     match node {
         Node::Scalar(text) => leaks(text),
         Node::Seq(items) => items.iter().any(mentions),
@@ -252,6 +271,35 @@ mod tests {
             "MODEL_HF_TOKEN",
         );
         assert!(!admitted(&nodes), "download step lost the token");
+    }
+
+    #[test]
+    fn download_reads_no_token_from_the_caller_environment() {
+        for fallback in [
+            r#"token="${MODEL_HF_TOKEN:-${HF_TOKEN:-}}""#,
+            r#"token="${MODEL_HF_TOKEN:-${HUGGING_FACE_HUB_TOKEN:-}}""#,
+        ] {
+            let mut nodes = chain();
+            let step = step_mut(&mut nodes[2], "name", "Download integration model");
+            let Node::Map(fields) = step else {
+                unreachable!()
+            };
+            let (_, run) = fields.iter_mut().find(|(name, _)| name == "run").unwrap();
+            let Node::Scalar(text) = run else {
+                unreachable!()
+            };
+            assert!(text.contains(r#"token="${MODEL_HF_TOKEN:-}""#));
+            *text = text.replace(r#"token="${MODEL_HF_TOKEN:-}""#, fallback);
+            assert!(!admitted(&nodes), "{fallback}");
+        }
+        let mut nodes = chain();
+        bind(
+            step_mut(&mut nodes[2], "name", "Download integration model"),
+            "env",
+            "HF_TOKEN",
+            "${{ env.HF_TOKEN }}",
+        );
+        assert!(!admitted(&nodes), "second token binding");
     }
 
     #[test]

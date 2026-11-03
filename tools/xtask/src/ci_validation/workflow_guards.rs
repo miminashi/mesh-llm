@@ -37,6 +37,7 @@ mod runner_finalization;
 mod runtime_events;
 mod selected_ref;
 mod shell;
+mod smoke_token;
 mod windows_build_paths;
 mod windows_skippy_probes;
 
@@ -93,6 +94,7 @@ pub(super) fn check(root: &Path) -> DynResult<()> {
     canary_runners::check(&workflows)?;
     canary_build::check(&workflows)?;
     laya::check(root, &workflows)?;
+    smoke_token::check(&workflows)?;
     let quality_jobs = workflows
         .get("ci-quality-slice.yml")
         .and_then(|workflow| workflow.get("jobs"))

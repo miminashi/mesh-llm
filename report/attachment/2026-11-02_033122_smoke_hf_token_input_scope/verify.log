@@ -1,0 +1,26 @@
+fmt ok
+$ cargo clippy -p xtask --all-targets -- -D warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 8m 40s
+$ cargo test -p xtask --bin xtask -- token
+test ci_validation::workflow_guards::laya_token::tests::token_travels_as_an_input_down_to_the_download_step ... ok
+test ci_validation::workflow_guards::laya_token::tests::download_reads_no_token_from_the_caller_environment ... ok
+test ci_validation::workflow_guards::laya_token::tests::hf_token_input_stays_optional_and_empty_by_default ... ok
+test ci_validation::workflow_guards::laya_token::tests::handoff_steps_cannot_bind_the_token_in_env_or_drop_it ... ok
+test ci_validation::workflow_guards::laya_token::tests::token_cannot_reach_another_step_of_the_chain ... ok
+test ci_validation::workflow_guards::smoke_token::tests::smoke_jobs_pass_the_token_only_to_model_restores ... ok
+test ci_validation::workflow_guards::smoke_token::tests::other_model_restoring_jobs_carry_no_token ... ok
+test ci_validation::workflow_guards::smoke_token::tests::token_cannot_return_to_the_job_env ... ok
+test ci_validation::workflow_guards::smoke_token::tests::token_cannot_reach_a_step_that_does_not_restore_a_model ... ok
+test ci_validation::workflow_guards::smoke_token::tests::restore_steps_hand_over_the_secret_as_hf_token_only ... ok
+test result: ok. 31 passed; 0 failed; 0 ignored; 0 measured; 2296 filtered out; finished in 23.25s
+$ cargo test -p xtask --bin xtask ci_validation
+test result: ok. 259 passed; 0 failed; 0 ignored; 0 measured; 2068 filtered out; finished in 23.18s
+$ cargo run -p xtask -- repo-consistency release-targets
+
+repo consistency checks passed: release-targets
+exit=0
+$ cargo run -p xtask -- ci validate-graph --workflows .github/workflows
+warning: linker stderr: Note: mold is unavailable or failed the active target/toolchain link probe.
+         Falling back to lld or the platform linker for this build.
+
+exit=0

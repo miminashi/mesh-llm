@@ -109,6 +109,8 @@ upstream の main は、この組み合わせで赤くなっている。修正 P
 
 最新の main を取り込んだあと、PR の Fork CI の Clippy and tests が `tools/xtask/src/ci_validation/workflow_guards/canary_runners.rs:157` の `clippy::needless_lifetimes` で落ちた。upstream #2811 が持ち込んだもので、main への push では xtask の Clippy が走らないため main の CI では見えない（PR が xtask を触ると走る）。upstream の修正 Mesh-LLM/mesh-llm#2817（open）とまったく同じ 1 行の変更（`fn scalar_mut(node: &mut Node) -> &mut String`）を入れた。変更後のファイルは upstream #2817 と blob が一致する（`e62a185f9`）ので、upstream を取り込むときに衝突しない。`cargo clippy -j 8 -p xtask --all-targets -- -D warnings` が通ることを確かめた。
 
+その後、同じ修正が fork の main に PR #66 で入った。main をマージしたあとは、この PR の差分から `canary_runners.rs` の変更は消えている（中身は同じ）。
+
 ## 副次発見
 
 fork が upstream 専用のジョブに `github.repository == 'Mesh-LLM/mesh-llm'` の条件を足した（コミット f5c517015）ことで、`if:` の文字列を厳密に比べる次の契約テストも落ちている:
